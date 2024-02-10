@@ -1,10 +1,12 @@
 #include "main.h"
 #include "renderwindow.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_events.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_video.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -28,7 +30,17 @@ int main(int argc, char *argv[]) {
   render_window.window = create_sdl_window("Game v1.0", 800, 600);
   render_window.renderer = create_sdl_renderer(render_window.window);
 
-  SDL_Delay(1000);
+  bool game_is_running = true;
+
+  SDL_Event event;
+
+  while (game_is_running) {
+    while (SDL_PollEvent(&event)) {
+      if (event.type == SDL_QUIT) {
+        game_is_running = false;
+      }
+    }
+  }
 
   cleanup_render_window(&render_window);
 
