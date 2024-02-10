@@ -36,12 +36,12 @@ int main(int argc, char *argv[]) {
   SDL_Texture *oak_floor_texture =
       load_texture(render_window.renderer, "assets/oak_woods/oak_floor.png");
 
-  Entity *platform0 = create_entity(100, 100, oak_floor_texture);
+  Entity *platform0 = create_entity(100, 300, oak_floor_texture);
+  Entity *platform1 = create_scaled_entity(50, 50, 4, oak_floor_texture);
 
   bool game_is_running = true;
 
   SDL_Event event;
-
   while (game_is_running) {
 
     // process events
@@ -52,18 +52,21 @@ int main(int argc, char *argv[]) {
       switch (event.type) {
       case SDL_QUIT:
       case SDL_WINDOWEVENT_CLOSE:
+        printf("Window close event received, exiting game...\n");
         game_is_running = false;
         break;
       }
 
       const Uint8 *key_state = SDL_GetKeyboardState(NULL);
       if (key_state[SDL_SCANCODE_ESCAPE]) {
+        printf("Escape key pressed, exiting game...\n");
         game_is_running = false;
       }
     }
 
     clear_renderer(render_window.renderer);
     render(render_window.renderer, platform0);
+    render(render_window.renderer, platform1);
     display(render_window.renderer);
   }
 

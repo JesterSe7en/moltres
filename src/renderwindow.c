@@ -83,15 +83,12 @@ void render(SDL_Renderer *renderer, Entity *entity) {
   }
 
   SDL_Texture *texture = entity->texture;
+  SDL_Rect current_frame = entity->current_frame;
 
-  SDL_Rect src = {entity->current_frame.x, entity->current_frame.y, 0, 0};
-  // out params are format, access, width, height
-  if (SDL_QueryTexture(texture, NULL, NULL, &src.w, &src.h) != 0) {
-    fprintf(stderr, "Cannot query texture: %s\n", SDL_GetError());
-    return;
-  }
-
-  SDL_Rect dest = {entity->x, entity->y, src.w, src.h};
+  SDL_Rect src = {current_frame.x, current_frame.y, current_frame.w,
+                  current_frame.h};
+  SDL_Rect dest = {entity->x * entity->scale, entity->y * entity->scale,
+                   src.w * entity->scale, src.h * entity->scale};
 
   if (SDL_RenderCopy(renderer, texture, &src, &dest) != 0) {
     fprintf(stderr, "Cannot render texture: %s\n", SDL_GetError());
