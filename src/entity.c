@@ -1,70 +1,48 @@
 #include "entity.h"
 
 /**
- * Creates a new entity. Defaults current frame to 0,0 with scale of 1.
+ * Initializes an entity
  *
  * @param x the x position of the entity in window
  * @param y the y position of the entity in window
- * @param SDL_Texture* The SDL texture of the entity
- * @return Entity* New entity
- */
-Entity *create_entity(float x, float y, SDL_Texture *texture) {
-  Entity *entity = (Entity *)malloc(sizeof(Entity));
-  // location on screen is the entity
-  entity->x = x;
-  entity->y = y;
-
-  entity->scale = 1;
-
-  // this is the size of the source texture
-  entity->current_frame.x = 0;
-  entity->current_frame.y = 0;
-  if (SDL_QueryTexture(texture, NULL, NULL, &entity->current_frame.w,
-                       &entity->current_frame.h) != 0) {
-    fprintf(stderr, "Could not query texture during entity creation: %s\n",
-            SDL_GetError());
-    free(entity);
-    return NULL;
-  }
-
-  entity->texture = texture;
-  return entity;
-}
-
-/**
- * Creates a new entity. Defaults current frame to 0,0.
- *
- * @param x the x position of the entity in window
- * @param y the y position of the entity in window
+ * @param cur_frame_x the x position of the current frame in the animation
+ * @param cur_frame_y the y position of the current frame in the animation
  * #param scale the scale of the entity in window
  * @param SDL_Texture* The SDL texture of the entity
- * @return Entity* New entity
+ * @return bool False if entity could not be initialized
  */
-Entity *create_scaled_entity(float x, float y, float scale,
-                             SDL_Texture *texture) {
-  Entity *entity = (Entity *)malloc(sizeof(Entity));
-  // location on screen is the entity
+bool init_entity(Entity *entity, float x, float y, float cur_frame_x,
+                 float cur_frame_y, float scale, SDL_Texture *texture) {
+  if (entity == NULL) {
+    fprintf(stderr, "Could not initialize entity: entity is NULL\n");
+    return false;
+  }
+
   entity->x = x;
   entity->y = y;
-
   entity->scale = scale;
-
-  // this is the size of the source texture
-  entity->current_frame.x = 0;
-  entity->current_frame.y = 0;
+  entity->current_frame.x = cur_frame_x;
+  entity->current_frame.y = cur_frame_y;
   if (SDL_QueryTexture(texture, NULL, NULL, &entity->current_frame.w,
                        &entity->current_frame.h) != 0) {
-    fprintf(stderr, "Could not query texture during entity creation: %s\n",
+    fprintf(stderr,
+            "Could not query texture during entity initialization: %s\n",
             SDL_GetError());
-    free(entity);
-    return NULL;
+    return false;
   }
 
   entity->texture = texture;
-  return entity;
+  return true;
 }
 
 void destroy_entity(Entity *entity) {
+  if (entity == NULL) {
+    fprintf(stderr, "Could not destroy entity: entity is NULL\n");
+    return;
+  }
+
+  printf("Destroying entity at (%f, %f)\n", entity->x, entity->y);
+
   if (entity->texture != NULL) {
     SDL_DestroyTexture(entity->texture);
   }

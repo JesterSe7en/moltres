@@ -36,9 +36,14 @@ int main(int argc, char *argv[]) {
   SDL_Texture *oak_floor_texture =
       load_texture(render_window.renderer, "assets/oak_woods/oak_floor.png");
 
-  Entity *entities[3] = {create_entity(0, 0, oak_floor_texture),
-                         create_entity(30, 0, oak_floor_texture),
-                         create_entity(30, 30, oak_floor_texture)};
+  int entity_count = 3;
+  Entity entities[entity_count];
+
+  for (int i = 0; i < entity_count; i++) {
+    if (!init_entity(&entities[i], 0, 0, 0, 0, 1, oak_floor_texture)) {
+      fprintf(stderr, "Cannot initialize entity: %s\n", SDL_GetError());
+    }
+  }
 
   bool game_is_running = true;
 
@@ -67,12 +72,17 @@ int main(int argc, char *argv[]) {
 
     clear_renderer(render_window.renderer);
 
-    int entity_count = sizeof(entities) / sizeof(Entity *);
+    int entity_count = sizeof(entities) / sizeof(Entity);
     for (int i = 0; i < entity_count; i++) {
-      render(render_window.renderer, entities[i]);
+      render(render_window.renderer, &entities[i]);
     }
 
     display(render_window.renderer);
+  }
+
+  // clean up entities
+  for (int i = 0; i < entity_count; i++) {
+    destroy_entity(&entities[i]);
   }
 
   cleanup_render_window(&render_window);

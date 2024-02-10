@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <stdbool.h>
 
 typedef struct {
   float x, y;
@@ -11,8 +12,8 @@ typedef struct {
   SDL_Texture *texture;
 } Entity;
 
-Entity *create_entity(float, float, SDL_Texture *);
-Entity *create_scaled_entity(float, float, float, SDL_Texture *);
-void destroy_entity(Entity *entity);
+bool init_entity(Entity *entity, float x, float y, float target_x,
+                 float target_y, float scale, SDL_Texture *texture);
+void destroy_entity(Entity *);
 
 #endif // INCLUDE_SRC_ENTITY_H_
