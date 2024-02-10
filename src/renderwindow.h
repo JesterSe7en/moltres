@@ -11,6 +11,11 @@ typedef struct {
 
 SDL_Window *create_sdl_window(const char *, int, int);
 SDL_Renderer *create_sdl_renderer(SDL_Window *);
+SDL_Texture *load_texture(SDL_Renderer *, const char *);
+void clear_renderer(SDL_Renderer *);
+void render(SDL_Renderer *, SDL_Texture *);
+void display(SDL_Renderer *);
+
 void cleanup_render_window(RenderWindow *);
 
 #endif // INCLUDE_MOLTRES_RENDERWINDOW_H_
