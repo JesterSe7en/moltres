@@ -1,6 +1,7 @@
 #include "renderwindow.h"
 #include <SDL2/SDL_error.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 #include <stdio.h>
@@ -25,6 +26,13 @@ SDL_Renderer *create_sdl_renderer(SDL_Window *window) {
   return renderer;
 }
 
+/**
+ * Load texture drectly from file
+ *
+ * @param renderer SDL Renderer
+ * @param file_path Path to image
+ * @return SDL_Texture The texture from source image
+ */
 SDL_Texture *load_texture(SDL_Renderer *renderer, const char *file_path) {
   if (renderer == NULL) {
     fprintf(stderr, "Cannot load texture: SDL renderer is NULL\n");
@@ -39,6 +47,31 @@ SDL_Texture *load_texture(SDL_Renderer *renderer, const char *file_path) {
   return texture;
 }
 
+/**
+ * Load texture as surface then as texture
+ *
+ * @param renderer SDL Renderer
+ * @param file_path Path to image
+ * @return SDL_Texture The texture from source image
+ */
+SDL_Texture *load_texture_from_memory(SDL_Renderer *renderer,
+                                      const char *file_path) {
+  if (renderer == NULL) {
+    fprintf(stderr, "Cannot load texture: SDL renderer is NULL\n");
+    return NULL;
+  }
+  SDL_Surface *surface = IMG_Load(file_path);
+  if (surface == NULL) {
+    fprintf(stderr, "Cannot load image as surface: %s\n", SDL_GetError());
+    return NULL;
+  }
+  SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+  if (texture == NULL) {
+    fprintf(stderr, "Cannot load image as texture: %s\n", SDL_GetError());
+  }
+  return texture;
+}
+
 void clear_renderer(SDL_Renderer *renderer) { SDL_RenderClear(renderer); }
 
 void render(SDL_Renderer *renderer, SDL_Texture *texture) {
@@ -47,7 +80,17 @@ void render(SDL_Renderer *renderer, SDL_Texture *texture) {
     return;
   }
 
-  if (SDL_RenderCopy(renderer, texture, NULL, NULL) != 0) {
+  SDL_Rect src = {0, 0, 0, 0};
+  // out params are format, access, width, height
+  if (SDL_QueryTexture(texture, NULL, NULL, &src.w, &src.h) != 0) {
+    fprintf(stderr, "Cannot query texture: %s\n", SDL_GetError());
+  } else {
+    // hard code this for now
+    src.w = src.h = 24;
+  }
+  SDL_Rect dest = {100, 100, src.w, src.h};
+
+  if (SDL_RenderCopy(renderer, texture, &src, &dest) != 0) {
     fprintf(stderr, "Cannot render texture: %s\n", SDL_GetError());
   };
 }
