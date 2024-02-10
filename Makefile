@@ -3,7 +3,7 @@
 
 build: $(wildcard ./src/*.c)
 	@echo "Building..."
-	clang-18 -o game -Wall -std=c11 -pedantic $^ -I/usr/local/include -L/usr/local/lib -lSDL2 -lSDL2_image -lSDL2_ttf -lchipmunk
+	gcc -o game -Wall -std=c11 -pedantic $^ -I/usr/local/include -L/usr/local/lib -lSDL2 -lSDL2_image -lSDL2_ttf
 	if [ $$? -eq 0 ]; then \
 		echo "Build successful."; \
 	else \
