@@ -1,4 +1,5 @@
 #include "renderwindow.h"
+#include "entity.h"
 #include <SDL2/SDL_error.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_pixels.h>
@@ -74,21 +75,23 @@ SDL_Texture *load_texture_from_memory(SDL_Renderer *renderer,
 
 void clear_renderer(SDL_Renderer *renderer) { SDL_RenderClear(renderer); }
 
-void render(SDL_Renderer *renderer, SDL_Texture *texture) {
-  if (renderer == NULL || texture == NULL) {
-    fprintf(stderr, "Cannot render texture: renderer or texture is NULL\n");
+void render(SDL_Renderer *renderer, Entity *entity) {
+  if (renderer == NULL || entity->texture == NULL) {
+    fprintf(stderr,
+            "Cannot render target entity: renderer or texture is NULL\n");
     return;
   }
 
-  SDL_Rect src = {0, 0, 0, 0};
+  SDL_Texture *texture = entity->texture;
+
+  SDL_Rect src = {entity->current_frame.x, entity->current_frame.y, 0, 0};
   // out params are format, access, width, height
   if (SDL_QueryTexture(texture, NULL, NULL, &src.w, &src.h) != 0) {
     fprintf(stderr, "Cannot query texture: %s\n", SDL_GetError());
-  } else {
-    // hard code this for now
-    src.w = src.h = 24;
+    return;
   }
-  SDL_Rect dest = {100, 100, src.w, src.h};
+
+  SDL_Rect dest = {entity->x, entity->y, src.w, src.h};
 
   if (SDL_RenderCopy(renderer, texture, &src, &dest) != 0) {
     fprintf(stderr, "Cannot render texture: %s\n", SDL_GetError());

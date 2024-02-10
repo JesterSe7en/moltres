@@ -1,4 +1,5 @@
 #include "main.h"
+#include "entity.h"
 #include "renderwindow.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
@@ -35,6 +36,8 @@ int main(int argc, char *argv[]) {
   SDL_Texture *oak_floor_texture =
       load_texture(render_window.renderer, "assets/oak_woods/oak_floor.png");
 
+  Entity *platform0 = create_entity(100, 100, oak_floor_texture);
+
   bool game_is_running = true;
 
   SDL_Event event;
@@ -60,7 +63,7 @@ int main(int argc, char *argv[]) {
     }
 
     clear_renderer(render_window.renderer);
-    render(render_window.renderer, oak_floor_texture);
+    render(render_window.renderer, platform0);
     display(render_window.renderer);
   }
 
