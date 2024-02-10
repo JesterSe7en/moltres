@@ -35,16 +35,13 @@ bool init_entity(Entity *entity, float x, float y, float cur_frame_x,
   return true;
 }
 
-void destroy_entity(Entity *entity) {
+void cleanup_entity(Entity *entity) {
   if (entity == NULL) {
     fprintf(stderr, "Could not destroy entity: entity is NULL\n");
     return;
   }
 
-  printf("Destroying entity at (%f, %f)\n", entity->x, entity->y);
-
   if (entity->texture != NULL) {
     SDL_DestroyTexture(entity->texture);
   }
-  free(entity);
 }

@@ -14,6 +14,6 @@ typedef struct {
 
 bool init_entity(Entity *entity, float x, float y, float target_x,
                  float target_y, float scale, SDL_Texture *texture);
-void destroy_entity(Entity *);
+void cleanup_entity(Entity *);
 
 #endif // INCLUDE_SRC_ENTITY_H_

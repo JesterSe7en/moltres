@@ -72,7 +72,6 @@ int main(int argc, char *argv[]) {
 
     clear_renderer(render_window.renderer);
 
-    int entity_count = sizeof(entities) / sizeof(Entity);
     for (int i = 0; i < entity_count; i++) {
       render(render_window.renderer, &entities[i]);
     }
@@ -82,7 +81,7 @@ int main(int argc, char *argv[]) {
 
   // clean up entities
   for (int i = 0; i < entity_count; i++) {
-    destroy_entity(&entities[i]);
+    cleanup_entity(&entities[i]);
   }
 
   cleanup_render_window(&render_window);
