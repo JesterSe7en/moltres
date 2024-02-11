@@ -4,8 +4,7 @@
 /**
  * Initializes an entity
  *
- * @param x the x position of the entity in window
- * @param y the y position of the entity in window
+ * @param position Vector2F the position of the entity
  * @param cur_frame_x the x position of the current frame in the animation
  * @param cur_frame_y the y position of the current frame in the animation
  * #param scale the scale of the entity in window
