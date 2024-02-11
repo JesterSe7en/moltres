@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "vector.h"
 
 /**
  * Initializes an entity
@@ -11,15 +12,15 @@
  * @param SDL_Texture* The SDL texture of the entity
  * @return bool False if entity could not be initialized
  */
-bool init_entity(Entity *entity, float x, float y, float cur_frame_x,
+bool init_entity(Entity *entity, Vector2F position, float cur_frame_x,
                  float cur_frame_y, float scale, SDL_Texture *texture) {
   if (entity == NULL) {
     fprintf(stderr, "Could not initialize entity: entity is NULL\n");
     return false;
   }
 
-  entity->x = x;
-  entity->y = y;
+  entity->x = position.x;
+  entity->y = position.y;
   entity->scale = scale;
   entity->current_frame.x = cur_frame_x;
   entity->current_frame.y = cur_frame_y;

@@ -1,6 +1,7 @@
 #include "main.h"
 #include "entity.h"
 #include "renderwindow.h"
+#include "vector.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_image.h>
@@ -40,7 +41,7 @@ int main(int argc, char *argv[]) {
   Entity entities[entity_count];
 
   for (int i = 0; i < entity_count; i++) {
-    if (!init_entity(&entities[i], 0, 0, 0, 0, 1, oak_floor_texture)) {
+    if (!init_entity(&entities[i], v2f(0, 0), 0, 0, 1, oak_floor_texture)) {
       fprintf(stderr, "Cannot initialize entity: %s\n", SDL_GetError());
     }
   }
