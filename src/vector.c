@@ -1,7 +1,7 @@
 #include "vector.h"
 
-Vector2F v2f(float x, float y) {
-  Vector2F v = {x, y};
+Vector2f v2f(float x, float y) {
+  Vector2f v = {x, y};
   return v;
 }
 

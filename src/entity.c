@@ -11,7 +11,7 @@
  * @param SDL_Texture* The SDL texture of the entity
  * @return bool False if entity could not be initialized
  */
-bool init_entity(Entity *entity, Vector2F position, float cur_frame_x,
+bool init_entity(Entity *entity, Vector2f position, float cur_frame_x,
                  float cur_frame_y, float scale, SDL_Texture *texture) {
   if (entity == NULL) {
     fprintf(stderr, "Could not initialize entity: entity is NULL\n");

@@ -7,14 +7,14 @@
 #include <stdbool.h>
 
 typedef struct {
-  Vector2F position;
+  Vector2f position;
   float x, y;
   float scale;
   SDL_Rect current_frame;
   SDL_Texture *texture;
 } Entity;
 
-bool init_entity(Entity *, Vector2F, float, float, float, SDL_Texture *texture);
+bool init_entity(Entity *, Vector2f, float, float, float, SDL_Texture *texture);
 void cleanup_entity(Entity *);
 
 #endif // INCLUDE_SRC_ENTITY_H_
