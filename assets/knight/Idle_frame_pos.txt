@@ -1,0 +1,12 @@
+Frame 1: 44, 42
+Frame 2: 164, 42
+Frame 3: 284, 42
+Frame 4: 404, 42
+Frame 5: 524, 42
+Frame 6: 644, 42
+Frame 7: 764, 42
+Frame 8: 884, 42
+Frame 9: 1004, 42
+Frame 10: 1124, 42
+
+spaced apart by 120 pixels
