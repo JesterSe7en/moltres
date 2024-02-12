@@ -27,10 +27,39 @@ void init_subsystems(void) {
   }
 }
 
-void update(RenderWindow render_window, Entity *entities, int entity_count) {
+void process_inputs(bool *game_is_running) {
+  SDL_Event event;
+  while (SDL_PollEvent(&event)) {
+    switch (event.type) {
+    case SDL_QUIT:
+    case SDL_WINDOWEVENT_CLOSE:
+      printf("Window close event received, exiting game...\n");
+      *game_is_running = false;
+      break;
+    }
+
+    const Uint8 *key_state = SDL_GetKeyboardState(NULL);
+    if (key_state[SDL_SCANCODE_ESCAPE]) {
+      printf("Escape key pressed, exiting game...\n");
+      *game_is_running = false;
+    }
+  }
+}
+
+void update(void) {
   float deltaT = (SDL_GetTicks64() - last_frame_time) / 1000.0f;
 
   last_frame_time = SDL_GetTicks64();
+}
+
+void render_entities(SDL_Renderer *renderer, Entity *entities,
+                     int entity_count) {
+
+  clear_renderer(renderer);
+
+  for (int i = 0; i < entity_count; i++) {
+    render(renderer, &entities[i]);
+  }
 }
 
 int main(int argc, char *argv[]) {
@@ -59,33 +88,9 @@ int main(int argc, char *argv[]) {
   SDL_Event event;
   while (game_is_running) {
 
-    // process events
-    // update
-    // render
-
-    while (SDL_PollEvent(&event)) {
-      switch (event.type) {
-      case SDL_QUIT:
-      case SDL_WINDOWEVENT_CLOSE:
-        printf("Window close event received, exiting game...\n");
-        game_is_running = false;
-        break;
-      }
-
-      const Uint8 *key_state = SDL_GetKeyboardState(NULL);
-      if (key_state[SDL_SCANCODE_ESCAPE]) {
-        printf("Escape key pressed, exiting game...\n");
-        game_is_running = false;
-      }
-    }
-
-    update(render_window, entities, entity_count);
-
-    clear_renderer(render_window.renderer);
-
-    for (int i = 0; i < entity_count; i++) {
-      render(render_window.renderer, &entities[i]);
-    }
+    process_inputs(&game_is_running);
+    update();
+    render_entities(render_window.renderer, entities, entity_count);
 
     display(render_window.renderer);
   }
