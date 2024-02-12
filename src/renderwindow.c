@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_syswm.h>
 #include <SDL2/SDL_video.h>
 #include <stdio.h>
 
@@ -11,6 +12,29 @@ SDL_Window *create_sdl_window(const char *title, int width, int height) {
   SDL_Window *window =
       SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                        width, height, SDL_WINDOW_SHOWN);
+
+  SDL_SysWMinfo info;
+  // Cannot just straight call GetWindowWMInfo, need to initialize the version
+  SDL_VERSION(&info.version);
+  if (!SDL_GetWindowWMInfo(window, &info)) {
+    fprintf(stderr, "Cannot get window info: %s\n", SDL_GetError());
+  }
+
+  printf("Version: %d.%d\n", info.version.major, info.version.minor);
+  printf("Subsystem: %d\n", info.subsystem);
+
+  switch (info.subsystem) {
+  case SDL_SYSWM_UNKNOWN:
+    printf("Unknown subsystem\n");
+    break;
+  case SDL_SYSWM_X11:
+    // Access X11-specific information in info.info.x11
+    printf("X11 Window ID: %lu\n", info.info.x11.window);
+    break;
+  default:
+    printf("Unsupported subsystem\n");
+  }
+
   if (window == NULL) {
     fprintf(stderr, "Cannot create SDL window: %s\n", SDL_GetError());
   }
