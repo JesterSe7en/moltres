@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+static int last_frame_time = 0;
+
 void init_subsystems(void) {
   // SDL returns 1 and SDL_image returns 0 on failure
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -23,6 +25,12 @@ void init_subsystems(void) {
     fprintf(stderr, "Cannot initialize SDL image: %s\n", SDL_GetError());
     exit(EXIT_FAILURE);
   }
+}
+
+void update(RenderWindow render_window, Entity *entities, int entity_count) {
+  float deltaT = (SDL_GetTicks64() - last_frame_time) / 1000.0f;
+
+  last_frame_time = SDL_GetTicks64();
 }
 
 int main(int argc, char *argv[]) {
@@ -70,6 +78,8 @@ int main(int argc, char *argv[]) {
         game_is_running = false;
       }
     }
+
+    update(render_window, entities, entity_count);
 
     clear_renderer(render_window.renderer);
 
