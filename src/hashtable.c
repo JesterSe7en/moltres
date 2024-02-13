@@ -35,7 +35,7 @@ void hashtable_add(HashTable *ht, char *key, int value) {
     }
 
     for (size_t i = 0; i < ht->size; i++) {
-      if (ht->entries[i].key != NULL && ht->entries[i].removed) {
+      if (ht->entries[i].key != NULL && !ht->entries[i].removed) {
 
         size_t index = hash_function(ht->entries[i].key) % new_size;
 
@@ -78,7 +78,22 @@ void hashtable_add(HashTable *ht, char *key, int value) {
 }
 
 void hashtable_remove(HashTable *ht, char *key) {
-  // TODO: implement me!
+  if (ht->entries == NULL) {
+    perror("Cannot remove from empty hash table");
+  }
+
+  size_t index = hash_function(key) % ht->size;
+
+  while (ht->entries[index].key != NULL) {
+    if (strcmp(ht->entries[index].key, key) == 0) {
+      free(ht->entries[index].key);
+      ht->entries[index].key = NULL;
+      ht->entries[index].removed = true;
+      ht->count--;
+      return;
+    }
+    index = (index + 1) & ht->size;
+  }
 }
 
 void hashtable_destroy(HashTable *ht) {
