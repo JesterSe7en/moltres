@@ -1,5 +1,6 @@
 #include "main.h"
 #include "entity.h"
+#include "player.h"
 #include "renderwindow.h"
 #include "vector.h"
 #include <SDL2/SDL.h>
@@ -82,6 +83,13 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Cannot initialize entity: %s\n", SDL_GetError());
     }
   }
+
+  Vector2f spawn_point = v2f(100, 100);
+  Player player = player_create(&spawn_point);
+
+  // player needs initial spawn point
+  // starting animation - pointer to specific animation info
+  // all animations used by player - an array?
 
   bool game_is_running = true;
 
