@@ -1,6 +1,7 @@
 #ifndef INCLUDE_SRC_HASHTABLE_H_
 #define INCLUDE_SRC_HASHTABLE_H_
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +9,7 @@
 typedef struct {
   char *key;
   int value;
+  bool removed;
 } Entry;
 
 typedef struct {
