@@ -22,7 +22,7 @@ HashTable *hashtable_create(void) {
   return ht;
 }
 
-void hashtable_add(HashTable *ht, char *key, int value) {
+void hashtable_add(HashTable *ht, char *key, void *value) {
   // Resize if necessary; only at (LOAD_FACTOR_THRESHOLD * 100)% capacity
   if (ht->entries == NULL ||
       (float)ht->count / ht->size > LOAD_FACTOR_THRESHOLD) {
@@ -64,6 +64,7 @@ void hashtable_add(HashTable *ht, char *key, int value) {
   while (ht->entries[index].key != NULL) {
     if (strcmp(ht->entries[index].key, key) == 0 &&
         !ht->entries[index].removed) {
+      free(ht->entries[index].value);
       ht->entries[index].value = value;
       return;
     }
@@ -89,6 +90,7 @@ void hashtable_remove(HashTable *ht, char *key) {
     if (strcmp(ht->entries[index].key, key) == 0) {
       free(ht->entries[index].key);
       ht->entries[index].key = NULL;
+      free(ht->entries[index].value);
       ht->entries[index].removed = true;
       ht->count--;
       return;

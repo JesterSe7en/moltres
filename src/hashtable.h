@@ -8,7 +8,7 @@
 
 typedef struct {
   char *key;
-  int value;
+  void *value;
   bool removed;
 } Entry;
 
@@ -20,7 +20,7 @@ typedef struct {
 
 HashTable *hashtable_create(void);
 void hashtable_remove(HashTable *, char *);
-void hashtable_add(HashTable *, char *, int);
+void hashtable_add(HashTable *, char *, void *);
 void hashtable_destroy(HashTable *);
 
 #endif // INCLUDE_SRC_HASHTABLE_H_
