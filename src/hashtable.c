@@ -23,7 +23,7 @@ HashTable *hashtable_create(void) {
 }
 
 void hashtable_add(HashTable *ht, char *key, int value) {
-  // Resize if necessary
+  // Resize if necessary; only at (LOAD_FACTOR_THRESHOLD * 100)% capacity
   if (ht->entries == NULL ||
       (float)ht->count / ht->size > LOAD_FACTOR_THRESHOLD) {
     size_t new_size = ht->size == 0 ? 1 : ht->size * 2;
@@ -35,6 +35,7 @@ void hashtable_add(HashTable *ht, char *key, int value) {
     }
 
     for (size_t i = 0; i < ht->size; i++) {
+      // only copy over non-removed entries
       if (ht->entries[i].key != NULL && !ht->entries[i].removed) {
 
         size_t index = hash_function(ht->entries[i].key) % new_size;
@@ -43,8 +44,7 @@ void hashtable_add(HashTable *ht, char *key, int value) {
           index = (index + 1) % new_size;
         }
 
-        new_entries[index].key =
-            strdup(ht->entries[i].key); // copy over key to new array
+        strcpy(new_entries[index].key, ht->entries[i].key);
         new_entries[index].value =
             ht->entries[i].value; // copy over value to new array
       }
@@ -71,7 +71,7 @@ void hashtable_add(HashTable *ht, char *key, int value) {
   }
 
   // we didn't find the key, so add it
-  ht->entries[index].key = strdup(key);
+  strcpy(ht->entries[index].key, key);
   ht->entries[index].value = value;
   ht->entries[index].removed = false;
   ht->count++;
@@ -85,6 +85,7 @@ void hashtable_remove(HashTable *ht, char *key) {
   size_t index = hash_function(key) % ht->size;
 
   while (ht->entries[index].key != NULL) {
+    // only mark entry as removed if it is the right key; also free key
     if (strcmp(ht->entries[index].key, key) == 0) {
       free(ht->entries[index].key);
       ht->entries[index].key = NULL;
