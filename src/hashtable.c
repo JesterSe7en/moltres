@@ -6,7 +6,9 @@
 
 #define LOAD_FACTOR_THRESHOLD 0.75
 
-size_t hash_function(char *key) { return SuperFastHash(key, strlen(key)); }
+size_t hash_function(const char *key) {
+  return SuperFastHash(key, strlen(key));
+}
 
 HashTable *hashtable_create(void) {
   HashTable *ht = (HashTable *)malloc(sizeof(HashTable));
@@ -22,12 +24,13 @@ HashTable *hashtable_create(void) {
   return ht;
 }
 
-void hashtable_add(HashTable *ht, char *key, void *value) {
+void hashtable_add(HashTable *ht, const char *key, void *value) {
   // Resize if necessary; only at (LOAD_FACTOR_THRESHOLD * 100)% capacity
   if (ht->entries == NULL ||
       (float)ht->count / ht->size > LOAD_FACTOR_THRESHOLD) {
     size_t new_size = ht->size == 0 ? 1 : ht->size * 2;
 
+    printf("Resizing hash table from %lu to %lu\n", ht->size, new_size);
     Entry *new_entries = (Entry *)calloc(new_size, sizeof(Entry));
     if (new_entries == NULL) {
       perror("Failed to resize hash table");
@@ -44,7 +47,7 @@ void hashtable_add(HashTable *ht, char *key, void *value) {
           index = (index + 1) % new_size;
         }
 
-        strcpy(new_entries[index].key, ht->entries[i].key);
+        new_entries[index].key = strdup(ht->entries[i].key);
         new_entries[index].value =
             ht->entries[i].value; // copy over value to new array
       }
@@ -54,6 +57,8 @@ void hashtable_add(HashTable *ht, char *key, void *value) {
     ht->entries = new_entries;
     ht->size = new_size;
   }
+
+  printf("now actually adding new entry...\n");
 
   // now actually add new entry
 
@@ -68,17 +73,17 @@ void hashtable_add(HashTable *ht, char *key, void *value) {
       ht->entries[index].value = value;
       return;
     }
-    index = (index + 1) & ht->size;
+    index = (index + 1) % ht->size;
   }
 
   // we didn't find the key, so add it
-  strcpy(ht->entries[index].key, key);
+  ht->entries[index].key = strdup(key);
   ht->entries[index].value = value;
   ht->entries[index].removed = false;
   ht->count++;
 }
 
-void hashtable_remove(HashTable *ht, char *key) {
+void hashtable_remove(HashTable *ht, const char *key) {
   if (ht->entries == NULL) {
     perror("Cannot remove from empty hash table");
   }
@@ -97,6 +102,20 @@ void hashtable_remove(HashTable *ht, char *key) {
     }
     index = (index + 1) & ht->size;
   }
+}
+
+void *hashtable_get(HashTable *ht, const char *key) {
+  size_t index = hash_function(key) % ht->size;
+
+  while (ht->entries[index].key != NULL) {
+    if (strcmp(ht->entries[index].key, key) == 0 &&
+        !ht->entries[index].removed) {
+      return ht->entries[index].value;
+    }
+    // linear probing
+    index = (index + 1) % ht->size;
+  }
+  return NULL;
 }
 
 void hashtable_destroy(HashTable *ht) {

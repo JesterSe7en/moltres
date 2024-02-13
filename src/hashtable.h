@@ -19,8 +19,9 @@ typedef struct {
 } HashTable;
 
 HashTable *hashtable_create(void);
-void hashtable_remove(HashTable *, char *);
-void hashtable_add(HashTable *, char *, void *);
+void hashtable_remove(HashTable *, const char *);
+void hashtable_add(HashTable *, const char *, void *);
+void *hashtable_get(HashTable *, const char *);
 void hashtable_destroy(HashTable *);
 
 #endif // INCLUDE_SRC_HASHTABLE_H_
