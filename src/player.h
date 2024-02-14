@@ -14,6 +14,6 @@ typedef struct {
 } Player;
 
 Player player_create(Vector2f *);
-void player_addAnimation(Player *, const char *, AnimationInfo);
+void player_addAnimation(Player *, const char *, AnimationInfo *);
 
 #endif // INCLUDE_SRC_PLAYER_H_

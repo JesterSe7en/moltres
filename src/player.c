@@ -14,7 +14,7 @@ Player player_create(Vector2f *spawn_point) {
 }
 
 void player_addAnimation(Player *player, const char *key,
-                         AnimationInfo ani_info) {
+                         AnimationInfo *ani_info) {
   // TODO: implement add animation
   printf("Adding animation to player\n");
 

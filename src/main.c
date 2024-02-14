@@ -88,12 +88,13 @@ int main(int argc, char *argv[]) {
   Vector2f spawn_point = v2f(100, 100);
   Player player = player_create(&spawn_point);
 
-  AnimationInfo idle_anim = {
-      .origin = v2i(44, 42),
-      .offset = v2i(120, 0),
-      .spritsheet =
-          IMG_LoadTexture(render_window.renderer, "assets/knight/_Idle.png")};
-
+  AnimationInfo *walk_anim = anim_info_create(
+      v2i(44, 42), v2i(120, 0),
+      IMG_LoadTexture(render_window.renderer, "assets/knight/_Walk.png"));
+  // AnimationInfo *idle_anim = anim_info_create(
+  //     v2i(44, 42), v2i(120, 0),
+  //     IMG_LoadTexture(render_window.renderer, "assets/knight/_Idle.png"));
+  //
   // player needs initial spawn point
   // starting animation - pointer to specific animation info
   // all animations used by player - an array?
