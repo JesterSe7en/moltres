@@ -5,11 +5,16 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+/**
+ * @struct AnimationInfo
+ * @brief Stores information about an animation
+ */
 typedef struct {
-  Vector2i origin;
-  int offset;
+  Vector2i origin; /**< x,y coordinates of the top left corner - first frame */
+  Vector2i offset; /**< x,y offset coordinates for the next frames */
+  SDL_Texture *spritsheet; /**< The spritesheet to find these frames */
 } AnimationInfo;
 
-AnimationInfo ani_info(Vector2i *, int);
+AnimationInfo ani_info(Vector2i *, Vector2i *, SDL_Texture *);
 
 #endif // INCLUDE_SRC_ANIMATION_H_

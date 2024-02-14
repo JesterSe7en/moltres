@@ -1,4 +1,5 @@
 #include "animation.h"
+#include "vector.h"
 
 /**
  * Creates an AnimationInfo struct with the given origin and offset.
@@ -7,6 +8,8 @@
  * @param offset The offset of the animation
  * @return The AnimationInfo struct
  */
-AnimationInfo ani_info(Vector2i *origin, int offset) {
-  return (AnimationInfo){.origin = *origin, .offset = offset};
+AnimationInfo ani_info(Vector2i *origin, Vector2i *offset,
+                       SDL_Texture *spritesheet) {
+  return (AnimationInfo){
+      .origin = *origin, .offset = *offset, .spritsheet = spritesheet};
 }
