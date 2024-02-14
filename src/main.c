@@ -1,4 +1,5 @@
 #include "main.h"
+#include "animation.h"
 #include "entity.h"
 #include "player.h"
 #include "renderwindow.h"
@@ -86,6 +87,12 @@ int main(int argc, char *argv[]) {
 
   Vector2f spawn_point = v2f(100, 100);
   Player player = player_create(&spawn_point);
+
+  AnimationInfo idle_anim = {
+      .origin = v2i(44, 42),
+      .offset = 120,
+      .spritsheet =
+          IMG_LoadTexture(render_window.renderer, "assets/knight/_Idle.png")};
 
   // player needs initial spawn point
   // starting animation - pointer to specific animation info
