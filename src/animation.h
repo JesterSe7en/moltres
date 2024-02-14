@@ -9,16 +9,10 @@
  * @struct AnimationInfo
  * @brief Stores information about an animation
  */
-typedef struct AnimationInfo AnimationInfo;
-
-/**
- * @brief Create AnimationInfo struct
- * @param origin Initial coordinates of the top left corner
- * @param offset Offset coordinates for the next frames
- * @param spritesheet The spritesheet to find these frames
- * @return Pointer to the created AnimationInfo struct
- */
-AnimationInfo *anim_info_create(Vector2i origin, Vector2i offset,
-                                SDL_Texture *spritesheet);
+typedef struct AnimationInfo {
+  Vector2i origin;          /**< x,y coordinates of the starting frame */
+  Vector2i offset;          /**< x,y offset between each frame */
+  SDL_Texture *spritesheet; /**< spritesheet of the animation */
+} AnimationInfo;
 
 #endif // INCLUDE_SRC_ANIMATION_H_

@@ -6,7 +6,7 @@
 #include <SDL2/SDL_image.h>
 #include <stdbool.h>
 
-typedef struct {
+typedef struct Entity {
   Vector2f position;
   float x, y;
   float scale;
@@ -14,7 +14,7 @@ typedef struct {
   SDL_Texture *texture;
 } Entity;
 
-bool init_entity(Entity *, Vector2f, float, float, float, SDL_Texture *texture);
+bool entity_init(Entity *, Vector2f, float, float, float, SDL_Texture *texture);
 void cleanup_entity(Entity *);
 
 #endif // INCLUDE_SRC_ENTITY_H_

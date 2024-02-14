@@ -7,7 +7,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-typedef struct {
+typedef struct Player {
   Vector2f spawn_point;
   AnimationInfo *current_animation;
   HashTable *animations;

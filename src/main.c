@@ -1,8 +1,5 @@
 #include "main.h"
-#include "animation.h"
-#include "entity.h"
 #include "player.h"
-#include "renderwindow.h"
 #include "vector.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
@@ -80,17 +77,20 @@ int main(int argc, char *argv[]) {
   Entity entities[entity_count];
 
   for (int i = 0; i < entity_count; i++) {
-    if (!init_entity(&entities[i], v2f(0, 0), 0, 0, 1, oak_floor_texture)) {
+    if (!entity_init(&entities[i], v2f(0, 0), 0, 0, 1, oak_floor_texture)) {
       fprintf(stderr, "Cannot initialize entity: %s\n", SDL_GetError());
     }
   }
 
-  Vector2f spawn_point = v2f(100, 100);
+  Vector2f spawn_point = {100, 100};
   Player player = player_create(&spawn_point);
 
-  AnimationInfo *walk_anim = anim_info_create(
-      v2i(44, 42), v2i(120, 0),
-      IMG_LoadTexture(render_window.renderer, "assets/knight/_Walk.png"));
+  Vector2i origin = {44, 42};
+  Vector2i offset = {120, 0};
+  SDL_Texture *spritsheet =
+      IMG_LoadTexture(render_window.renderer, "assets/knight/_Idle.png");
+
+  AnimationInfo idle = {origin, offset, spritsheet};
 
   // player needs initial spawn point
   // starting animation - pointer to specific animation info
