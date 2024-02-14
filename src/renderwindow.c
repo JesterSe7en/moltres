@@ -51,13 +51,13 @@ SDL_Renderer *create_sdl_renderer(SDL_Window *window) {
   return renderer;
 }
 
-/**
- * Load texture drectly from file
- *
- * @param renderer SDL Renderer
- * @param file_path Path to image
- * @return SDL_Texture The texture from source image
- */
+RenderWindow render_window_create(const char *title, int width, int height) {
+  RenderWindow renderwindow;
+  renderwindow.window = create_sdl_window(title, width, height);
+  renderwindow.renderer = create_sdl_renderer(renderwindow.window);
+  return renderwindow;
+}
+
 SDL_Texture *load_texture(SDL_Renderer *renderer, const char *file_path) {
   if (renderer == NULL) {
     fprintf(stderr, "Cannot load texture: SDL renderer is NULL\n");

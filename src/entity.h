@@ -14,7 +14,18 @@ typedef struct Entity {
   SDL_Texture *texture;
 } Entity;
 
-bool entity_init(Entity *, Vector2f, float, float, float, SDL_Texture *texture);
+/**
+ * Initializes an entity
+ *
+ * @param position Vector2F the position of the entity
+ * @param cur_frame_x the x position of the current frame in the animation
+ * @param cur_frame_y the y position of the current frame in the animation
+ * @param scale the scale of the entity in window
+ * @param SDL_Texture* The SDL texture of the entity
+ * @return bool False if entity could not be initialized properly
+ */
+bool entity_init(Entity *entity, Vector2f position, float cur_frame_x,
+                 float cur_frame_y, float scale, SDL_Texture *texture);
 void cleanup_entity(Entity *);
 
 #endif // INCLUDE_SRC_ENTITY_H_

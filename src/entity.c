@@ -2,16 +2,6 @@
 #include "vector.h"
 #include <stdio.h>
 
-/**
- * Initializes an entity
- *
- * @param position Vector2F the position of the entity
- * @param cur_frame_x the x position of the current frame in the animation
- * @param cur_frame_y the y position of the current frame in the animation
- * #param scale the scale of the entity in window
- * @param SDL_Texture* The SDL texture of the entity
- * @return bool False if entity could not be initialized
- */
 bool entity_init(Entity *entity, Vector2f position, float cur_frame_x,
                  float cur_frame_y, float scale, SDL_Texture *texture) {
   if (entity == NULL) {

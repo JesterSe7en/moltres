@@ -54,7 +54,7 @@ void update(void) {
 void render_entities(SDL_Renderer *renderer, Entity *entities,
                      int entity_count) {
 
-  clear_renderer(renderer);
+  SDL_RenderClear(renderer);
 
   for (int i = 0; i < entity_count; i++) {
     render(renderer, &entities[i]);
@@ -62,11 +62,9 @@ void render_entities(SDL_Renderer *renderer, Entity *entities,
 }
 
 int main(int argc, char *argv[]) {
-  RenderWindow render_window = {NULL, NULL};
   init_subsystems();
 
-  render_window.window = create_sdl_window("Game v1.0", 800, 600);
-  render_window.renderer = create_sdl_renderer(render_window.window);
+  RenderWindow render_window = render_window_create("Game v1.0", 800, 600);
 
   SDL_Delay(1000);
 
