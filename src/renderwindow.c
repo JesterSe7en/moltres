@@ -97,8 +97,6 @@ SDL_Texture *load_texture_from_memory(SDL_Renderer *renderer,
   return texture;
 }
 
-void clear_renderer(SDL_Renderer *renderer) { SDL_RenderClear(renderer); }
-
 void render(SDL_Renderer *renderer, Entity *entity) {
   if (renderer == NULL || entity->texture == NULL) {
     fprintf(stderr,
