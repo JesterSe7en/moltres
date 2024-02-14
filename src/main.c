@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 
   AnimationInfo idle_anim = {
       .origin = v2i(44, 42),
-      .offset = 120,
+      .offset = v2i(120, 0),
       .spritsheet =
           IMG_LoadTexture(render_window.renderer, "assets/knight/_Idle.png")};
 
