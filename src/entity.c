@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "hashtable.h"
 #include "vector.h"
 #include <stdio.h>
 
@@ -23,6 +24,8 @@ bool entity_init(Entity *entity, Vector2f position, float cur_frame_x,
   }
 
   entity->texture = texture;
+  entity->anim_info_ht = hashtable_create();
+  entity->curr_anim = NULL;
   return true;
 }
 

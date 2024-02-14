@@ -80,25 +80,16 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  Vector2f spawn_point = {100, 100};
-  Player player = player_create(&spawn_point);
-
-  Vector2i origin = {44, 42};
-  Vector2i offset = {120, 0};
   SDL_Texture *spritsheet =
       IMG_LoadTexture(render_window.renderer, "assets/knight/_Idle.png");
+  AnimationInfo idle = {v2i(44, 42), v2i(120, 0), spritsheet};
 
-  AnimationInfo idle = {origin, offset, spritsheet};
-
-  // player needs initial spawn point
-  // starting animation - pointer to specific animation info
-  // all animations used by player - an array?
+  Player player = player_create(v2f(200, 200));
 
   bool game_is_running = true;
 
   SDL_Event event;
   while (game_is_running) {
-
     process_inputs(&game_is_running);
     update();
     render_entities(render_window.renderer, entities, entity_count);

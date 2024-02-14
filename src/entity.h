@@ -1,6 +1,8 @@
 #ifndef INCLUDE_SRC_ENTITY_H_
 #define INCLUDE_SRC_ENTITY_H_
 
+#include "animation.h"
+#include "hashtable.h"
 #include "vector.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -12,10 +14,12 @@ typedef struct Entity {
   float scale;
   SDL_Rect current_frame;
   SDL_Texture *texture;
+  char *curr_anim;         /**< set this to NULL if there is no animation */
+  HashTable *anim_info_ht; /**< Stores animation info structs */
 } Entity;
 
 /**
- * Initializes an entity
+ * Initializes an entity - by default it has no animation aka static
  *
  * @param position Vector2F the position of the entity
  * @param cur_frame_x the x position of the current frame in the animation

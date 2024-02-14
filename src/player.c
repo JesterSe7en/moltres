@@ -3,10 +3,10 @@
 #include "hashtable.h"
 #include <stdio.h>
 
-Player player_create(Vector2f *spawn_point) {
+Player player_create(Vector2f spawn_point) {
   Player player;
 
-  player.spawn_point = *spawn_point;
+  player.spawn_point = spawn_point;
   player.animations = hashtable_create();
   player.current_animation = NULL;
 
