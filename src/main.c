@@ -91,10 +91,7 @@ int main(int argc, char *argv[]) {
   AnimationInfo *walk_anim = anim_info_create(
       v2i(44, 42), v2i(120, 0),
       IMG_LoadTexture(render_window.renderer, "assets/knight/_Walk.png"));
-  // AnimationInfo *idle_anim = anim_info_create(
-  //     v2i(44, 42), v2i(120, 0),
-  //     IMG_LoadTexture(render_window.renderer, "assets/knight/_Idle.png"));
-  //
+
   // player needs initial spawn point
   // starting animation - pointer to specific animation info
   // all animations used by player - an array?
