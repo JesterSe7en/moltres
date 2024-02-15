@@ -19,5 +19,5 @@ typedef struct AnimationInfo {
 AnimationInfo *create_animation_info(Vector2i origin, Vector2i offset,
                                      float frame_duration,
                                      SDL_Texture *spritesheet);
-
+void destroy_animation_info(AnimationInfo *animation_info);
 #endif // INCLUDE_SRC_ANIMATION_H_

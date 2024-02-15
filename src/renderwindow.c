@@ -155,7 +155,6 @@ void cleanup_entities(RenderWindow *render_window) {
     Entry *entry = hashtable_iterator_next(&it);
     Entity *entity = (Entity *)entry->value;
     cleanup_entity(entity);
-    entity = NULL;
   }
 }
 

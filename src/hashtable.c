@@ -124,6 +124,7 @@ void hashtable_destroy(HashTable *ht) {
   }
   free(ht->entries);
   free(ht);
+  ht = NULL;
 }
 
 //-------- HASH TABLE ITERATOR ---------

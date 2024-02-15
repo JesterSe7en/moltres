@@ -11,3 +11,14 @@ AnimationInfo *create_animation_info(Vector2i origin, Vector2i offset,
   info->spritesheet = spritesheet;
   return info;
 }
+
+void destroy_animation_info(AnimationInfo *animation_info) {
+  if (animation_info == NULL) {
+    fprintf(stderr, "Cannot destroy NULL animation_info.\n");
+    return;
+  }
+
+  SDL_DestroyTexture(animation_info->spritesheet);
+  free(animation_info);
+  animation_info = NULL;
+}

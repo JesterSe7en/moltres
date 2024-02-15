@@ -114,9 +114,24 @@ void cleanup_entity(Entity *entity) {
     SDL_DestroyTexture(entity->texture);
   }
 
+  // destroy all animation infos
+  HashTable *ht = entity->anim_info_ht;
+  if (ht != NULL && ht->size > 0) {
+    HashTableIterator it = hashtable_iterator_create(ht);
+    while (hashtable_iterator_has_next(&it)) {
+      Entry *entry = hashtable_iterator_next(&it);
+      AnimationInfo *ai = (AnimationInfo *)entry->value;
+      if (ai != NULL) {
+        destroy_animation_info(ai);
+      }
+    }
+  }
+
+  // destroy the animation info hashtable itself
   if (entity->anim_info_ht != NULL) {
     hashtable_destroy(entity->anim_info_ht);
   }
 
   free(entity);
+  entity = NULL;
 }
