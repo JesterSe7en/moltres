@@ -25,6 +25,10 @@ HashTable *hashtable_create(void) {
 }
 
 void hashtable_add(HashTable *ht, const char *key, void *value) {
+  if (ht == NULL) {
+    perror("Cannot add to null hash table");
+    return;
+  }
   // Resize if necessary; only at (LOAD_FACTOR_THRESHOLD * 100)% capacity
   if (ht->entries == NULL ||
       (float)ht->count / ht->size > LOAD_FACTOR_THRESHOLD) {
