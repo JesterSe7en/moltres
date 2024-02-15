@@ -30,7 +30,6 @@ void hashtable_add(HashTable *ht, const char *key, void *value) {
       (float)ht->count / ht->size > LOAD_FACTOR_THRESHOLD) {
     size_t new_size = ht->size == 0 ? 1 : ht->size * 2;
 
-    printf("Resizing hash table from %lu to %lu\n", ht->size, new_size);
     Entry *new_entries = (Entry *)calloc(new_size, sizeof(Entry));
     if (new_entries == NULL) {
       perror("Failed to resize hash table");
@@ -57,8 +56,6 @@ void hashtable_add(HashTable *ht, const char *key, void *value) {
     ht->entries = new_entries;
     ht->size = new_size;
   }
-
-  printf("now actually adding new entry...\n");
 
   // now actually add new entry
 
