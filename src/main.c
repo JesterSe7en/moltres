@@ -43,12 +43,17 @@ void update(void) {
 }
 
 void setup_entites(RenderWindow *render_window) {
+
+  // FIXME: I cannot do this as the memory for oak_floor is freed after exiting
+  // this function even though it is saved in the hashtable with
+  // add_entity_to_render_window()
   Entity oak_floor;
   SDL_Texture *oak_floor_texture =
       load_texture(render_window->renderer, "assets/oak_woods/oak_floor.png");
-  entity_init_static(&oak_floor, v2f(100, 100), v2i(0, 0), 28, 28, 1,
-                     oak_floor_texture);
-  add_entity_to_render_window(render_window, "floor", &oak_floor);
+  if (entity_init_static(&oak_floor, v2f(100, 100), v2i(0, 0), 28, 28, 1,
+                         oak_floor_texture)) {
+    add_entity_to_render_window(render_window, "floor", &oak_floor);
+  }
 
   // Entity player;
   // SDL_Texture *idle_spritesheet =
@@ -82,17 +87,19 @@ int main(int argc, char *argv[]) {
 
   bool game_is_running = true;
 
+  setup_entites(&render_window);
+
   SDL_Event event;
   while (game_is_running) {
     process_inputs(&game_is_running);
-    // FIXME: something is causing the game to quit right away
     update();
-    setup_entites(&render_window);
+    render_all(&render_window);
     display(&render_window);
   }
 
   // clean up entities
-  cleanup_all_entities(&render_window);
+  // TODO: once iterator is fixed, we should clean up all entities
+  // cleanup_all_entities(&render_window);
   cleanup_render_window(&render_window);
 
   SDL_Quit();

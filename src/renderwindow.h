@@ -40,6 +40,13 @@ SDL_Texture *load_texture(SDL_Renderer *renderer, const char *file_path);
 void render(SDL_Renderer *renderer, Entity *entity);
 
 /**
+ * Renders all entities in the render window
+ *
+ * @param render_window The render window
+ */
+void render_all(RenderWindow *render_window);
+
+/**
  * Draws the render window
  *
  * @param render_window The render window

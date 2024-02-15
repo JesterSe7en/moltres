@@ -125,3 +125,25 @@ void hashtable_destroy(HashTable *ht) {
   free(ht->entries);
   free(ht);
 }
+
+//-------- HASH TABLE ITERATOR ---------
+
+HashTableIterator hashtable_iterator_create(const HashTable *ht) {
+  HashTableIterator iterator;
+  iterator.ht = ht;
+  iterator.current_index = 0;
+  return iterator;
+}
+bool hashtable_iterator_has_next(const HashTableIterator *it) {
+  return it->current_index < it->ht->size;
+}
+Entry *hashtable_iterator_next(HashTableIterator *it) {
+  while (it->current_index < it->ht->size) {
+    Entry *entry = &it->ht->entries[it->current_index++];
+    if (entry->key != NULL && !entry->removed) {
+      return entry;
+    }
+  }
+
+  return NULL;
+}

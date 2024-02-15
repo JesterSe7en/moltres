@@ -100,12 +100,18 @@ SDL_Texture *load_texture_from_memory(SDL_Renderer *renderer,
 }
 
 void render(SDL_Renderer *renderer, Entity *entity) {
+  if (entity == NULL) {
+    fprintf(stderr, "Cannot render entity: entity is NULL\n");
+    return;
+  }
+
   if (renderer == NULL || entity->texture == NULL) {
     fprintf(stderr,
             "Cannot render target entity: renderer or texture is NULL\n");
     return;
   }
 
+  // FIXME: this texture goes away?
   SDL_Texture *texture = entity->texture;
   SDL_Rect current_frame = entity->current_frame;
 
@@ -119,10 +125,22 @@ void render(SDL_Renderer *renderer, Entity *entity) {
   };
 }
 
+void render_all(RenderWindow *render_window) {
+  HashTable *ht = render_window->entity_ht;
+
+  HashTableIterator it = hashtable_iterator_create(ht);
+  printf("Created iterator...\n");
+  while (hashtable_iterator_has_next(&it)) {
+    Entry *entry = hashtable_iterator_next(&it);
+    Entity *entity = (Entity *)entry->value;
+    printf("Rendering entity %s...\n", entry->key);
+    render(render_window->renderer, entity);
+  }
+}
+
 void add_entity_to_render_window(RenderWindow *render_window,
                                  const char *entity_name, Entity *entity) {
   hashtable_add(render_window->entity_ht, entity_name, entity);
-  render(render_window->renderer, entity);
 }
 
 Entity *get_entity_from_render_window(RenderWindow *renderwindow,
