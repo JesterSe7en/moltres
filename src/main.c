@@ -66,8 +66,6 @@ int main(int argc, char *argv[]) {
 
   RenderWindow render_window = render_window_create("Game v1.0", 800, 600);
 
-  SDL_Delay(1000);
-
   SDL_Texture *oak_floor_texture =
       load_texture(render_window.renderer, "assets/oak_woods/oak_floor.png");
 
