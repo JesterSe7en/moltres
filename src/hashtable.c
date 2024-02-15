@@ -62,7 +62,6 @@ void hashtable_add(HashTable *ht, const char *key, void *value) {
   }
 
   // now actually add new entry
-
   size_t index = hash_function(key) % ht->size;
 
   // check if key already exists and is not subject to removal.  if so, just

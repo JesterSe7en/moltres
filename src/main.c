@@ -85,6 +85,7 @@ int main(int argc, char *argv[]) {
   SDL_Event event;
   while (game_is_running) {
     process_inputs(&game_is_running);
+    // FIXME: something is causing the game to quit right away
     update();
     setup_entites(&render_window);
     display(&render_window);

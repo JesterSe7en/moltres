@@ -121,7 +121,6 @@ void render(SDL_Renderer *renderer, Entity *entity) {
 
 void add_entity_to_render_window(RenderWindow *render_window,
                                  const char *entity_name, Entity *entity) {
-  printf("Adding %s to render window\n", entity_name);
   hashtable_add(render_window->entity_ht, entity_name, entity);
   render(render_window->renderer, entity);
 }
