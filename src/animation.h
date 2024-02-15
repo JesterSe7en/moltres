@@ -16,4 +16,8 @@ typedef struct AnimationInfo {
   SDL_Texture *spritesheet; /**< spritesheet of the animation */
 } AnimationInfo;
 
+AnimationInfo *create_animation_info(Vector2i origin, Vector2i offset,
+                                     float frame_duration,
+                                     SDL_Texture *spritesheet);
+
 #endif // INCLUDE_SRC_ANIMATION_H_

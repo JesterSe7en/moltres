@@ -26,7 +26,7 @@ typedef struct Entity {
  * @param width the width in pixels to source from texture
  * @param height the height in pixels to source from texture
  * @param scale the scale of the entity in window
- * @param SDL_Texture* The SDL texture of the entity
+ * @param texutre The SDL texture of the entity
  * @return bool False if entity could not be initialized properly
  */
 bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
@@ -45,13 +45,43 @@ bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
  * @param offset the x,y offset of the animation
  * @param scale the scale of the entity in window
  * @param anim_name the name of the animation
- * @param SDL_Texture* The SDL texture of the animation
+ * @param texture The SDL texture of the animation
  * @return bool False if entity could not be initialized properly
  */
 bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
                          int width, int height, Vector2i offset,
                          float frame_duration, float scale, char *anim_name,
                          SDL_Texture *spritesheet);
+/**
+ * Creates a static entity - heap allocated
+ *
+ * @param position Vector2F the position of the entity
+ * @param origin Vector2i the top left corner to source texture
+ * @param width the width in pixels to source from texture
+ * @param height the height in pixels to source from texture
+ * @param scale the scale of the entity in window
+ * @param texture The SDL texture of the entity
+ */
+Entity *entity_create_static(Vector2f position, Vector2i origin, int width,
+                             int height, float scale, SDL_Texture *texture);
+
+/**
+ * Creates a dynamic entity - heap allocated
+ *
+ * @param position Vector2F the position of the entity
+ * @param origin Vector2i the top left corner to source texture
+ * @param width the width in pixels to source from texture
+ * @param height the height in pixels to source from texture
+ * @param offset the x,y offset of the animation
+ * @param frame_duration the duration of each frame
+ * @param scale the scale of the entity in window
+ * @param anim_name the name of the animation
+ * @param texture The SDL texture of the animation
+ */
+Entity *entity_create_dynamic(Vector2f position, Vector2i origin, int width,
+                              int height, Vector2i offset, float frame_duration,
+                              float scale, char *anim_name,
+                              SDL_Texture *spritesheet);
 
 /**
  * Adds an animation to an entity

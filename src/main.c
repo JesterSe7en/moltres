@@ -88,12 +88,10 @@ int main(int argc, char *argv[]) {
   bool game_is_running = true;
 
   setup_entites(&render_window);
-
   SDL_Event event;
   while (game_is_running) {
     process_inputs(&game_is_running);
     update();
-    render_all(&render_window);
     display(&render_window);
   }
 
