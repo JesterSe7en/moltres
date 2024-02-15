@@ -3,8 +3,9 @@
 #include "vector.h"
 #include <stdio.h>
 
-bool entity_init(Entity *entity, Vector2f position, float cur_frame_x,
-                 float cur_frame_y, float scale, SDL_Texture *texture) {
+bool entity_init_static(Entity *entity, Vector2f position, Vector2f origin,
+                        int width, int height, float scale,
+                        SDL_Texture *texture) {
   if (entity == NULL) {
     fprintf(stderr, "Could not initialize entity: entity is NULL\n");
     return false;
@@ -13,19 +14,46 @@ bool entity_init(Entity *entity, Vector2f position, float cur_frame_x,
   entity->x = position.x;
   entity->y = position.y;
   entity->scale = scale;
-  entity->current_frame.x = cur_frame_x;
-  entity->current_frame.y = cur_frame_y;
-  if (SDL_QueryTexture(texture, NULL, NULL, &entity->current_frame.w,
-                       &entity->current_frame.h) != 0) {
-    fprintf(stderr,
-            "Could not query texture during entity initialization: %s\n",
-            SDL_GetError());
+  entity->current_frame.x = origin.x;
+  entity->current_frame.y = origin.y;
+  entity->current_frame.w = width;
+  entity->current_frame.h = height;
+
+  // if we are using the entire loaded texture, we can query it like this
+  // if (SDL_QueryTexture(texture, NULL, NULL, &entity->current_frame.w,
+  //                      &entity->current_frame.h) != 0) {
+  //   fprintf(stderr,
+  //           "Could not query texture during entity initialization: %s\n",
+  //           SDL_GetError());
+  //   return false;
+  // }
+
+  entity->texture = texture;
+  entity->curr_anim = NULL;
+  entity->anim_info_ht = NULL;
+  return true;
+}
+
+bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2f origin,
+                         int width, int height, float scale, char *anim_key,
+                         SDL_Texture *anim_texture) {
+  if (entity == NULL) {
+    fprintf(stderr, "Could not initialize entity: entity is NULL\n");
     return false;
   }
 
-  entity->texture = texture;
+  entity->x = position.x;
+  entity->y = position.y;
+  entity->scale = scale;
+  entity->current_frame.x = origin.x;
+  entity->current_frame.y = origin.y;
+  entity->current_frame.w = width;
+  entity->current_frame.h = height;
+  entity->texture = NULL;
+  entity->curr_anim = anim_key;
   entity->anim_info_ht = hashtable_create();
-  entity->curr_anim = NULL;
+  hashtable_add(entity->anim_info_ht, anim_key, anim_texture);
+
   return true;
 }
 

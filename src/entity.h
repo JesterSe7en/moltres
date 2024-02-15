@@ -19,17 +19,36 @@ typedef struct Entity {
 } Entity;
 
 /**
- * Initializes an entity - by default it has no animation aka static
+ * Initializes a static entity - aka no animations
  *
  * @param position Vector2F the position of the entity
- * @param cur_frame_x the x position of the current frame in the animation
- * @param cur_frame_y the y position of the current frame in the animation
+ * @param origin Vector2F the top left corner to source texture
+ * @param width the width in pixels to source from texture
+ * @param height the height in pixels to source from texture
  * @param scale the scale of the entity in window
  * @param SDL_Texture* The SDL texture of the entity
  * @return bool False if entity could not be initialized properly
  */
-bool entity_init(Entity *entity, Vector2f position, float cur_frame_x,
-                 float cur_frame_y, float scale, SDL_Texture *texture);
+bool entity_init_static(Entity *entity, Vector2f position, Vector2f origin,
+                        int width, int height, float scale,
+                        SDL_Texture *texture);
+
+/**
+ * Initializes a dynamic entity - aka has animation(s).  Must initialize with at
+ * least one animation
+ *
+ * @param position Vector2F the position of the entity
+ * @param origin Vector2F the top left corner to source texture
+ * @param width the width in pixels to source from texture
+ * @param height the height in pixels to source from texture
+ * @param scale the scale of the entity in window
+ * @param anim_name the name of the animation
+ * @param SDL_Texture* The SDL texture of the animation
+ * @return bool False if entity could not be initialized properly
+ */
+bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2f origin,
+                         int width, int height, float scale, char *anim_name,
+                         SDL_Texture *anim_texture);
 void cleanup_entity(Entity *);
 
 #endif // INCLUDE_SRC_ENTITY_H_

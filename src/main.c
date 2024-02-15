@@ -1,4 +1,5 @@
 #include "main.h"
+#include "entity.h"
 #include "player.h"
 #include "vector.h"
 #include <SDL2/SDL.h>
@@ -61,28 +62,27 @@ void render_entities(SDL_Renderer *renderer, Entity *entities,
   }
 }
 
+void render_entity(SDL_Renderer *renderer, Entity *entity) {
+  SDL_RenderClear(renderer);
+  render(renderer, entity);
+}
+
 int main(int argc, char *argv[]) {
   init_subsystems();
 
   RenderWindow render_window = render_window_create("Game v1.0", 800, 600);
 
+  Entity oak_floor;
   SDL_Texture *oak_floor_texture =
       load_texture(render_window.renderer, "assets/oak_woods/oak_floor.png");
+  entity_init_static(&oak_floor, v2f(100, 100), v2f(0, 0), 28, 28, 1,
+                     oak_floor_texture);
 
-  int entity_count = 3;
-  Entity entities[entity_count];
-
-  for (int i = 0; i < entity_count; i++) {
-    if (!entity_init(&entities[i], v2f(0, 0), 0, 0, 1, oak_floor_texture)) {
-      fprintf(stderr, "Cannot initialize entity: %s\n", SDL_GetError());
-    }
-  }
-
-  SDL_Texture *spritsheet =
-      IMG_LoadTexture(render_window.renderer, "assets/knight/_Idle.png");
-  AnimationInfo idle = {v2i(44, 42), v2i(120, 0), spritsheet};
-
-  Player player = player_create(v2f(200, 200));
+  Entity player;
+  SDL_Texture *idle_texture =
+      load_texture(render_window.renderer, "assets/knight/_Idle.png");
+  entity_init_dynamic(&player, v2f(100, 100), v2f(44, 42), 21, 38, 1, "idle",
+                      idle_texture);
 
   bool game_is_running = true;
 
@@ -90,16 +90,13 @@ int main(int argc, char *argv[]) {
   while (game_is_running) {
     process_inputs(&game_is_running);
     update();
-    render_entities(render_window.renderer, entities, entity_count);
+    render_entity(render_window.renderer, &oak_floor);
 
     display(render_window.renderer);
   }
 
   // clean up entities
-  for (int i = 0; i < entity_count; i++) {
-    cleanup_entity(&entities[i]);
-  }
-
+  cleanup_entity(&oak_floor);
   cleanup_render_window(&render_window);
 
   SDL_Quit();
