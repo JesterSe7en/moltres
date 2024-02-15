@@ -6,6 +6,8 @@
 #include "vector.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_pixels.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
 
 typedef struct Entity {
@@ -16,6 +18,9 @@ typedef struct Entity {
   SDL_Texture *texture;
   char *curr_anim;         /**< set this to NULL if there is no animation */
   HashTable *anim_info_ht; /**< Stores animation info structs */
+
+  SDL_Color color;
+  const char *text;
 } Entity;
 
 /**

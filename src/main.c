@@ -1,6 +1,7 @@
 #include "main.h"
 #include "entity.h"
 #include "renderwindow.h"
+#include <SDL2/SDL_ttf.h>
 
 static int last_frame_time = 0;
 
@@ -11,8 +12,16 @@ void init_subsystems(void) {
     exit(EXIT_FAILURE);
   }
 
-  if (!IMG_Init(IMG_INIT_PNG)) {
+  if (IMG_Init(IMG_INIT_PNG) == 0) {
     fprintf(stderr, "Cannot initialize SDL image: %s\n", SDL_GetError());
+    SDL_Quit();
+    exit(EXIT_FAILURE);
+  }
+
+  if (TTF_Init() != 0) {
+    fprintf(stderr, "Cannot initialize SDL TTF: %s\n", SDL_GetError());
+    IMG_Quit();
+    SDL_Quit();
     exit(EXIT_FAILURE);
   }
 }
@@ -40,6 +49,22 @@ void update(void) {
   float deltaT = (SDL_GetTicks64() - last_frame_time) / 1000.0f;
 
   last_frame_time = SDL_GetTicks64();
+
+  static Uint32 frames = 0;
+  static Uint32 lastTime = 0;
+
+  frames++;
+  Uint32 currentTime = SDL_GetTicks64();
+
+  if (currentTime - lastTime >= 1000) {
+    float fps = frames / ((currentTime - lastTime) / 1000.0f);
+
+    printf("FPS: %.2f\n", fps);
+
+    // Reset counters for the next second
+    frames = 0;
+    lastTime = currentTime;
+  }
 }
 
 void setup_entites(RenderWindow *render_window) {
@@ -67,6 +92,25 @@ void setup_entites(RenderWindow *render_window) {
   // add_entity_to_render_window(render_window, "player", &player);
 }
 
+// Function to calculate and print FPS
+void get_FPS(Uint32 deltaTime, float *fps) {
+  static Uint32 frames = 0;
+  static Uint32 lastTime = 0;
+
+  frames++;
+  Uint32 currentTime = SDL_GetTicks();
+
+  if (currentTime - lastTime >= 1000) {
+    *fps = frames / ((currentTime - lastTime) / 1000.0f);
+
+    printf("FPS: %.2f\n", *fps);
+
+    // Reset counters for the next second
+    frames = 0;
+    lastTime = currentTime;
+  }
+}
+
 int main(int argc, char *argv[]) {
   init_subsystems();
 
@@ -75,11 +119,22 @@ int main(int argc, char *argv[]) {
   bool game_is_running = true;
 
   setup_entites(&render_window);
+  load_font(&render_window, "assets/fonts/JosefinSans-Regular.ttf");
+
   SDL_Event event;
+  float fps;
   while (game_is_running) {
     process_inputs(&game_is_running);
     update();
     render_all(&render_window);
+
+    // SDL_Color sdlcolor = {255, 0, 0, 255}; // red
+    // SDL_Surface *surface =
+    //     TTF_RenderText_Solid(render_window.font, fps, sdlcolor);
+    //
+    // SDL_Texture *fps_texture =
+    //     SDL_CreateTextureFromSurface(render_window.renderer, surface);
+    //
     display(&render_window);
   }
 

@@ -2,6 +2,7 @@
 #include "animation.h"
 #include "hashtable.h"
 #include "vector.h"
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 
 bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,

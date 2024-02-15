@@ -99,6 +99,14 @@ SDL_Texture *load_texture_from_memory(SDL_Renderer *renderer,
   return texture;
 }
 
+void load_font(RenderWindow *render_window, const char *font_path) {
+  TTF_Font *font = TTF_OpenFont(font_path, 24);
+  if (font == NULL) {
+    fprintf(stderr, "Cannot load font: %s\n", TTF_GetError());
+  }
+  render_window->font = font;
+}
+
 void render(SDL_Renderer *renderer, Entity *entity) {
   if (entity == NULL) {
     fprintf(stderr, "Cannot render entity: entity is NULL\n");
@@ -158,11 +166,15 @@ void cleanup_entities(RenderWindow *render_window) {
   }
 }
 
-void cleanup_render_window(RenderWindow *renderwindow) {
-  SDL_DestroyRenderer(renderwindow->renderer);
-  SDL_DestroyWindow(renderwindow->window);
+void cleanup_render_window(RenderWindow *render_window) {
+  SDL_DestroyRenderer(render_window->renderer);
+  SDL_DestroyWindow(render_window->window);
 
-  renderwindow->renderer = NULL;
-  renderwindow->window = NULL;
-  hashtable_destroy(renderwindow->entity_ht);
+  render_window->renderer = NULL;
+  render_window->window = NULL;
+  if (render_window->font != NULL) {
+    TTF_CloseFont(render_window->font);
+    render_window->font = NULL;
+  }
+  hashtable_destroy(render_window->entity_ht);
 }

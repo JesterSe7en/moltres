@@ -5,11 +5,13 @@
 #include "hashtable.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 typedef struct {
   SDL_Window *window;
   SDL_Renderer *renderer;
   HashTable *entity_ht;
+  TTF_Font *font;
 } RenderWindow;
 
 /**
@@ -30,6 +32,8 @@ RenderWindow render_window_create(const char *title, int width, int height);
  * @return SDL_Texture The texture from source image
  */
 SDL_Texture *load_texture(SDL_Renderer *renderer, const char *file_path);
+
+void load_font(RenderWindow *render_window, const char *font_path);
 
 /**
  * Renders the entity using the SDL renderer
