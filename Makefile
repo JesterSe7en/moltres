@@ -17,7 +17,7 @@ build: $(wildcard ./src/*.c)
 		echo "Build failed."; \
 	fi
 
-run: build
+run:
 	./game
 
 clean:
