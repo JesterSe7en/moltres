@@ -75,14 +75,14 @@ int main(int argc, char *argv[]) {
   Entity oak_floor;
   SDL_Texture *oak_floor_texture =
       load_texture(render_window.renderer, "assets/oak_woods/oak_floor.png");
-  entity_init_static(&oak_floor, v2f(100, 100), v2f(0, 0), 28, 28, 1,
+  entity_init_static(&oak_floor, v2f(100, 100), v2i(0, 0), 28, 28, 1,
                      oak_floor_texture);
 
   Entity player;
-  SDL_Texture *idle_texture =
+  SDL_Texture *idle_spritesheet =
       load_texture(render_window.renderer, "assets/knight/_Idle.png");
-  entity_init_dynamic(&player, v2f(100, 100), v2f(44, 42), 21, 38, 1, "idle",
-                      idle_texture);
+  entity_init_dynamic(&player, v2f(100, 100), v2i(44, 42), 21, 38, v2i(120, 0),
+                      1, "idle", idle_spritesheet);
 
   bool game_is_running = true;
 

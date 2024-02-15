@@ -29,7 +29,7 @@ typedef struct Entity {
  * @param SDL_Texture* The SDL texture of the entity
  * @return bool False if entity could not be initialized properly
  */
-bool entity_init_static(Entity *entity, Vector2f position, Vector2f origin,
+bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
                         int width, int height, float scale,
                         SDL_Texture *texture);
 
@@ -41,14 +41,17 @@ bool entity_init_static(Entity *entity, Vector2f position, Vector2f origin,
  * @param origin Vector2F the top left corner to source texture
  * @param width the width in pixels to source from texture
  * @param height the height in pixels to source from texture
+ * @param offset the x,y offset of the animation
  * @param scale the scale of the entity in window
  * @param anim_name the name of the animation
  * @param SDL_Texture* The SDL texture of the animation
  * @return bool False if entity could not be initialized properly
  */
-bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2f origin,
-                         int width, int height, float scale, char *anim_name,
-                         SDL_Texture *anim_texture);
+bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
+                         int width, int height, Vector2i offset, float scale,
+                         char *anim_name, SDL_Texture *spritesheet);
+
+void add_animation(char *anim_name, SDL_Texture *spritesheet);
 void cleanup_entity(Entity *);
 
 #endif // INCLUDE_SRC_ENTITY_H_

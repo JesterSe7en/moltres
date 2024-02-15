@@ -1,9 +1,10 @@
 #include "entity.h"
+#include "animation.h"
 #include "hashtable.h"
 #include "vector.h"
 #include <stdio.h>
 
-bool entity_init_static(Entity *entity, Vector2f position, Vector2f origin,
+bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
                         int width, int height, float scale,
                         SDL_Texture *texture) {
   if (entity == NULL) {
@@ -34,9 +35,9 @@ bool entity_init_static(Entity *entity, Vector2f position, Vector2f origin,
   return true;
 }
 
-bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2f origin,
-                         int width, int height, float scale, char *anim_key,
-                         SDL_Texture *anim_texture) {
+bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
+                         int width, int height, Vector2i offset, float scale,
+                         char *anim_key, SDL_Texture *spritesheet) {
   if (entity == NULL) {
     fprintf(stderr, "Could not initialize entity: entity is NULL\n");
     return false;
@@ -52,7 +53,8 @@ bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2f origin,
   entity->texture = NULL;
   entity->curr_anim = anim_key;
   entity->anim_info_ht = hashtable_create();
-  hashtable_add(entity->anim_info_ht, anim_key, anim_texture);
+  AnimationInfo ai = {origin, offset, spritesheet};
+  hashtable_add(entity->anim_info_ht, anim_key, &ai);
 
   return true;
 }
