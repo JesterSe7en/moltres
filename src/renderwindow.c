@@ -56,6 +56,7 @@ RenderWindow render_window_create(const char *title, int width, int height) {
   RenderWindow renderwindow;
   renderwindow.window = create_sdl_window(title, width, height);
   renderwindow.renderer = create_sdl_renderer(renderwindow.window);
+  renderwindow.entity_ht = hashtable_create();
   return renderwindow;
 }
 
