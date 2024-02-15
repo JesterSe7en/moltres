@@ -38,7 +38,7 @@ bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
  * least one animation
  *
  * @param position Vector2F the position of the entity
- * @param origin Vector2F the top left corner to source texture
+ * @param origin Vector2i the top left corner to source texture
  * @param width the width in pixels to source from texture
  * @param height the height in pixels to source from texture
  * @param offset the x,y offset of the animation
@@ -51,7 +51,18 @@ bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
                          int width, int height, Vector2i offset, float scale,
                          char *anim_name, SDL_Texture *spritesheet);
 
-void add_animation(char *anim_name, SDL_Texture *spritesheet);
+/**
+ * Adds an animation to an entity
+ *
+ * @param entity The entity to add the animation to
+ * @param origin Vector2I the top left corner to source texture
+ * @param offset Vector2I the x,y offset of the animation
+ * @param anim_name The name of the animation
+ * @param spritesheet The SDL texture of the animation
+ */
+void entity_add_animation(Entity *entity, Vector2i origin, Vector2i offset,
+                          char *anim_name, SDL_Texture *spritesheet);
+
 void cleanup_entity(Entity *);
 
 #endif // INCLUDE_SRC_ENTITY_H_

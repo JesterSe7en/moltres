@@ -37,7 +37,7 @@ bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
 
 bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
                          int width, int height, Vector2i offset, float scale,
-                         char *anim_key, SDL_Texture *spritesheet) {
+                         char *anim_name, SDL_Texture *spritesheet) {
   if (entity == NULL) {
     fprintf(stderr, "Could not initialize entity: entity is NULL\n");
     return false;
@@ -51,12 +51,18 @@ bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
   entity->current_frame.w = width;
   entity->current_frame.h = height;
   entity->texture = NULL;
-  entity->curr_anim = anim_key;
+  entity->curr_anim = anim_name;
   entity->anim_info_ht = hashtable_create();
   AnimationInfo ai = {origin, offset, spritesheet};
-  hashtable_add(entity->anim_info_ht, anim_key, &ai);
+  hashtable_add(entity->anim_info_ht, anim_name, &ai);
 
   return true;
+}
+
+void entity_add_animation(Entity *entity, Vector2i origin, Vector2i offset,
+                          char *anim_name, SDL_Texture *spritesheet) {
+  AnimationInfo ai = {origin, offset, spritesheet};
+  hashtable_add(entity->anim_info_ht, anim_name, &ai);
 }
 
 void cleanup_entity(Entity *entity) {
