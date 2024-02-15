@@ -12,6 +12,7 @@
 typedef struct AnimationInfo {
   Vector2i origin;          /**< x,y coordinates of the starting frame */
   Vector2i offset;          /**< x,y offset between each frame */
+  float frame_duration;     /**< duration of each frame in seconds */
   SDL_Texture *spritesheet; /**< spritesheet of the animation */
 } AnimationInfo;
 

@@ -32,6 +32,7 @@ typedef struct Entity {
 bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
                         int width, int height, float scale,
                         SDL_Texture *texture);
+// FIXME: maybe put all of this parameters in a struct? getting unwieldy
 
 /**
  * Initializes a dynamic entity - aka has animation(s).  Must initialize with at
@@ -48,8 +49,9 @@ bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
  * @return bool False if entity could not be initialized properly
  */
 bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
-                         int width, int height, Vector2i offset, float scale,
-                         char *anim_name, SDL_Texture *spritesheet);
+                         int width, int height, Vector2i offset,
+                         float frame_duration, float scale, char *anim_name,
+                         SDL_Texture *spritesheet);
 
 /**
  * Adds an animation to an entity
@@ -57,11 +59,13 @@ bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
  * @param entity The entity to add the animation to
  * @param origin Vector2I the top left corner to source texture
  * @param offset Vector2I the x,y offset of the animation
+ * @param frame_duration The duration of each frame
  * @param anim_name The name of the animation
  * @param spritesheet The SDL texture of the animation
  */
 void entity_add_animation(Entity *entity, Vector2i origin, Vector2i offset,
-                          char *anim_name, SDL_Texture *spritesheet);
+                          float frame_duration, char *anim_name,
+                          SDL_Texture *spritesheet);
 
 void cleanup_entity(Entity *);
 

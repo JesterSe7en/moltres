@@ -2,12 +2,14 @@
 #define INCLUDE_MOLTRES_RENDERWINDOW_H_
 
 #include "entity.h"
+#include "hashtable.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
 typedef struct {
   SDL_Window *window;
   SDL_Renderer *renderer;
+  HashTable *entity_ht;
 } RenderWindow;
 
 /**
@@ -40,9 +42,29 @@ void render(SDL_Renderer *renderer, Entity *entity);
 /**
  * Draws the render window
  *
- * @param renderer The SDL renderer
+ * @param render_window The render window
  */
-void display(SDL_Renderer *renderer);
+void display(RenderWindow *render_window);
+
+/**
+ * Add an entity to the render window
+ *
+ * @param render_window The render window
+ * @param entity_name The name of the entity
+ * @param entity The entity to add
+ */
+void add_entity_to_render_window(RenderWindow *render_window,
+                                 const char *entity_name, Entity *entity);
+
+/**
+ * Get an entity from the render window
+ *
+ * @param render_window The render window
+ * @param entity_name The name of the entity
+ * @param entity The entity to get
+ */
+Entity *get_entity_from_render_window(RenderWindow *renderwindow,
+                                      const char *entity_name);
 
 void cleanup_render_window(RenderWindow *render_window);
 
