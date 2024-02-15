@@ -74,11 +74,12 @@ int main(int argc, char *argv[]) {
                       1, "idle", idle_spritesheet);
   SDL_Texture *jump_spritesheet =
       load_texture(render_window.renderer, "assets/knight/_Jump.png");
-  entity_add_animation(&player, v2i(0, 0), v2i(20, 20), "jump",
+  entity_add_animation(&player, v2i(42, 42), v2i(120, 0), "jump",
                        jump_spritesheet);
   SDL_Texture *run_spritesheet =
       load_texture(render_window.renderer, "assets/knight/_Run.png");
-  entity_add_animation(&player, v2i(0, 0), v2i(20, 20), "run", run_spritesheet);
+  entity_add_animation(&player, v2i(42, 42), v2i(120, 0), "run",
+                       run_spritesheet);
 
   printf("Number of animation associated with player: %zu\n",
          player.anim_info_ht->count);
