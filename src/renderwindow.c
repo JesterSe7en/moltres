@@ -111,7 +111,6 @@ void render(SDL_Renderer *renderer, Entity *entity) {
     return;
   }
 
-  // FIXME: this texture goes away?
   SDL_Texture *texture = entity->texture;
   SDL_Rect current_frame = entity->current_frame;
 
@@ -129,11 +128,9 @@ void render_all(RenderWindow *render_window) {
   HashTable *ht = render_window->entity_ht;
 
   HashTableIterator it = hashtable_iterator_create(ht);
-  printf("Created iterator...\n");
   while (hashtable_iterator_has_next(&it)) {
     Entry *entry = hashtable_iterator_next(&it);
     Entity *entity = (Entity *)entry->value;
-    printf("Rendering entity %s...\n", entry->key);
     render(render_window->renderer, entity);
   }
 }
@@ -152,10 +149,21 @@ void display(RenderWindow *render_window) {
   SDL_RenderPresent(render_window->renderer);
 }
 
+void cleanup_entities(RenderWindow *render_window) {
+  HashTableIterator it = hashtable_iterator_create(render_window->entity_ht);
+  while (hashtable_iterator_has_next(&it)) {
+    Entry *entry = hashtable_iterator_next(&it);
+    Entity *entity = (Entity *)entry->value;
+    cleanup_entity(entity);
+    entity = NULL;
+  }
+}
+
 void cleanup_render_window(RenderWindow *renderwindow) {
   SDL_DestroyRenderer(renderwindow->renderer);
   SDL_DestroyWindow(renderwindow->window);
 
   renderwindow->renderer = NULL;
   renderwindow->window = NULL;
+  hashtable_destroy(renderwindow->entity_ht);
 }
