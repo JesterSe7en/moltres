@@ -94,7 +94,6 @@ void setup_entites(RenderWindow *render_window) {
       entity_create_dynamic(v2f(100, 100), v2i(44, 42), 21, 38, v2i(120, 0),
                             0.5, 1, "idle", idle_spritesheet);
   add_entity_to_render_window(render_window, "player", player);
-
   // SDL_Texture *jump_spritesheet =
   //     load_texture(render_window->renderer, "assets/knight/_Jump.png");
   // entity_add_animation(&player, v2i(0, 0), v2i(20, 20), 0.5, "jump",
@@ -105,7 +104,6 @@ void setup_entites(RenderWindow *render_window) {
   //                      run_spritesheet);
   // add_entity_to_render_window(render_window, "player", &player);
   //
-  printf("setup entities complete\n");
 }
 
 int main(int argc, char *argv[]) {
