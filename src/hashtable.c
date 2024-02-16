@@ -111,7 +111,13 @@ void hashtable_remove(HashTable *ht, const char *key) {
   }
 }
 
-void *hashtable_get(HashTable *ht, const char *key) {
+void *hashtable_get(HashTable **ht_ptr, const char *key) {
+  if (*ht_ptr == NULL) {
+    fprintf(stderr, "Cannot get from null hash table\n");
+    return NULL;
+  }
+
+  HashTable *ht = *ht_ptr;
   size_t index = hash_function(key) % ht->size;
 
   while (ht->entries[index].key != NULL) {

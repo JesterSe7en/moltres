@@ -151,7 +151,7 @@ void add_entity_to_render_window(RenderWindow *render_window,
 
 Entity *get_entity_from_render_window(RenderWindow *renderwindow,
                                       const char *entity_name) {
-  return hashtable_get(renderwindow->entity_ht, entity_name);
+  return hashtable_get(&renderwindow->entity_ht, entity_name);
 }
 
 void display(RenderWindow *render_window) {

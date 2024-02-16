@@ -54,13 +54,13 @@ void update(RenderWindow *render_window) {
   static Uint32 frames = 0;
   static Uint32 lastTime = 0;
   // cache player entity
-  // static Entity *player = NULL;
+  static Entity *player = NULL;
 
   frames++;
   Uint32 currentTime = SDL_GetTicks64();
-  // if (player == NULL) {
-  //   player = (Entity *)hashtable_get(render_window->entity_ht, "player");
-  // }
+  if (player == NULL) {
+    player = (Entity *)hashtable_get(&render_window->entity_ht, "player");
+  }
 
   if (currentTime - lastTime >= 1000) {
     float fps = frames / ((currentTime - lastTime) / 1000.0f);
@@ -87,13 +87,13 @@ void setup_entites(RenderWindow *render_window) {
   Entity *oak_floor = entity_create_static(v2f(100, 100), v2i(0, 0), 28, 28, 1,
                                            oak_floor_texture);
   add_entity_to_render_window(render_window, "floor", oak_floor);
-  //
-  // SDL_Texture *idle_spritesheet =
-  //     load_texture(render_window->renderer, "assets/knight/_Idle.png");
-  // Entity *player =
-  //     entity_create_dynamic(v2f(100, 100), v2i(44, 42), 21, 38, v2i(120, 0),
-  //                           0.5, 1, "idle", idle_spritesheet);
-  // add_entity_to_render_window(render_window, "player", player);
+
+  SDL_Texture *idle_spritesheet =
+      load_texture(render_window->renderer, "assets/knight/_Idle.png");
+  Entity *player =
+      entity_create_dynamic(v2f(100, 100), v2i(44, 42), 21, 38, v2i(120, 0),
+                            0.5, 1, "idle", idle_spritesheet);
+  add_entity_to_render_window(render_window, "player", player);
 
   // SDL_Texture *jump_spritesheet =
   //     load_texture(render_window->renderer, "assets/knight/_Jump.png");
