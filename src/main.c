@@ -1,9 +1,12 @@
 #include "main.h"
 #include "entity.h"
 #include "renderwindow.h"
+#include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
+#include <stdio.h>
 
 static int last_frame_time = 0;
+static int global_fps = 0;
 
 void init_subsystems(void) {
   // SDL returns 1 and SDL_image returns 0 on failure
@@ -63,9 +66,7 @@ void update(RenderWindow *render_window) {
   }
 
   if (currentTime - lastTime >= 1000) {
-    float fps = frames / ((currentTime - lastTime) / 1000.0f);
-
-    printf("FPS: %.2f\n", fps);
+    global_fps = frames / ((currentTime - lastTime) / 1000.0f);
 
     // if (player != NULL) {
     //   AnimationInfo *ai =
@@ -119,17 +120,27 @@ int main(int argc, char *argv[]) {
   SDL_Event event;
   float fps;
   while (game_is_running) {
+    SDL_RenderClear(render_window->renderer);
+
     process_inputs(&game_is_running);
     update(render_window);
     render_all(render_window);
 
-    // SDL_Color sdlcolor = {255, 0, 0, 255}; // red
-    // SDL_Surface *surface =
-    //     TTF_RenderText_Solid(render_window.font, fps, sdlcolor);
-    //
-    // SDL_Texture *fps_texture =
-    //     SDL_CreateTextureFromSurface(render_window.renderer, surface);
-    //
+    SDL_Color sdlcolor = {255, 0, 0, 255}; // red
+    char fps[32];
+    snprintf(fps, sizeof(fps), "FPS: %d", global_fps);
+    int w, h;
+    TTF_SizeText(render_window->font, fps, &w, &h);
+
+    SDL_Surface *surface =
+        TTF_RenderText_Solid(render_window->font, fps, sdlcolor);
+
+    SDL_Texture *fps_texture =
+        SDL_CreateTextureFromSurface(render_window->renderer, surface);
+
+    SDL_Rect target = {200, 200, w, h};
+    SDL_RenderCopy(render_window->renderer, fps_texture, NULL, &target);
+
     display(render_window);
   }
 
