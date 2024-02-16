@@ -50,6 +50,7 @@ void update(void) {
 
   last_frame_time = SDL_GetTicks64();
 
+  // ---- fps display ----
   static Uint32 frames = 0;
   static Uint32 lastTime = 0;
 
@@ -90,25 +91,6 @@ void setup_entites(RenderWindow *render_window) {
   // entity_add_animation(&player, v2i(0, 0), v2i(20, 20), 0.5, "run",
   //                      run_spritesheet);
   // add_entity_to_render_window(render_window, "player", &player);
-}
-
-// Function to calculate and print FPS
-void get_FPS(Uint32 deltaTime, float *fps) {
-  static Uint32 frames = 0;
-  static Uint32 lastTime = 0;
-
-  frames++;
-  Uint32 currentTime = SDL_GetTicks();
-
-  if (currentTime - lastTime >= 1000) {
-    *fps = frames / ((currentTime - lastTime) / 1000.0f);
-
-    printf("FPS: %.2f\n", *fps);
-
-    // Reset counters for the next second
-    frames = 0;
-    lastTime = currentTime;
-  }
 }
 
 int main(int argc, char *argv[]) {
