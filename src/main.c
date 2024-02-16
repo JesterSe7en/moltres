@@ -107,6 +107,23 @@ void setup_entites(RenderWindow *render_window) {
   //
 }
 
+void render_fps(RenderWindow *render_window) {
+  SDL_Color sdlcolor = {255, 0, 0, 255}; // red
+  char fps[32];
+  snprintf(fps, sizeof(fps), "FPS: %d", global_fps);
+  int w, h;
+  TTF_SizeText(render_window->font, fps, &w, &h);
+
+  SDL_Surface *surface =
+      TTF_RenderText_Solid(render_window->font, fps, sdlcolor);
+
+  SDL_Texture *fps_texture =
+      SDL_CreateTextureFromSurface(render_window->renderer, surface);
+
+  SDL_Rect target = {200, 200, w, h};
+  SDL_RenderCopy(render_window->renderer, fps_texture, NULL, &target);
+}
+
 int main(int argc, char *argv[]) {
   init_subsystems();
 
@@ -125,22 +142,9 @@ int main(int argc, char *argv[]) {
     process_inputs(&game_is_running);
     update(render_window);
     render_all(render_window);
-
-    SDL_Color sdlcolor = {255, 0, 0, 255}; // red
-    char fps[32];
-    snprintf(fps, sizeof(fps), "FPS: %d", global_fps);
-    int w, h;
-    TTF_SizeText(render_window->font, fps, &w, &h);
-
-    SDL_Surface *surface =
-        TTF_RenderText_Solid(render_window->font, fps, sdlcolor);
-
-    SDL_Texture *fps_texture =
-        SDL_CreateTextureFromSurface(render_window->renderer, surface);
-
-    SDL_Rect target = {200, 200, w, h};
-    SDL_RenderCopy(render_window->renderer, fps_texture, NULL, &target);
-
+#ifdef DEBUG
+    render_fps(render_window);
+#endif
     display(render_window);
   }
 
