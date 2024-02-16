@@ -45,7 +45,7 @@ void process_inputs(bool *game_is_running) {
   }
 }
 
-void update(void) {
+void update(RenderWindow *render_window) {
   float deltaT = (SDL_GetTicks64() - last_frame_time) / 1000.0f;
 
   last_frame_time = SDL_GetTicks64();
@@ -53,15 +53,27 @@ void update(void) {
   // ---- fps display ----
   static Uint32 frames = 0;
   static Uint32 lastTime = 0;
+  // cache player entity
+  // static Entity *player = NULL;
 
   frames++;
   Uint32 currentTime = SDL_GetTicks64();
+  // if (player == NULL) {
+  //   player = (Entity *)hashtable_get(render_window->entity_ht, "player");
+  // }
 
   if (currentTime - lastTime >= 1000) {
     float fps = frames / ((currentTime - lastTime) / 1000.0f);
 
     printf("FPS: %.2f\n", fps);
 
+    // if (player != NULL) {
+    //   AnimationInfo *ai =
+    //       (AnimationInfo *)hashtable_get(player->anim_info_ht, "idle");
+    //   player->current_frame.x += ai->offset.x;
+    //   player->current_frame.y += ai->offset.y;
+    // }
+    //
     // Reset counters for the next second
     frames = 0;
     lastTime = currentTime;
@@ -75,13 +87,14 @@ void setup_entites(RenderWindow *render_window) {
   Entity *oak_floor = entity_create_static(v2f(100, 100), v2i(0, 0), 28, 28, 1,
                                            oak_floor_texture);
   add_entity_to_render_window(render_window, "floor", oak_floor);
-
-  // Entity player;
+  //
   // SDL_Texture *idle_spritesheet =
   //     load_texture(render_window->renderer, "assets/knight/_Idle.png");
-  // entity_init_dynamic(&player, v2f(100, 100), v2i(44, 42), 21, 38, v2i(120,
-  // 0),
-  //                     0.5, 1, "idle", idle_spritesheet);
+  // Entity *player =
+  //     entity_create_dynamic(v2f(100, 100), v2i(44, 42), 21, 38, v2i(120, 0),
+  //                           0.5, 1, "idle", idle_spritesheet);
+  // add_entity_to_render_window(render_window, "player", player);
+
   // SDL_Texture *jump_spritesheet =
   //     load_texture(render_window->renderer, "assets/knight/_Jump.png");
   // entity_add_animation(&player, v2i(0, 0), v2i(20, 20), 0.5, "jump",
@@ -91,24 +104,26 @@ void setup_entites(RenderWindow *render_window) {
   // entity_add_animation(&player, v2i(0, 0), v2i(20, 20), 0.5, "run",
   //                      run_spritesheet);
   // add_entity_to_render_window(render_window, "player", &player);
+  //
+  printf("setup entities complete\n");
 }
 
 int main(int argc, char *argv[]) {
   init_subsystems();
 
-  RenderWindow render_window = render_window_create("Game v1.0", 800, 600);
+  RenderWindow *render_window = render_window_create("Game v1.0", 800, 600);
 
   bool game_is_running = true;
 
-  setup_entites(&render_window);
-  load_font(&render_window, "assets/fonts/JosefinSans-Regular.ttf");
+  setup_entites(render_window);
+  load_font(render_window, "assets/fonts/JosefinSans-Regular.ttf");
 
   SDL_Event event;
   float fps;
   while (game_is_running) {
     process_inputs(&game_is_running);
-    update();
-    render_all(&render_window);
+    update(render_window);
+    render_all(render_window);
 
     // SDL_Color sdlcolor = {255, 0, 0, 255}; // red
     // SDL_Surface *surface =
@@ -117,12 +132,12 @@ int main(int argc, char *argv[]) {
     // SDL_Texture *fps_texture =
     //     SDL_CreateTextureFromSurface(render_window.renderer, surface);
     //
-    display(&render_window);
+    display(render_window);
   }
 
   // clean up entities
-  cleanup_entities(&render_window);
-  cleanup_render_window(&render_window);
+  cleanup_entities(render_window);
+  cleanup_render_window(render_window);
 
   SDL_Quit();
 

@@ -52,11 +52,11 @@ SDL_Renderer *create_sdl_renderer(SDL_Window *window) {
   return renderer;
 }
 
-RenderWindow render_window_create(const char *title, int width, int height) {
-  RenderWindow renderwindow;
-  renderwindow.window = create_sdl_window(title, width, height);
-  renderwindow.renderer = create_sdl_renderer(renderwindow.window);
-  renderwindow.entity_ht = hashtable_create();
+RenderWindow *render_window_create(const char *title, int width, int height) {
+  RenderWindow *renderwindow = malloc(sizeof(RenderWindow));
+  renderwindow->window = create_sdl_window(title, width, height);
+  renderwindow->renderer = create_sdl_renderer(renderwindow->window);
+  renderwindow->entity_ht = hashtable_create();
   return renderwindow;
 }
 
@@ -105,6 +105,7 @@ void load_font(RenderWindow *render_window, const char *font_path) {
     fprintf(stderr, "Cannot load font: %s\n", TTF_GetError());
   }
   render_window->font = font;
+  printf("Loaded font: %s\n", font_path);
 }
 
 void render(SDL_Renderer *renderer, Entity *entity) {
@@ -145,7 +146,7 @@ void render_all(RenderWindow *render_window) {
 
 void add_entity_to_render_window(RenderWindow *render_window,
                                  const char *entity_name, Entity *entity) {
-  hashtable_add(render_window->entity_ht, entity_name, entity);
+  hashtable_add(&render_window->entity_ht, entity_name, entity);
 }
 
 Entity *get_entity_from_render_window(RenderWindow *renderwindow,
@@ -177,4 +178,6 @@ void cleanup_render_window(RenderWindow *render_window) {
     render_window->font = NULL;
   }
   hashtable_destroy(render_window->entity_ht);
+  free(render_window);
+  render_window = NULL;
 }

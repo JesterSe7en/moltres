@@ -24,11 +24,13 @@ HashTable *hashtable_create(void) {
   return ht;
 }
 
-void hashtable_add(HashTable *ht, const char *key, void *value) {
-  if (ht == NULL) {
+void hashtable_add(HashTable **ht_ptr, const char *key, void *value) {
+  if (*ht_ptr == NULL) {
     perror("Cannot add to null hash table");
     return;
   }
+
+  HashTable *ht = *ht_ptr;
   // Resize if necessary; only at (LOAD_FACTOR_THRESHOLD * 100)% capacity
   if (ht->entries == NULL ||
       (float)ht->count / ht->size > LOAD_FACTOR_THRESHOLD) {
@@ -39,6 +41,9 @@ void hashtable_add(HashTable *ht, const char *key, void *value) {
       perror("Failed to resize hash table");
       return;
     }
+
+    printf("Attempting to resize hash table from %lu to %lu\n", ht->size,
+           new_size);
 
     for (size_t i = 0; i < ht->size; i++) {
       // only copy over non-removed entries
@@ -63,6 +68,7 @@ void hashtable_add(HashTable *ht, const char *key, void *value) {
 
   // now actually add new entry
   size_t index = hash_function(key) % ht->size;
+  printf("Checking for existing entry at index %lu\n", index);
 
   // check if key already exists and is not subject to removal.  if so, just
   // update it
@@ -77,6 +83,7 @@ void hashtable_add(HashTable *ht, const char *key, void *value) {
   }
 
   // we didn't find the key, so add it
+  printf("Adding new entry at index %lu\n", index);
   ht->entries[index].key = strdup(key);
   ht->entries[index].value = value;
   ht->entries[index].removed = false;
@@ -130,6 +137,10 @@ void hashtable_destroy(HashTable *ht) {
 //-------- HASH TABLE ITERATOR ---------
 
 HashTableIterator hashtable_iterator_create(const HashTable *ht) {
+  if (ht == NULL) {
+    fprintf(stderr, "Cannot create iterator from null hash table\n");
+    return (HashTableIterator){NULL, 0};
+  }
   HashTableIterator iterator;
   iterator.ht = ht;
   iterator.current_index = 0;

@@ -22,7 +22,7 @@ typedef struct {
  * @param height The height of render window
  * @return RenderWindow
  */
-RenderWindow render_window_create(const char *title, int width, int height);
+RenderWindow *render_window_create(const char *title, int width, int height);
 
 /**
  * Load texture drectly from file

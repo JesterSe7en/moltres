@@ -25,7 +25,7 @@ typedef struct HashTableIterator {
 
 HashTable *hashtable_create(void);
 void hashtable_remove(HashTable *ht, const char *key);
-void hashtable_add(HashTable *ht, const char *key, void *value);
+void hashtable_add(HashTable **ht, const char *key, void *value);
 void *hashtable_get(HashTable *ht, const char *key);
 void hashtable_destroy(HashTable *ht);
 

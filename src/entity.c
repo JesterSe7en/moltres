@@ -56,7 +56,7 @@ bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
   entity->curr_anim = anim_name;
   entity->anim_info_ht = hashtable_create();
   AnimationInfo ai = {origin, offset, frame_duration, spritesheet};
-  hashtable_add(entity->anim_info_ht, anim_name, &ai);
+  hashtable_add(&entity->anim_info_ht, anim_name, &ai);
 
   return true;
 }
@@ -94,7 +94,7 @@ Entity *entity_create_dynamic(Vector2f position, Vector2i origin, int width,
 
   AnimationInfo *ai =
       create_animation_info(origin, offset, frame_duration, spritesheet);
-  hashtable_add(entity->anim_info_ht, anim_name, &ai);
+  hashtable_add(&entity->anim_info_ht, anim_name, &ai);
   return entity;
 }
 
@@ -102,7 +102,7 @@ void entity_add_animation(Entity *entity, Vector2i origin, Vector2i offset,
                           float frame_duration, char *anim_name,
                           SDL_Texture *spritesheet) {
   AnimationInfo ai = {origin, offset, frame_duration, spritesheet};
-  hashtable_add(entity->anim_info_ht, anim_name, &ai);
+  hashtable_add(&entity->anim_info_ht, anim_name, &ai);
 }
 
 void cleanup_entity(Entity *entity) {
