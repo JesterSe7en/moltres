@@ -23,6 +23,10 @@ typedef struct Entity {
   const char *text;
 } Entity;
 
+typedef struct EntityProperties {
+  float x;
+} EntityProperties; // follow in line with Vulkan
+
 /**
  * Initializes a static entity - aka no animations
  *
@@ -34,10 +38,11 @@ typedef struct Entity {
  * @param texutre The SDL texture of the entity
  * @return bool False if entity could not be initialized properly
  */
-bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
-                        int width, int height, float scale,
-                        SDL_Texture *texture);
-// FIXME: maybe put all of this parameters in a struct? getting unwieldy
+/* bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
+ */
+/*                         int width, int height, float scale, */
+/*                         SDL_Texture *texture); */
+/* // FIXME: maybe put all of this parameters in a struct? getting unwieldy */
 
 /**
  * Initializes a dynamic entity - aka has animation(s).  Must initialize with at
@@ -53,10 +58,12 @@ bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
  * @param texture The SDL texture of the animation
  * @return bool False if entity could not be initialized properly
  */
-bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
-                         int width, int height, Vector2i offset,
-                         float frame_duration, float scale, char *anim_name,
-                         SDL_Texture *spritesheet);
+/* bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
+ */
+/*                          int width, int height, Vector2i offset, */
+/*                          float frame_duration, float scale, char *anim_name,
+ */
+/*                          SDL_Texture *spritesheet); */
 /**
  * Creates a static entity - heap allocated
  *
