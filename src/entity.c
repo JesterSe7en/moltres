@@ -91,6 +91,7 @@ Entity *entity_create_dynamic(Vector2f position, Vector2i origin, int width,
   entity->current_frame.h = height;
   entity->texture = NULL;
   entity->curr_anim = anim_name;
+  entity->anim_info_ht = hashtable_create();
 
   AnimationInfo *ai =
       create_animation_info(origin, offset, frame_duration, spritesheet);
