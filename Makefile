@@ -35,11 +35,11 @@ $(TARGET_RELEASE): $(OBJ_RELEASE)
 	$(CC) $(CFLAGS_COMMON) $(CFLAGS_RELEASE) -o $@ $^ $(LDFLAGS) $(LDLIBS)
 
 obj/%_debug.o: ./src/%.c
-	@mkdir -p $(dir $@)
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS_COMMON) $(CFLAGS_DEBUG) -c -o $@ $<
 
 obj/%_release.o: ./src/%.c
-	@mkdir -p $(dir $@)
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS_COMMON) $(CFLAGS_RELEASE) -c -o $@ $<
 
 clean:
