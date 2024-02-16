@@ -36,6 +36,8 @@ bool entity_init_static(Entity *entity, Vector2f position, Vector2i origin,
   return true;
 }
 
+// FIXME: probably dont need this?  Can do Entity entity =
+// *entity_create_dynamic(...) to accomplish the same thing...maybe
 bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
                          int width, int height, Vector2i offset,
                          float frame_duration, float scale, char *anim_name,
@@ -52,10 +54,10 @@ bool entity_init_dynamic(Entity *entity, Vector2f position, Vector2i origin,
   entity->current_frame.y = origin.y;
   entity->current_frame.w = width;
   entity->current_frame.h = height;
-  entity->texture = NULL;
+  entity->texture = spritesheet;
   entity->curr_anim = anim_name;
   entity->anim_info_ht = hashtable_create();
-  AnimationInfo ai = {origin, offset, frame_duration, spritesheet};
+  AnimationInfo ai = {origin, offset, frame_duration};
   hashtable_add(&entity->anim_info_ht, anim_name, &ai);
 
   return true;
@@ -89,12 +91,11 @@ Entity *entity_create_dynamic(Vector2f position, Vector2i origin, int width,
   entity->current_frame.y = origin.y;
   entity->current_frame.w = width;
   entity->current_frame.h = height;
-  entity->texture = NULL;
+  entity->texture = spritesheet;
   entity->curr_anim = anim_name;
   entity->anim_info_ht = hashtable_create();
 
-  AnimationInfo *ai =
-      create_animation_info(origin, offset, frame_duration, spritesheet);
+  AnimationInfo *ai = create_animation_info(origin, offset, frame_duration);
   hashtable_add(&entity->anim_info_ht, anim_name, &ai);
   return entity;
 }
@@ -102,7 +103,7 @@ Entity *entity_create_dynamic(Vector2f position, Vector2i origin, int width,
 void entity_add_animation(Entity *entity, Vector2i origin, Vector2i offset,
                           float frame_duration, char *anim_name,
                           SDL_Texture *spritesheet) {
-  AnimationInfo ai = {origin, offset, frame_duration, spritesheet};
+  AnimationInfo ai = {origin, offset, frame_duration};
   hashtable_add(&entity->anim_info_ht, anim_name, &ai);
 }
 

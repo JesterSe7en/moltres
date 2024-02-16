@@ -10,14 +10,12 @@
  * @brief Stores information about an animation
  */
 typedef struct AnimationInfo {
-  Vector2i origin;          /**< x,y coordinates of the starting frame */
-  Vector2i offset;          /**< x,y offset between each frame */
-  float frame_duration;     /**< duration of each frame in seconds */
-  SDL_Texture *spritesheet; /**< spritesheet of the animation */
+  Vector2i origin;      /**< x,y coordinates of the starting frame */
+  Vector2i offset;      /**< x,y offset between each frame */
+  float frame_duration; /**< duration of each frame in seconds */
 } AnimationInfo;
 
 AnimationInfo *create_animation_info(Vector2i origin, Vector2i offset,
-                                     float frame_duration,
-                                     SDL_Texture *spritesheet);
+                                     float frame_duration);
 void destroy_animation_info(AnimationInfo *animation_info);
 #endif // INCLUDE_SRC_ANIMATION_H_

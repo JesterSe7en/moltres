@@ -114,6 +114,7 @@ void render(SDL_Renderer *renderer, Entity *entity) {
     return;
   }
 
+  // if dynamic, check AnimationInfo for the source x and y from origin param
   if (renderer == NULL || entity->texture == NULL) {
     fprintf(stderr,
             "Cannot render target entity: renderer or texture is NULL\n");
@@ -122,11 +123,24 @@ void render(SDL_Renderer *renderer, Entity *entity) {
 
   SDL_Texture *texture = entity->texture;
   SDL_Rect current_frame = entity->current_frame;
+  SDL_Rect src, dest;
 
-  SDL_Rect src = {current_frame.x, current_frame.y, current_frame.w,
-                  current_frame.h};
-  SDL_Rect dest = {entity->x * entity->scale, entity->y * entity->scale,
-                   src.w * entity->scale, src.h * entity->scale};
+  if (entity->anim_info_ht != NULL) {
+    printf("Trying to render an animation, not implemented yet\n");
+    // need to store current animation name
+    // need to store what frame of the animation it is on, to determine how much
+    // offset we need
+  } else {
+    src.x = current_frame.x;
+    src.y = current_frame.y;
+    src.w = current_frame.w;
+    src.h = current_frame.h;
+
+    dest.x = entity->x * entity->scale;
+    dest.y = entity->y * entity->scale;
+    dest.w = src.w * entity->scale;
+    dest.h = src.h * entity->scale;
+  }
 
   if (SDL_RenderCopy(renderer, texture, &src, &dest) != 0) {
     fprintf(stderr, "Cannot render texture: %s\n", SDL_GetError());
