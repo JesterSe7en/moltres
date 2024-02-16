@@ -22,3 +22,46 @@ run:
 
 clean:
 	rm -f game
+
+
+
+CC = gcc
+CFLAGS_COMMON = -Wall -Wextra
+LDFLAGS = -lm
+
+# Debug version
+CFLAGS_DEBUG = -g -DDEBUG
+TARGET_DEBUG = your_program_debug
+
+# Release version
+CFLAGS_RELEASE = -O3
+TARGET_RELEASE = your_program_release
+
+# Source files
+SRC = main.c file1.c file2.c
+
+# Object files
+OBJ_DEBUG = $(SRC:.c=_debug.o)
+OBJ_RELEASE = $(SRC:.c=_release.o)
+
+# Build targets
+all: debug release
+
+debug: $(TARGET_DEBUG)
+
+release: $(TARGET_RELEASE)
+
+$(TARGET_DEBUG): $(OBJ_DEBUG)
+	$(CC) $(CFLAGS_COMMON) $(CFLAGS_DEBUG) -o $@ $^ $(LDFLAGS)
+
+$(TARGET_RELEASE): $(OBJ_RELEASE)
+	$(CC) $(CFLAGS_COMMON) $(CFLAGS_RELEASE) -o $@ $^ $(LDFLAGS)
+
+%_debug.o: %.c
+	$(CC) $(CFLAGS_COMMON) $(CFLAGS_DEBUG) -c -o $@ $<
+
+%_release.o: %.c
+	$(CC) $(CFLAGS_COMMON) $(CFLAGS_RELEASE) -c -o $@ $<
+
+clean:
+	rm -f $(OBJ_DEBUG) $(OBJ_RELEASE) $(TARGET_DEBUG) $(TARGET_RELEASE)
