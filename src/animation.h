@@ -14,9 +14,12 @@ typedef struct AnimationInfo {
   Vector2i offset;      /**< x,y offset between each frame */
   float frame_duration; /**< duration of each frame in seconds */
   int max_frame;        /**< maximum number of frames in the animation */
+  int current_frame; /**< current frame of the animation usually 0-(max_frame -
+                        1) */
 } AnimationInfo;
 
 AnimationInfo *create_animation_info(Vector2i origin, Vector2i offset,
                                      float frame_duration, int max_frame);
+
 void destroy_animation_info(AnimationInfo *animation_info);
 #endif // INCLUDE_SRC_ANIMATION_H_

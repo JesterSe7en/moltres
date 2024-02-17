@@ -51,6 +51,7 @@ void process_inputs(bool *game_is_running) {
 void update(RenderWindow *render_window) {
   float deltaT = (SDL_GetTicks64() - last_frame_time) / 1000.0f;
 
+  // FIXME: maybe either use the static lastTime in this function or the global
   last_frame_time = SDL_GetTicks64();
 
   // ---- fps display ----
@@ -58,27 +59,39 @@ void update(RenderWindow *render_window) {
   static Uint32 lastTime = 0;
   // cache player entity
   static Entity *player = NULL;
+  static AnimationInfo *ai = NULL;
 
   frames++;
   Uint32 currentTime = SDL_GetTicks64();
   if (player == NULL) {
     player = (Entity *)hashtable_get(&render_window->entity_ht, "player");
+    ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "idle");
   }
 
   if (currentTime - lastTime >= 1000) {
     global_fps = frames / ((currentTime - lastTime) / 1000.0f);
 
-    // if (player != NULL) {
-    //   AnimationInfo *ai =
-    //       (AnimationInfo *)hashtable_get(player->anim_info_ht, "idle");
-    //   player->current_frame.x += ai->offset.x;
-    //   player->current_frame.y += ai->offset.y;
-    // }
-    //
     // Reset counters for the next second
     frames = 0;
     lastTime = currentTime;
   }
+
+  if (player != NULL) {
+    if (currentTime - lastTime >= ai->frame_duration) {
+      // go to next animation frame.
+      player->current_frame.x = ai->origin.x + ai->offset.x * ai->current_frame;
+      player->current_frame.y = ai->origin.y + ai->offset.y * ai->current_frame;
+      printf("Source rect: x:%d y:%d w:%d h:%d\n", player->current_frame.x,
+             player->current_frame.y, player->current_frame.w,
+             player->current_frame.h);
+      if (ai->current_frame >= ai->max_frame) {
+        ai->current_frame = 0;
+      } else {
+        ai->current_frame++;
+      }
+    }
+  }
+  lastTime = currentTime;
 }
 
 void setup_entites(RenderWindow *render_window) {
@@ -92,8 +105,8 @@ void setup_entites(RenderWindow *render_window) {
   SDL_Texture *idle_spritesheet =
       load_texture(render_window->renderer, "assets/knight/_Idle.png");
   Entity *player =
-      entity_create_dynamic(v2f(200, 100), v2i(44, 42), 21, 38, v2i(120, 0),
-                            0.5, 1, "idle", 10, idle_spritesheet);
+      entity_create_dynamic(v2f(200, 100), v2i(44, 42), 21, 38, v2i(120, 0), 10,
+                            1, "idle", 10, idle_spritesheet);
   add_entity_to_render_window(render_window, "player", player);
   // SDL_Texture *jump_spritesheet =
   //     load_texture(render_window->renderer, "assets/knight/_Jump.png");

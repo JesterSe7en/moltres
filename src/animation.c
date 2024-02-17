@@ -8,6 +8,7 @@ AnimationInfo *create_animation_info(Vector2i origin, Vector2i offset,
   info->offset = offset;
   info->frame_duration = frame_duration;
   info->max_frame = max_frame;
+  info->current_frame = 0;
   return info;
 }
 
