@@ -128,7 +128,21 @@ void render(SDL_Renderer *renderer, Entity *entity) {
   if (entity->anim_info_ht != NULL) {
     printf("Trying to render an animation, not implemented yet\n");
     // need to store current animation name
+    char *current_animation_running = entity->curr_anim;
     // need to store what frame of the animation it is on, to determine how much
+    AnimationInfo *ai =
+        hashtable_get(&entity->anim_info_ht, current_animation_running);
+
+    src.x = ai->origin.x;
+    src.y = ai->origin.y;
+    src.w = current_frame.w;
+    src.h = current_frame.h;
+
+    dest.x = entity->x * entity->scale;
+    dest.y = entity->y * entity->scale;
+    dest.w = src.w * entity->scale;
+    dest.h = src.h * entity->scale;
+
     // offset we need
   } else {
     src.x = current_frame.x;
