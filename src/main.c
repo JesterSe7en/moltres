@@ -92,8 +92,8 @@ void setup_entites(RenderWindow *render_window) {
   SDL_Texture *idle_spritesheet =
       load_texture(render_window->renderer, "assets/knight/_Idle.png");
   Entity *player =
-      entity_create_dynamic(v2f(100, 100), v2i(44, 42), 21, 38, v2i(120, 0),
-                            0.5, 1, "idle", idle_spritesheet);
+      entity_create_dynamic(v2f(200, 100), v2i(44, 42), 21, 38, v2i(120, 0),
+                            0.5, 1, "idle", 10, idle_spritesheet);
   add_entity_to_render_window(render_window, "player", player);
   // SDL_Texture *jump_spritesheet =
   //     load_texture(render_window->renderer, "assets/knight/_Jump.png");

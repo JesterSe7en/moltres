@@ -2,11 +2,12 @@
 #include "vector.h"
 
 AnimationInfo *create_animation_info(Vector2i origin, Vector2i offset,
-                                     float frame_duration) {
+                                     float frame_duration, int max_frame) {
   AnimationInfo *info = malloc(sizeof(AnimationInfo));
   info->origin = origin;
   info->offset = offset;
   info->frame_duration = frame_duration;
+  info->max_frame = max_frame;
   return info;
 }
 

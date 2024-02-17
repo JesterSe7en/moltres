@@ -81,7 +81,7 @@ Entity *entity_create_static(Vector2f position, Vector2i origin, int width,
 
 Entity *entity_create_dynamic(Vector2f position, Vector2i origin, int width,
                               int height, Vector2i offset, float frame_duration,
-                              float scale, char *anim_name,
+                              float scale, char *anim_name, int max_frames,
                               SDL_Texture *spritesheet) {
   Entity *entity = malloc(sizeof(Entity));
   entity->x = position.x;
@@ -95,7 +95,8 @@ Entity *entity_create_dynamic(Vector2f position, Vector2i origin, int width,
   entity->curr_anim = anim_name;
   entity->anim_info_ht = hashtable_create();
 
-  AnimationInfo *ai = create_animation_info(origin, offset, frame_duration);
+  AnimationInfo *ai =
+      create_animation_info(origin, offset, frame_duration, max_frames);
   hashtable_add(&entity->anim_info_ht, anim_name, ai);
   return entity;
 }

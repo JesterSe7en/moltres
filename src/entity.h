@@ -88,11 +88,12 @@ Entity *entity_create_static(Vector2f position, Vector2i origin, int width,
  * @param frame_duration the duration of each frame
  * @param scale the scale of the entity in window
  * @param anim_name the name of the animation
+ * @param max_frames the total number of frames for an animation
  * @param texture The SDL texture of the animation
  */
 Entity *entity_create_dynamic(Vector2f position, Vector2i origin, int width,
                               int height, Vector2i offset, float frame_duration,
-                              float scale, char *anim_name,
+                              float scale, char *anim_name, int max_frames,
                               SDL_Texture *spritesheet);
 
 /**
