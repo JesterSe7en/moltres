@@ -79,15 +79,15 @@ void update(RenderWindow *render_window) {
   if (player != NULL) {
     if (currentTime - lastTime >= ai->frame_duration) {
       // go to next animation frame.
-      player->current_frame.x = ai->origin.x + ai->offset.x * ai->current_frame;
-      player->current_frame.y = ai->origin.y + ai->offset.y * ai->current_frame;
+      player->current_frame.x = ai->origin.x + ai->offset.x * ai->cur_frame;
+      player->current_frame.y = ai->origin.y + ai->offset.y * ai->cur_frame;
       printf("Source rect: x:%d y:%d w:%d h:%d\n", player->current_frame.x,
              player->current_frame.y, player->current_frame.w,
              player->current_frame.h);
-      if (ai->current_frame >= ai->max_frame) {
-        ai->current_frame = 0;
+      if (ai->cur_frame >= ai->total_frames) {
+        ai->cur_frame = 0;
       } else {
-        ai->current_frame++;
+        ai->cur_frame++;
       }
     }
   }
