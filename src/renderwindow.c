@@ -129,8 +129,8 @@ void render(SDL_Renderer *renderer, Entity *entity) {
   src.w = current_frame.w;
   src.h = current_frame.h;
 
-  dest.x = entity->x * entity->scale;
-  dest.y = entity->y * entity->scale;
+  dest.x = entity->position.x * entity->scale;
+  dest.y = entity->position.y * entity->scale;
   dest.w = src.w * entity->scale;
   dest.h = src.h * entity->scale;
 

@@ -12,7 +12,6 @@
 
 typedef struct Entity {
   Vector2f position;
-  float x, y;
   float scale;
   SDL_Rect current_frame;
   SDL_Texture *texture;
@@ -24,7 +23,6 @@ typedef struct Entity {
 } Entity;
 
 typedef struct EntityProperties {
-  float x;
 } EntityProperties; // follow in line with Vulkan
 
 /**
