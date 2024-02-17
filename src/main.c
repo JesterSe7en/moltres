@@ -63,10 +63,10 @@ void update(RenderWindow *render_window) {
 
   frames++;
   Uint32 currentTime = SDL_GetTicks64();
-  if (player == NULL) {
-    player = (Entity *)hashtable_get(&render_window->entity_ht, "player");
-    ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "idle");
-  }
+  // if (player == NULL) {
+  //   player = (Entity *)hashtable_get(&render_window->entity_ht, "player");
+  //   ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "idle");
+  // }
 
   if (currentTime - lastTime >= 1000) {
     global_fps = frames / ((currentTime - lastTime) / 1000.0f);
@@ -76,38 +76,42 @@ void update(RenderWindow *render_window) {
     lastTime = currentTime;
   }
 
-  if (player != NULL) {
-    if (currentTime - lastTime >= ai->frame_duration) {
-      // go to next animation frame.
-      player->current_frame.x = ai->origin.x + ai->offset.x * ai->cur_frame;
-      player->current_frame.y = ai->origin.y + ai->offset.y * ai->cur_frame;
-      printf("Source rect: x:%d y:%d w:%d h:%d\n", player->current_frame.x,
-             player->current_frame.y, player->current_frame.w,
-             player->current_frame.h);
-      if (ai->cur_frame >= ai->total_frames) {
-        ai->cur_frame = 0;
-      } else {
-        ai->cur_frame++;
-      }
-    }
-  }
-  lastTime = currentTime;
+  // if (player != NULL) {
+  //   if (currentTime - lastTime >= ai->frame_duration) {
+  //     // go to next animation frame.
+  //     player->current_frame.x = ai->origin.x + ai->offset.x * ai->cur_frame;
+  //     player->current_frame.y = ai->origin.y + ai->offset.y * ai->cur_frame;
+  //     printf("Source rect: x:%d y:%d w:%d h:%d\n", player->current_frame.x,
+  //            player->current_frame.y, player->current_frame.w,
+  //            player->current_frame.h);
+  //     if (ai->cur_frame >= ai->total_frames) {
+  //       ai->cur_frame = 0;
+  //     } else {
+  //       ai->cur_frame++;
+  //     }
+  //   }
+  // }
+  // lastTime = currentTime;
 }
 
 void setup_entites(RenderWindow *render_window) {
 
+  // oak_floor.png is just one tile
   SDL_Texture *oak_floor_texture =
       load_texture(render_window->renderer, "assets/oak_woods/oak_floor.png");
-  Entity *oak_floor = entity_create_static(v2f(100, 100), v2i(0, 0), 28, 28, 1,
-                                           oak_floor_texture);
+  int w, h;
+  SDL_QueryTexture(oak_floor_texture, NULL, NULL, &w, &h);
+  Entity *oak_floor =
+      entity_create(v2f(100, 100), v2i(0, 0), w, h, 1, oak_floor_texture);
   add_entity_to_render_window(render_window, "floor", oak_floor);
 
-  SDL_Texture *idle_spritesheet =
-      load_texture(render_window->renderer, "assets/knight/_Idle.png");
-  Entity *player =
-      entity_create_dynamic(v2f(200, 100), v2i(44, 42), 21, 38, v2i(120, 0), 10,
-                            1, "idle", 10, idle_spritesheet);
-  add_entity_to_render_window(render_window, "player", player);
+  // SDL_Texture *idle_spritesheet =
+  //     load_texture(render_window->renderer, "assets/knight/_Idle.png");
+  // Entity *player =
+  //     entity_create(v2f(200, 100), v2i(44, 42), 21, 28, 1, idle_spritesheet);
+  // entity_add_animation(player, v2i(44, 42), v2i(120, 0), 10, 24, 5, "idle",
+  //                      idle_spritesheet);
+  // add_entity_to_render_window(render_window, "player", player);
   // SDL_Texture *jump_spritesheet =
   //     load_texture(render_window->renderer, "assets/knight/_Jump.png");
   // entity_add_animation(&player, v2i(0, 0), v2i(20, 20), 0.5, "jump",
