@@ -96,23 +96,6 @@ void update(RenderWindow *render_window) {
     frames = 0;
     lastTime = currentTime;
   }
-
-  // if (player != NULL) {
-  //   if (currentTime - lastTime >= ai->frame_duration) {
-  //     // go to next animation frame.
-  //     player->current_frame.x = ai->origin.x + ai->offset.x * ai->cur_frame;
-  //     player->current_frame.y = ai->origin.y + ai->offset.y * ai->cur_frame;
-  //     printf("Source rect: x:%d y:%d w:%d h:%d\n", player->current_frame.x,
-  //            player->current_frame.y, player->current_frame.w,
-  //            player->current_frame.h);
-  //     if (ai->cur_frame >= ai->total_frames) {
-  //       ai->cur_frame = 0;
-  //     } else {
-  //       ai->cur_frame++;
-  //     }
-  //   }
-  // }
-  // lastTime = currentTime;
 }
 
 void setup_entites(RenderWindow *render_window) {
@@ -128,8 +111,7 @@ void setup_entites(RenderWindow *render_window) {
 
   SDL_Texture *idle_spritesheet =
       load_texture(render_window->renderer, "assets/knight/_Idle.png");
-  Entity *player =
-      entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1.2, idle_spritesheet);
+  Entity *player = entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1.2, NULL);
   entity_add_animation(player, v2i(44, 42), v2i(120, 0), 10, 10, 5, "idle",
                        idle_spritesheet);
   add_entity_to_render_window(render_window, "player", player);
@@ -140,9 +122,9 @@ void setup_entites(RenderWindow *render_window) {
   //                      jump_spritesheet);
   // SDL_Texture *run_spritesheet =
   //     load_texture(render_window->renderer, "assets/knight/_Run.png");
-  // entity_add_animation(&player, v2i(0, 0), v2i(20, 20), 0.5, "run",
+  // entity_add_animation(player, v2i(0, 0), v2i(20, 20), 5, 10, 1, "run",
   //                      run_spritesheet);
-  // add_entity_to_render_window(render_window, "player", &player);
+  // add_entity_to_render_window(render_window, "player", player);
   //
 }
 

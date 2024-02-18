@@ -33,6 +33,9 @@ void entity_add_animation(Entity *entity, Vector2i origin, Vector2i offset,
   AnimationInfo *ai =
       animation_info_create(origin, offset, total_frames, fps, total_time);
   hashtable_add(&entity->anim_info_ht, anim_name, ai);
+
+  entity->curr_anim = anim_name;
+  entity->texture = spritesheet;
 }
 
 void cleanup_entity(Entity *entity) {
