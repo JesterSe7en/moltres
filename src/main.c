@@ -105,13 +105,14 @@ void setup_entites(RenderWindow *render_window) {
       entity_create(v2f(100, 100), v2i(0, 0), w, h, 1, oak_floor_texture);
   add_entity_to_render_window(render_window, "floor", oak_floor);
 
-  // SDL_Texture *idle_spritesheet =
-  //     load_texture(render_window->renderer, "assets/knight/_Idle.png");
-  // Entity *player =
-  //     entity_create(v2f(200, 100), v2i(44, 42), 21, 28, 1, idle_spritesheet);
-  // entity_add_animation(player, v2i(44, 42), v2i(120, 0), 10, 24, 5, "idle",
-  //                      idle_spritesheet);
-  // add_entity_to_render_window(render_window, "player", player);
+  SDL_Texture *idle_spritesheet =
+      load_texture(render_window->renderer, "assets/knight/_Idle.png");
+  Entity *player =
+      entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1, idle_spritesheet);
+  entity_add_animation(player, v2i(44, 42), v2i(120, 0), 10, 24, 5, "idle",
+                       idle_spritesheet);
+  add_entity_to_render_window(render_window, "player", player);
+
   // SDL_Texture *jump_spritesheet =
   //     load_texture(render_window->renderer, "assets/knight/_Jump.png");
   // entity_add_animation(&player, v2i(0, 0), v2i(20, 20), 0.5, "jump",
