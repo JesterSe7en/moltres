@@ -1,4 +1,5 @@
 #include "main.h"
+#include "animation.h"
 #include "entity.h"
 #include "renderwindow.h"
 #include <SDL2/SDL_render.h>
@@ -67,7 +68,7 @@ void update(RenderWindow *render_window) {
   Uint32 currentTime = SDL_GetTicks64();
   if (player == NULL) {
     player = (Entity *)hashtable_get(&render_window->entity_ht, "player");
-    ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "idle");
+    ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "attack2");
   }
 
   if (ai != NULL) {
@@ -100,18 +101,35 @@ void update(RenderWindow *render_window) {
 
 void setup_entites(RenderWindow *render_window) {
 
+  SDL_Renderer *renderer = render_window->renderer;
+
   // oak_floor.png is just one tile
   SDL_Texture *oak_floor_texture =
-      load_texture(render_window->renderer, "assets/oak_woods/oak_floor.png");
+      load_texture(renderer, "assets/oak_woods/oak_floor.png");
   int w, h;
   SDL_QueryTexture(oak_floor_texture, NULL, NULL, &w, &h);
   Entity *oak_floor =
       entity_create(v2f(100, 100), v2i(0, 0), w, h, 1, oak_floor_texture);
   add_entity_to_render_window(render_window, "floor", oak_floor);
 
+  // Entity *player = entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1.2,
+  // NULL);
+  // FIXME: width hack for now to run an attack animation
+  Entity *player =
+      entity_create(v2f(200, 100), v2i(44, 42), 120, 38, 1.2, NULL);
   SDL_Texture *idle_spritesheet =
-      load_texture(render_window->renderer, "assets/knight/_Idle.png");
-  Entity *player = entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1.2, NULL);
+      load_texture(renderer, "assets/knight/_Idle.png");
+
+  AnimationInfoProperties props = {
+      .origin = v2i(44, 42),
+      .offset = v2i(120, 0),
+      .size = v2i(120, 38),
+      .fps = 10,
+      .total_frames = 5,
+  };
+
+  entity_add_animation(player, "idle", idle_spritesheet, props);
+
   entity_add_animation(player, v2i(44, 42), v2i(120, 0), 10, 10, 5, "idle",
                        idle_spritesheet);
   add_entity_to_render_window(render_window, "player", player);
@@ -125,7 +143,11 @@ void setup_entites(RenderWindow *render_window) {
   // entity_add_animation(player, v2i(0, 0), v2i(20, 20), 5, 10, 1, "run",
   //                      run_spritesheet);
   // add_entity_to_render_window(render_window, "player", player);
-  //
+
+  SDL_Texture *attack_2_spritesheet =
+      load_texture(renderer, "assets/knight/_Attack2.png");
+  entity_add_animation(player, v2i(31, 39), v2i(120, 0), 6, 12, 1, "attack2",
+                       attack_2_spritesheet);
 }
 
 void render_fps(RenderWindow *render_window) {

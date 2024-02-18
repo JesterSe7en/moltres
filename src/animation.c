@@ -1,18 +1,16 @@
 #include "animation.h"
-#include "vector.h"
 
-AnimationInfo *animation_info_create(Vector2i origin, Vector2i offset,
-                                     int total_frames, float fps,
-                                     float total_time) {
+AnimationInfo *animation_info_create(AnimationInfoProperties *properties) {
   AnimationInfo *info = malloc(sizeof(AnimationInfo));
-  info->origin = origin;
-  info->offset = offset;
-  info->total_frames = total_frames;
-  info->fps = fps;
-  info->total_time = total_time;
+  info->origin = properties.origin;
+  info->offset = properties.offset;
+  info->size = properties.size;
+  info->total_frames = properties.total_frames;
+  info->fps = properties.fps;
+  info->total_time = properties.total_time;
 
   info->cur_frame = 0; // default to first frame
-  info->frame_duration = 1.0f / fps;
+  info->frame_duration = 1.0f / properties.fps;
   return info;
 }
 

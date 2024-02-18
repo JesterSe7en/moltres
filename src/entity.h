@@ -50,18 +50,15 @@ Entity *entity_create(Vector2f position, Vector2i screen_origin, int width,
  * parameters.
  *
  * @param entity Pointer to the entity to which the animation will be added.
- * @param origin The origin position of the animation frame in the spritesheet.
- * @param offset The offset between consecutive frames in the spritesheet.
- * @param total_frames The total number of frames in the animation.
- * @param fps Frames per second, specifying the animation speed.
- * @param total_time Total time for the animation to complete
  * @param anim_name Name of the animation for reference and retrieval.
  * @param spritesheet SDL_Texture representing the spritesheet containing
- * animation frames.
+ * @param props AnimationInfoProperties struct containing the properties of the
+ * new animation.
  */
-void entity_add_animation(Entity *entity, Vector2i origin, Vector2i offset,
-                          int total_frames, float fps, float total_time,
-                          char *anim_name, SDL_Texture *spritesheet);
+
+void entity_add_animation(Entity *entity, char *anim_name,
+                          SDL_Texture *spritesheet,
+                          AnimationInfoProperties *props);
 
 void cleanup_entity(Entity *);
 
