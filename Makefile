@@ -4,7 +4,7 @@
 CC = clang
 CFLAGS_COMMON = -Wall -std=c17 -pedantic -D_POSIX_C_SOURCE=200809L -I/usr/local/include
 LDFLAGS = -L/usr/local/lib -Wl,-rpath=/usr/local/lib
-LDLIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
+LDLIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -lm
 
 # Debug version
 CFLAGS_DEBUG = -g -DDEBUG
