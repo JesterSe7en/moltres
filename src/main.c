@@ -50,6 +50,7 @@ void process_inputs(bool *game_is_running) {
 
 void update(RenderWindow *render_window) {
   float deltaT = (SDL_GetTicks64() - last_frame_time) / 1000.0f;
+  printf("Delta time: %f\n", deltaT);
 
   // FIXME: maybe either use the static lastTime in this function or the global
   last_frame_time = SDL_GetTicks64();
@@ -57,16 +58,36 @@ void update(RenderWindow *render_window) {
   // ---- fps display ----
   static Uint32 frames = 0;
   static Uint32 lastTime = 0;
+  static int current_frame = 0;
   // cache player entity
   static Entity *player = NULL;
   static AnimationInfo *ai = NULL;
 
   frames++;
   Uint32 currentTime = SDL_GetTicks64();
-  // if (player == NULL) {
-  //   player = (Entity *)hashtable_get(&render_window->entity_ht, "player");
-  //   ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "idle");
-  // }
+  if (player == NULL) {
+    player = (Entity *)hashtable_get(&render_window->entity_ht, "player");
+    ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "idle");
+  }
+
+  if (ai != NULL) {
+    ai->elapsed_time += deltaT;
+    printf("Elapsed time: %f\n", ai->elapsed_time);
+
+    float total_duration = ai->total_frames * ai->frame_duration;
+
+    if (total_duration > 0 && ai->elapsed_time >= total_duration) {
+      ai->elapsed_time = fmod(ai->elapsed_time, total_duration);
+    }
+
+    ai->cur_frame = (int)(ai->elapsed_time / ai->frame_duration);
+
+    player->current_frame.x = ai->origin.x + ai->offset.x * ai->cur_frame;
+    player->current_frame.y = ai->origin.y + ai->offset.y * ai->cur_frame;
+    printf("Source rect: x:%d y:%d w:%d h:%d\n", player->current_frame.x,
+           player->current_frame.y, player->current_frame.w,
+           player->current_frame.h);
+  }
 
   if (currentTime - lastTime >= 1000) {
     global_fps = frames / ((currentTime - lastTime) / 1000.0f);
@@ -108,8 +129,8 @@ void setup_entites(RenderWindow *render_window) {
   SDL_Texture *idle_spritesheet =
       load_texture(render_window->renderer, "assets/knight/_Idle.png");
   Entity *player =
-      entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1, idle_spritesheet);
-  entity_add_animation(player, v2i(44, 42), v2i(120, 0), 10, 24, 5, "idle",
+      entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1.2, idle_spritesheet);
+  entity_add_animation(player, v2i(44, 42), v2i(120, 0), 10, 10, 5, "idle",
                        idle_spritesheet);
   add_entity_to_render_window(render_window, "player", player);
 

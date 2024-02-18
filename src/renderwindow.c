@@ -43,8 +43,10 @@ SDL_Window *create_sdl_window(const char *title, int width, int height) {
 }
 
 SDL_Renderer *create_sdl_renderer(SDL_Window *window) {
-  SDL_Renderer *renderer =
-      SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  // SDL_Renderer *renderer =
+  //     SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  SDL_Renderer *renderer = SDL_CreateRenderer(
+      window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
   if (renderer == NULL) {
     fprintf(stderr, "Cannot create SDL renderer: %s\n", SDL_GetError());

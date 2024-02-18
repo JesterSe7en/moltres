@@ -20,6 +20,7 @@ typedef struct AnimationInfo {
   int cur_frame; /**< current frame index of the animation [0, total_frames - 1]
                   */
   float frame_duration; /**< duration of each frame in seconds */
+  float elapsed_time;   /**< elapsed time of the animation in seconds */
 } AnimationInfo;
 
 AnimationInfo *animation_info_create(Vector2i origin, Vector2i offset,
