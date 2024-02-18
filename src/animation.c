@@ -13,7 +13,7 @@ AnimationInfo *animation_info_create(Vector2i origin, Vector2i offset,
 
   info->cur_frame = 0; // default to first frame
   info->frame_duration = 1.0f / fps;
-  return NULL;
+  return info;
 }
 
 void animation_info_destroy(AnimationInfo *animation_info) {
