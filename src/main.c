@@ -85,6 +85,8 @@ void update(RenderWindow *render_window) {
 
     player->current_frame.x = ai->origin.x + ai->offset.x * ai->cur_frame;
     player->current_frame.y = ai->origin.y + ai->offset.y * ai->cur_frame;
+    player->current_frame.w = ai->size.x;
+    player->current_frame.h = ai->size.y;
     printf("Source rect: x:%d y:%d w:%d h:%d\n", player->current_frame.x,
            player->current_frame.y, player->current_frame.w,
            player->current_frame.h);
@@ -115,8 +117,7 @@ void setup_entites(RenderWindow *render_window) {
   // Entity *player = entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1.2,
   // NULL);
   // FIXME: width hack for now to run an attack animation
-  Entity *player =
-      entity_create(v2f(200, 100), v2i(44, 42), 120, 38, 1.2, NULL);
+  Entity *player = entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1.2, NULL);
   SDL_Texture *idle_spritesheet =
       load_texture(renderer, "assets/knight/_Idle.png");
 
