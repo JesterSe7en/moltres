@@ -1,6 +1,6 @@
 #include "animation.h"
 
-AnimationInfo *animation_info_create(AnimationInfoProperties *properties) {
+AnimationInfo *animation_info_create(AnimationInfoProperties properties) {
   AnimationInfo *info = malloc(sizeof(AnimationInfo));
   info->origin = properties.origin;
   info->offset = properties.offset;

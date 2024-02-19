@@ -23,29 +23,6 @@ Entity *entity_create(Vector2f position, Vector2i origin, int width, int height,
   return entity;
 }
 
-void entity_add_animation(Entity *entity, Vector2i origin, Vector2i offset,
-                          int total_frames, float fps, float total_time,
-                          char *anim_name, SDL_Texture *spritesheet) {
-  if (entity->anim_info_ht == NULL) {
-    entity->anim_info_ht = hashtable_create();
-  }
-
-  AnimationInfoProperties *prop =
-      {
-          .origin = origin,
-          .offset = offset,
-          .size = size,
-
-      }
-
-  AnimationInfo *ai =
-      animation_info_create(origin, offset, total_frames, fps, total_time);
-  hashtable_add(&entity->anim_info_ht, anim_name, ai);
-
-  entity->curr_anim = anim_name;
-  entity->texture = spritesheet;
-}
-
 void entity_add_animation(Entity *entity, char *anim_name,
                           SDL_Texture *spritesheet,
                           AnimationInfoProperties *props) {
@@ -53,7 +30,7 @@ void entity_add_animation(Entity *entity, char *anim_name,
     entity->anim_info_ht = hashtable_create();
   }
 
-  AnimationInfo *ai = animation_info_create(props);
+  AnimationInfo *ai = animation_info_create(*props);
   hashtable_add(&entity->anim_info_ht, anim_name, ai);
   entity->curr_anim = anim_name;
   entity->texture = spritesheet;

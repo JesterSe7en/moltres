@@ -68,7 +68,7 @@ void update(RenderWindow *render_window) {
   Uint32 currentTime = SDL_GetTicks64();
   if (player == NULL) {
     player = (Entity *)hashtable_get(&render_window->entity_ht, "player");
-    ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "attack2");
+    ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "idle");
   }
 
   if (ai != NULL) {
@@ -127,27 +127,8 @@ void setup_entites(RenderWindow *render_window) {
       .fps = 10,
       .total_frames = 5,
   };
-
-  entity_add_animation(player, "idle", idle_spritesheet, props);
-
-  entity_add_animation(player, v2i(44, 42), v2i(120, 0), 10, 10, 5, "idle",
-                       idle_spritesheet);
+  entity_add_animation(player, "idle", idle_spritesheet, &props);
   add_entity_to_render_window(render_window, "player", player);
-
-  // SDL_Texture *jump_spritesheet =
-  //     load_texture(render_window->renderer, "assets/knight/_Jump.png");
-  // entity_add_animation(&player, v2i(0, 0), v2i(20, 20), 0.5, "jump",
-  //                      jump_spritesheet);
-  // SDL_Texture *run_spritesheet =
-  //     load_texture(render_window->renderer, "assets/knight/_Run.png");
-  // entity_add_animation(player, v2i(0, 0), v2i(20, 20), 5, 10, 1, "run",
-  //                      run_spritesheet);
-  // add_entity_to_render_window(render_window, "player", player);
-
-  SDL_Texture *attack_2_spritesheet =
-      load_texture(renderer, "assets/knight/_Attack2.png");
-  entity_add_animation(player, v2i(31, 39), v2i(120, 0), 6, 12, 1, "attack2",
-                       attack_2_spritesheet);
 }
 
 void render_fps(RenderWindow *render_window) {

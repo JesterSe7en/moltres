@@ -33,7 +33,7 @@ typedef struct AnimationInfoProperties {
   float total_time;
 } AnimationInfoProperties;
 
-AnimationInfo *animation_info_create(AnimationInfoProperties *properties);
+AnimationInfo *animation_info_create(AnimationInfoProperties properties);
 
 void animation_info_destroy(AnimationInfo *animation_info);
 #endif // INCLUDE_SRC_ANIMATION_H_
