@@ -68,7 +68,7 @@ void update(RenderWindow *render_window) {
   Uint32 currentTime = SDL_GetTicks64();
   if (player == NULL) {
     player = (Entity *)hashtable_get(&render_window->entity_ht, "player");
-    ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "idle");
+    ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "run");
   }
 
   if (ai != NULL) {
@@ -87,9 +87,6 @@ void update(RenderWindow *render_window) {
     player->current_frame.y = ai->origin.y + ai->offset.y * ai->cur_frame;
     player->current_frame.w = ai->size.x;
     player->current_frame.h = ai->size.y;
-    printf("Source rect: x:%d y:%d w:%d h:%d\n", player->current_frame.x,
-           player->current_frame.y, player->current_frame.w,
-           player->current_frame.h);
   }
 
   if (currentTime - lastTime >= 1000) {
@@ -106,29 +103,39 @@ void setup_entites(RenderWindow *render_window) {
   SDL_Renderer *renderer = render_window->renderer;
 
   // oak_floor.png is just one tile
-  SDL_Texture *oak_floor_texture =
-      load_texture(renderer, "assets/oak_woods/oak_floor.png");
-  int w, h;
-  SDL_QueryTexture(oak_floor_texture, NULL, NULL, &w, &h);
-  Entity *oak_floor =
-      entity_create(v2f(100, 100), v2i(0, 0), w, h, 1, oak_floor_texture);
-  add_entity_to_render_window(render_window, "floor", oak_floor);
+  // SDL_Texture *oak_floor_texture =
+  //     load_texture(renderer, "assets/oak_woods/oak_floor.png");
+  // int w, h;
+  // SDL_QueryTexture(oak_floor_texture, NULL, NULL, &w, &h);
+  // Entity *oak_floor =
+  //     entity_create(v2f(100, 100), v2i(0, 0), w, h, 1, oak_floor_texture);
+  // add_entity_to_render_window(render_window, "floor", oak_floor);
 
   // Entity *player = entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1.2,
   // NULL);
   // FIXME: width hack for now to run an attack animation
-  Entity *player = entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1.2, NULL);
+  Entity *player = entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1, NULL);
   SDL_Texture *idle_spritesheet =
       load_texture(renderer, "assets/knight/_Idle.png");
-
   AnimationInfoProperties props = {
       .origin = v2i(44, 42),
       .offset = v2i(120, 0),
-      .size = v2i(120, 38),
+      .size = v2i(21, 38),
       .fps = 10,
       .total_frames = 5,
   };
   entity_add_animation(player, "idle", idle_spritesheet, &props);
+  SDL_Texture *run_spritesheet =
+      load_texture(renderer, "assets/knight/_Run.png");
+  AnimationInfoProperties props_run = {
+      .origin = v2i(41, 40),
+      .offset = v2i(120, 0),
+      .size = v2i(37, 40),
+      .fps = 10,
+      .total_frames = 10,
+  };
+  entity_add_animation(player, "run", run_spritesheet, &props_run);
+
   add_entity_to_render_window(render_window, "player", player);
 }
 

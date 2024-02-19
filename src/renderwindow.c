@@ -134,6 +134,10 @@ void render(SDL_Renderer *renderer, Entity *entity) {
   dest.w = src.w * entity->scale;
   dest.h = src.h * entity->scale;
 
+  printf("Source rect: x:%d y:%d w:%d h:%d\n", src.x, src.y, src.w, src.h);
+  printf("Destination rect: x:%d y:%d w:%d h:%d\n", dest.x, dest.y, dest.w,
+         dest.h);
+
   if (SDL_RenderCopy(renderer, texture, &src, &dest) != 0) {
     fprintf(stderr, "Cannot render texture: %s\n", SDL_GetError());
   };
