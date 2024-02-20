@@ -5,6 +5,16 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#define PATH_SEPERATOR "\\"
+#else
+#include <limits.h>
+#include <unistd.h>
+#define PATH_SEPERATOR "/"
+#endif
 
 static int last_frame_time = 0;
 static int global_fps = 0;
@@ -98,13 +108,19 @@ void SetupEntities(RenderWindow *render_window) {
 
   SDL_Renderer *renderer = render_window->renderer_;
   SDL_Window *window = render_window->window_;
+  char path[PATH_MAX];
+  char seperator[] = PATH_SEPERATOR;
 
   int w, h;
 
   // ---- Background ----
   SDL_GetWindowSize(window, &w, &h);
-  SDL_Texture *background_texture = LoadTexture(
-      renderer, "..\\assets\\oak_woods\\background\\background_layer_1.png");
+  snprintf(path, sizeof(path),
+           "..%sassets%soak_woods%sbackground%sbackground_layer_1.png",
+           seperator, seperator, seperator, seperator);
+  SDL_Texture *background_texture = LoadTexture(renderer, path);
+  // SDL_Texture *background_texture = LoadTexture(
+  //     renderer, "..\\assets\\oak_woods\\background\\background_layer_1.png");
   Entity *background =
       EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background_texture);
   AddEntityToRenderWindow(render_window, "background", background);
