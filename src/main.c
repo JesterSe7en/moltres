@@ -2,19 +2,11 @@
 #include "animation.h"
 #include "entity.h"
 #include "renderwindow.h"
+#include "utils.h"
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#ifdef _WIN32
-#include <windows.h>
-#define PATH_SEPERATOR "\\"
-#else
-#include <limits.h>
-#include <unistd.h>
-#define PATH_SEPERATOR "/"
-#endif
 
 static int last_frame_time = 0;
 static int global_fps = 0;
@@ -108,47 +100,68 @@ void SetupEntities(RenderWindow *render_window) {
 
   SDL_Renderer *renderer = render_window->renderer_;
   SDL_Window *window = render_window->window_;
-  char path[PATH_MAX];
-  char seperator[] = PATH_SEPERATOR;
 
   int w, h;
 
   // ---- Background ----
   SDL_GetWindowSize(window, &w, &h);
-  snprintf(path, sizeof(path),
-           "..%sassets%soak_woods%sbackground%sbackground_layer_1.png",
-           seperator, seperator, seperator, seperator);
-  SDL_Texture *background_texture = LoadTexture(renderer, path);
+  PathBuilder builder = {NULL, 0};
+  append(&builder, "..");
+  append(&builder, "assets");
+  append(&builder, "oak_woods");
+  append(&builder, "background");
+  append(&builder, "background_layer_1.png");
+  printf("%s\n", builder.buffer);
+
+  SDL_Texture *background_texture = LoadTexture(renderer, builder.buffer);
   // SDL_Texture *background_texture = LoadTexture(
   //     renderer, "..\\assets\\oak_woods\\background\\background_layer_1.png");
   Entity *background =
       EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background_texture);
   AddEntityToRenderWindow(render_window, "background", background);
 
-  SDL_Texture *background2_texture = LoadTexture(
-      renderer, "..\\assets\\oak_woods\\background\\background_layer_2.png");
+  clear(&builder);
+  append(&builder, "..");
+  append(&builder, "assets");
+  append(&builder, "oak_woods");
+  append(&builder, "background");
+  append(&builder, "background_layer_2.png");
+  SDL_Texture *background2_texture = LoadTexture(renderer, builder.buffer);
   Entity *background2 =
       EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background2_texture);
   AddEntityToRenderWindow(render_window, "background2", background2);
 
-  SDL_Texture *background3_texture = LoadTexture(
-      renderer, "..\\assets\\oak_woods\\background\\background_layer_3.png");
+  clear(&builder);
+  append(&builder, "..");
+  append(&builder, "assets");
+  append(&builder, "oak_woods");
+  append(&builder, "background");
+  append(&builder, "background_layer_3.png");
+  SDL_Texture *background3_texture = LoadTexture(renderer, builder.buffer);
   Entity *background3 =
       EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background3_texture);
   AddEntityToRenderWindow(render_window, "background3", background3);
 
   //---- Floor ----
-  SDL_Texture *oak_floor_texture =
-      LoadTexture(renderer, "..\\assets\\oak_woods\\oak_floor.png");
+  clear(&builder);
+  append(&builder, "..");
+  append(&builder, "assets");
+  append(&builder, "oak_woods");
+  append(&builder, "oak_floor.png");
+  SDL_Texture *oak_floor_texture = LoadTexture(renderer, builder.buffer);
   SDL_QueryTexture(oak_floor_texture, NULL, NULL, &w, &h);
   Entity *oak_floor =
       EntityCreate(V2F(100, 100), V2I(0, 0), w, h, 1, oak_floor_texture);
   AddEntityToRenderWindow(render_window, "floor", oak_floor);
 
   //---- Player ----
+  clear(&builder);
+  append(&builder, "..");
+  append(&builder, "assets");
+  append(&builder, "knight");
+  append(&builder, "_Idle.png");
   Entity *player = EntityCreate(V2F(200, 100), V2I(44, 42), 21, 38, 1, NULL);
-  SDL_Texture *idle_spritesheet =
-      LoadTexture(renderer, "..\\assets\\knight\\_Idle.png");
+  SDL_Texture *idle_spritesheet = LoadTexture(renderer, builder.buffer);
   AnimationInfoProperties props = {
       .origin = V2I(44, 42),
       .offset = V2I(120, 0),
@@ -157,8 +170,12 @@ void SetupEntities(RenderWindow *render_window) {
       .total_frames = 5,
   };
   EntityAddAnimation(player, "idle", idle_spritesheet, &props);
-  SDL_Texture *run_spritesheet =
-      LoadTexture(renderer, "..\\assets\\knight\\_Run.png");
+  clear(&builder);
+  append(&builder, "..");
+  append(&builder, "assets");
+  append(&builder, "knight");
+  append(&builder, "_Run.png");
+  SDL_Texture *run_spritesheet = LoadTexture(renderer, builder.buffer);
   AnimationInfoProperties props_run = {
       .origin = V2I(41, 40),
       .offset = V2I(120, 0),
@@ -200,8 +217,12 @@ int main(int argc, char *argv[]) {
   bool game_is_running = true;
 
   SetupEntities(render_window);
-  LoadFont(render_window, "..\\assets\\fonts\\8BitOperatorPlusSC-Regular.ttf",
-           12);
+  PathBuilder builder = {NULL, 0};
+  append(&builder, "..");
+  append(&builder, "assets");
+  append(&builder, "fonts");
+  append(&builder, "8BitOperatorPlusSC-Regular.ttf");
+  LoadFont(render_window, builder.buffer,12);
 
   while (game_is_running) {
     SDL_RenderClear(render_window->renderer_);
