@@ -1,5 +1,5 @@
-#ifndef INCLUDE_MOLTRES_RENDERWINDOW_H_
-#define INCLUDE_MOLTRES_RENDERWINDOW_H_
+#ifndef MOLTRES_SRC_RENDERWINDOW_H_
+#define MOLTRES_SRC_RENDERWINDOW_H_
 
 #include "entity.h"
 #include "hashtable.h"
@@ -7,78 +7,90 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+/**
+ * @struct RenderWindow
+ * @brief Represents a render window.
+ */
 typedef struct {
-  SDL_Window *window;
-  SDL_Renderer *renderer;
-  HashTable *entity_ht;
-  TTF_Font *font;
+  SDL_Window *window_;     /**< Pointer to the SDL window */
+  SDL_Renderer *renderer_; /**< Pointer to the SDL renderer */
+  HashTable *entity_ht_;   /**< Hash table for storing entities */
+  TTF_Font *font_;         /**< Pointer to the TTF font */
 } RenderWindow;
 
 /**
- * Create render window
- *
- * @param title The title of render window
- * @param width The width of render window
- * @param height The height of render window
- * @return RenderWindow
+ * @brief Creates a new render window.
+ * @param title The title of the render window.
+ * @param width The width of the render window.
+ * @param height The height of the render window.
+ * @return Pointer to the newly created render window.
  */
-RenderWindow *render_window_create(const char *title, int width, int height);
+RenderWindow *RenderWindowCreate(const char *title, int width, int height);
 
 /**
- * Load texture drectly from file
- *
- * @param renderer SDL Renderer
- * @param file_path Path to image
- * @return SDL_Texture The texture from source image
+ * @brief Loads a texture directly from a file.
+ * @param renderer Pointer to the SDL renderer.
+ * @param file_path Path to the image file.
+ * @return Pointer to the texture loaded from the image.
  */
-SDL_Texture *load_texture(SDL_Renderer *renderer, const char *file_path);
-
-void load_font(RenderWindow *render_window, const char *font_path);
+SDL_Texture *LoadTexture(SDL_Renderer *renderer, const char *file_path);
 
 /**
- * Renders the entity using the SDL renderer
- *
- * @param renderer The SDL renderer
- * @param entity The entity to render
+ * @brief Loads a font for the render window.
+ * @param render_window Pointer to the render window.
+ * @param font_path Path to the font file.
+ * @param font_size The size of the font.
  */
-void render(SDL_Renderer *renderer, Entity *entity);
+void LoadFont(RenderWindow *render_window, const char *font_path,
+              int font_size);
 
 /**
- * Renders all entities in the render window
- *
- * @param render_window The render window
+ * @brief Renders an entity using the SDL renderer.
+ * @param renderer Pointer to the SDL renderer.
+ * @param entity Pointer to the entity to render.
  */
-void render_all(RenderWindow *render_window);
+void Render(SDL_Renderer *renderer, Entity *entity);
 
 /**
- * Draws the render window
- *
- * @param render_window The render window
+ * @brief Renders all entities in the render window.
+ * @param render_window Pointer to the render window.
  */
-void display(RenderWindow *render_window);
+void RenderAll(RenderWindow *render_window);
 
 /**
- * Add an entity to the render window
- *
- * @param render_window The render window
- * @param entity_name The name of the entity
- * @param entity The entity to add
+ * @brief Draws the render window.
+ * @param render_window Pointer to the render window.
  */
-void add_entity_to_render_window(RenderWindow *render_window,
-                                 const char *entity_name, Entity *entity);
+void Display(RenderWindow *render_window);
 
 /**
- * Get an entity from the render window
- *
- * @param render_window The render window
- * @param entity_name The name of the entity
- * @param entity The entity to get
+ * @brief Adds an entity to the render window.
+ * @param render_window Pointer to the render window.
+ * @param entity_name The name of the entity.
+ * @param entity Pointer to the entity to add.
  */
-Entity *get_entity_from_render_window(RenderWindow *renderwindow,
-                                      const char *entity_name);
+void AddEntityToRenderWindow(RenderWindow *render_window,
+                             const char *entity_name, Entity *entity);
 
-void cleanup_entities(RenderWindow *render_window);
+/**
+ * @brief Retrieves an entity from the render window.
+ * @param render_window Pointer to the render window.
+ * @param entity_name The name of the entity.
+ * @return Pointer to the retrieved entity, or NULL if not found.
+ */
+Entity *GetEntityFromRenderWindow(RenderWindow *render_window,
+                                  const char *entity_name);
 
-void cleanup_render_window(RenderWindow *render_window);
+/**
+ * @brief Cleans up all entities in the render window.
+ * @param render_window Pointer to the render window.
+ */
+void CleanupEntities(RenderWindow *render_window);
 
-#endif // INCLUDE_MOLTRES_RENDERWINDOW_H_
+/**
+ * @brief Cleans up the render window and frees associated memory.
+ * @param render_window Pointer to the render window.
+ */
+void CleanupRenderWindow(RenderWindow *render_window);
+
+#endif // MOLTRES_SRC_RENDERWINDOW_H_

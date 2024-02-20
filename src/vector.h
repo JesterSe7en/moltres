@@ -1,23 +1,23 @@
-#ifndef INCLUDE_SRC_VECTOR_H_
-#define INCLUDE_SRC_VECTOR_H_
+#ifndef MOLTRES_SRC_VECTOR_H_
+#define MOLTRES_SRC_VECTOR_H_
 
 typedef struct Vector2f {
   float x, y;
-} Vector2f;
+} Vector2F;
 
 typedef struct Vector2i {
   int x, y;
-} Vector2i;
+} Vector2I;
 
 // for convenience
-static inline Vector2f v2f(float x, float y) {
-  Vector2f v = {x, y};
+static inline Vector2F V2F(float x, float y) {
+  Vector2F v = {x, y};
   return v;
 }
 
-static inline Vector2i v2i(int x, int y) {
-  Vector2i v = {x, y};
+static inline Vector2I V2I(int x, int y) {
+  Vector2I v = {x, y};
   return v;
 }
 
-#endif // INCLUDE_SRC_VECTOR_H_
+#endif // MOLTRES_SRC_VECTOR_H_

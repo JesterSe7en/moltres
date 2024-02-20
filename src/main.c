@@ -9,7 +9,7 @@
 static int last_frame_time = 0;
 static int global_fps = 0;
 
-void init_subsystems(void) {
+void InitSubsystems(void) {
   // SDL returns 1 and SDL_image returns 0 on failure
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
     fprintf(stderr, "Cannot initialize SDL: %s\n", SDL_GetError());
@@ -30,7 +30,7 @@ void init_subsystems(void) {
   }
 }
 
-void process_inputs(bool *game_is_running) {
+void ProcessInputs(bool *game_is_running) {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
@@ -49,36 +49,32 @@ void process_inputs(bool *game_is_running) {
   }
 }
 
-void update(RenderWindow *render_window) {
-  float deltaT = (SDL_GetTicks64() - last_frame_time) / 1000.0f;
-  printf("Delta time: %f\n", deltaT);
-
-  // FIXME: maybe either use the static lastTime in this function or the global
+void Update(RenderWindow *render_window) {
+  float delta_t = (SDL_GetTicks64() - last_frame_time) / 1000.0f;
   last_frame_time = SDL_GetTicks64();
 
-  // ---- fps display ----
+  // ---- fps Display ----
   static Uint32 frames = 0;
-  static Uint32 lastTime = 0;
+  static Uint32 last_time = 0;
   static int current_frame = 0;
   // cache player entity
   static Entity *player = NULL;
   static AnimationInfo *ai = NULL;
 
   frames++;
-  Uint32 currentTime = SDL_GetTicks64();
+  Uint32 current_time = SDL_GetTicks64();
   if (player == NULL) {
-    player = (Entity *)hashtable_get(&render_window->entity_ht, "player");
-    ai = (AnimationInfo *)hashtable_get(&player->anim_info_ht, "run");
+    player = (Entity *)HashtableGet(&render_window->entity_ht_, "player");
+    ai = (AnimationInfo *)HashtableGet(&player->anim_info_ht, "run");
   }
 
   if (ai != NULL) {
-    ai->elapsed_time += deltaT;
-    printf("Elapsed time: %f\n", ai->elapsed_time);
+    ai->elapsed_time += delta_t;
 
     float total_duration = ai->total_frames * ai->frame_duration;
 
     if (total_duration > 0 && ai->elapsed_time >= total_duration) {
-      ai->elapsed_time = fmod(ai->elapsed_time, total_duration);
+      ai->elapsed_time = fmodf(ai->elapsed_time, total_duration);
     }
 
     ai->cur_frame = (int)(ai->elapsed_time / ai->frame_duration);
@@ -89,100 +85,122 @@ void update(RenderWindow *render_window) {
     player->current_frame.h = ai->size.y;
   }
 
-  if (currentTime - lastTime >= 1000) {
-    global_fps = frames / ((currentTime - lastTime) / 1000.0f);
+  if (current_time - last_time >= 1000) {
+    global_fps = frames / ((current_time - last_time) / 1000.0f);
 
     // Reset counters for the next second
     frames = 0;
-    lastTime = currentTime;
+    last_time = current_time;
   }
 }
 
-void setup_entites(RenderWindow *render_window) {
+void SetupEntities(RenderWindow *render_window) {
 
-  SDL_Renderer *renderer = render_window->renderer;
+  SDL_Renderer *renderer = render_window->renderer_;
+  SDL_Window *window = render_window->window_;
 
-  // oak_floor.png is just one tile
-  // SDL_Texture *oak_floor_texture =
-  //     load_texture(renderer, "assets/oak_woods/oak_floor.png");
-  // int w, h;
-  // SDL_QueryTexture(oak_floor_texture, NULL, NULL, &w, &h);
-  // Entity *oak_floor =
-  //     entity_create(v2f(100, 100), v2i(0, 0), w, h, 1, oak_floor_texture);
-  // add_entity_to_render_window(render_window, "floor", oak_floor);
+  int w, h;
 
-  // Entity *player = entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1.2,
-  // NULL);
-  // FIXME: width hack for now to run an attack animation
-  Entity *player = entity_create(v2f(200, 100), v2i(44, 42), 21, 38, 1, NULL);
+  // ---- Background ----
+  SDL_GetWindowSize(window, &w, &h);
+  SDL_Texture *background_texture = LoadTexture(
+      renderer, "..\\assets\\oak_woods\\background\\background_layer_1.png");
+  Entity *background =
+      EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background_texture);
+  AddEntityToRenderWindow(render_window, "background", background);
+
+  SDL_Texture *background2_texture = LoadTexture(
+      renderer, "..\\assets\\oak_woods\\background\\background_layer_2.png");
+  Entity *background2 =
+      EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background2_texture);
+  AddEntityToRenderWindow(render_window, "background2", background2);
+
+  SDL_Texture *background3_texture = LoadTexture(
+      renderer, "..\\assets\\oak_woods\\background\\background_layer_3.png");
+  Entity *background3 =
+      EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background3_texture);
+  AddEntityToRenderWindow(render_window, "background3", background3);
+
+  //---- Floor ----
+  SDL_Texture *oak_floor_texture =
+      LoadTexture(renderer, "..\\assets\\oak_woods\\oak_floor.png");
+  SDL_QueryTexture(oak_floor_texture, NULL, NULL, &w, &h);
+  Entity *oak_floor =
+      EntityCreate(V2F(100, 100), V2I(0, 0), w, h, 1, oak_floor_texture);
+  AddEntityToRenderWindow(render_window, "floor", oak_floor);
+
+  //---- Player ----
+  Entity *player = EntityCreate(V2F(200, 100), V2I(44, 42), 21, 38, 1, NULL);
   SDL_Texture *idle_spritesheet =
-      load_texture(renderer, "assets/knight/_Idle.png");
+      LoadTexture(renderer, "..\\assets\\knight\\_Idle.png");
   AnimationInfoProperties props = {
-      .origin = v2i(44, 42),
-      .offset = v2i(120, 0),
-      .size = v2i(21, 38),
+      .origin = V2I(44, 42),
+      .offset = V2I(120, 0),
+      .size = V2I(21, 38),
       .fps = 10,
       .total_frames = 5,
   };
-  entity_add_animation(player, "idle", idle_spritesheet, &props);
+  EntityAddAnimation(player, "idle", idle_spritesheet, &props);
   SDL_Texture *run_spritesheet =
-      load_texture(renderer, "assets/knight/_Run.png");
+      LoadTexture(renderer, "..\\assets\\knight\\_Run.png");
   AnimationInfoProperties props_run = {
-      .origin = v2i(41, 40),
-      .offset = v2i(120, 0),
-      .size = v2i(37, 40),
+      .origin = V2I(41, 40),
+      .offset = V2I(120, 0),
+      .size = V2I(37, 40),
       .fps = 10,
       .total_frames = 10,
   };
-  entity_add_animation(player, "run", run_spritesheet, &props_run);
-
-  add_entity_to_render_window(render_window, "player", player);
+  EntityAddAnimation(player, "run", run_spritesheet, &props_run);
+  AddEntityToRenderWindow(render_window, "player", player);
 }
 
-void render_fps(RenderWindow *render_window) {
-  SDL_Color sdlcolor = {255, 0, 0, 255}; // red
+void RenderFps(RenderWindow *render_window) {
+  SDL_Color sdl_color = {255, 0, 0, 255}; // red
   char fps[32];
-  snprintf(fps, sizeof(fps), "FPS: %d", global_fps);
-  int w, h;
-  TTF_SizeText(render_window->font, fps, &w, &h);
+  snprintf(fps, sizeof(fps), "%d", global_fps);
+  int text_w, text_h;
+  TTF_SizeText(render_window->font_, fps, &text_w, &text_h);
 
   SDL_Surface *surface =
-      TTF_RenderText_Solid(render_window->font, fps, sdlcolor);
+      TTF_RenderText_Solid(render_window->font_, fps, sdl_color);
 
   SDL_Texture *fps_texture =
-      SDL_CreateTextureFromSurface(render_window->renderer, surface);
+      SDL_CreateTextureFromSurface(render_window->renderer_, surface);
 
-  SDL_Rect target = {200, 200, w, h};
-  SDL_RenderCopy(render_window->renderer, fps_texture, NULL, &target);
+  int screen_h;
+  SDL_GetWindowSize(render_window->window_, NULL, &screen_h);
+
+  //  bottom left of the screen
+  SDL_Rect target = {0, screen_h - text_h, text_w, text_h};
+  SDL_RenderCopy(render_window->renderer_, fps_texture, NULL, &target);
 }
 
 int main(int argc, char *argv[]) {
-  init_subsystems();
 
-  RenderWindow *render_window = render_window_create("Game v1.0", 800, 600);
+  InitSubsystems();
+
+  RenderWindow *render_window = RenderWindowCreate("Game v1.0", 800, 600);
 
   bool game_is_running = true;
 
-  setup_entites(render_window);
-  load_font(render_window, "assets/fonts/JosefinSans-Regular.ttf");
+  SetupEntities(render_window);
+  LoadFont(render_window, "..\\assets\\fonts\\8BitOperatorPlusSC-Regular.ttf",
+           12);
 
-  SDL_Event event;
-  float fps;
   while (game_is_running) {
-    SDL_RenderClear(render_window->renderer);
+    SDL_RenderClear(render_window->renderer_);
 
-    process_inputs(&game_is_running);
-    update(render_window);
-    render_all(render_window);
-#ifdef DEBUG
-    render_fps(render_window);
-#endif
-    display(render_window);
+    ProcessInputs(&game_is_running);
+    Update(render_window);
+    RenderAll(render_window);
+    RenderFps(render_window);
+    Display(render_window);
   }
 
   // clean up entities
-  cleanup_entities(render_window);
-  cleanup_render_window(render_window);
+  CleanupEntities(render_window);
+  CleanupRenderWindow(render_window);
+  render_window = NULL;
 
   SDL_Quit();
 

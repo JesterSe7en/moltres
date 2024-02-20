@@ -2,6 +2,10 @@
 #include "renderwindow.h"
 #include "vector.h"
 
+#ifdef _WIN32
+#include <SDL2/SDL_main.h>
+#endif
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_image.h>

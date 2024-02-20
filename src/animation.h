@@ -1,21 +1,20 @@
-#ifndef INCLUDE_SRC_ANIMATION_H_
-#define INCLUDE_SRC_ANIMATION_H_
+#ifndef MOLTRES_SRC_ANIMATION_H_
+#define MOLTRES_SRC_ANIMATION_H_
 
 #include "vector.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <stdio.h>
 
 /**
  * @struct AnimationInfo
  * @brief Stores information about an animation
  */
 typedef struct AnimationInfo {
-  Vector2i origin;  /**< x,y coordinates of the starting frame */
-  Vector2i offset;  /**< x,y offset between each frame */
-  Vector2i size;    /**< width, height of each frame */
+  Vector2I origin;  /**< x,y coordinates of the starting frame */
+  Vector2I offset;  /**< x,y offset between each frame */
+  Vector2I size;    /**< width, height of each frame */
   int total_frames; /**< total number of frames in the animation */
-  float fps;        /**< frame rate of the animation */
-  float total_time; /**< total time of the animation in seconds */
 
   // derived values
   int cur_frame; /**< current frame index of the animation [0, total_frames - 1]
@@ -25,15 +24,20 @@ typedef struct AnimationInfo {
 } AnimationInfo;
 
 typedef struct AnimationInfoProperties {
-  Vector2i origin;
-  Vector2i offset;
-  Vector2i size;
+  Vector2I origin;
+  Vector2I offset;
+  Vector2I size;
   int total_frames;
   float fps;
   float total_time;
 } AnimationInfoProperties;
 
-AnimationInfo *animation_info_create(AnimationInfoProperties properties);
+/**
+ * @brief Creates an AnimationInfo structure based on the provided properties
+ * @param properties The properties for initializing the AnimationInfo structure
+ * @return A pointer to the newly created AnimationInfo structure
+ */
+AnimationInfo *AnimationInfoCreate(AnimationInfoProperties properties);
 
-void animation_info_destroy(AnimationInfo *animation_info);
-#endif // INCLUDE_SRC_ANIMATION_H_
+void AnimationInfoDestroy(AnimationInfo *animation_info);
+#endif // MOLTRES_SRC_ANIMATION_H_

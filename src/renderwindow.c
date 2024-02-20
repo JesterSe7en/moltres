@@ -3,66 +3,64 @@
 #include "hashtable.h"
 #include <SDL2/SDL_error.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL_render.h>
-#include <SDL2/SDL_syswm.h>
 #include <SDL2/SDL_video.h>
 #include <stdio.h>
 
-SDL_Window *create_sdl_window(const char *title, int width, int height) {
+SDL_Window *CreateSdlWindow(const char *title, int width, int height) {
   SDL_Window *window =
       SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                        width, height, SDL_WINDOW_SHOWN);
 
-  SDL_SysWMinfo info;
-  // Cannot just straight call GetWindowWMInfo, need to initialize the version
-  SDL_VERSION(&info.version);
-  if (!SDL_GetWindowWMInfo(window, &info)) {
-    fprintf(stderr, "Cannot get window info: %s\n", SDL_GetError());
-  }
-
-  printf("Version: %d.%d\n", info.version.major, info.version.minor);
-  printf("Subsystem: %d\n", info.subsystem);
-
-  switch (info.subsystem) {
-  case SDL_SYSWM_UNKNOWN:
-    printf("Unknown subsystem\n");
-    break;
-  case SDL_SYSWM_X11:
-    // Access X11-specific information in info.info.x11
-    printf("X11 Window ID: %lu\n", info.info.x11.window);
-    break;
-  default:
-    printf("Unsupported subsystem\n");
-  }
+  //  SDL_SysWMinfo info;
+  //  // Cannot just straight call GetWindowWMInfo, need to initialize the
+  //  version SDL_VERSION(&info.version); if (!SDL_GetWindowWMInfo(window_,
+  //  &info)) {
+  //    fprintf(stderr, "Cannot get window_ info: %s\n", SDL_GetError());
+  //  }
+  //
+  //  printf("Version: %d.%d\n", info.version.major, info.version.minor);
+  //  printf("Subsystem: %d\n", info.subsystem);
+  //
+  //  switch (info.subsystem) {
+  //  case SDL_SYSWM_UNKNOWN:
+  //    printf("Unknown subsystem\n");
+  //    break;
+  //  case SDL_SYSWM_X11:
+  //    // Access X11-specific information in info.info.x11
+  //    printf("X11 Window ID: %lu\n", info.info.x11.window_);
+  //    break;
+  //  default:
+  //    printf("Unsupported subsystem\n");
+  //  }
 
   if (window == NULL) {
-    fprintf(stderr, "Cannot create SDL window: %s\n", SDL_GetError());
+    fprintf(stderr, "Cannot create SDL window_: %s\n", SDL_GetError());
   }
   return window;
 }
 
-SDL_Renderer *create_sdl_renderer(SDL_Window *window) {
+SDL_Renderer *CreateSdlRenderer(SDL_Window *window) {
   SDL_Renderer *renderer =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
   if (renderer == NULL) {
-    fprintf(stderr, "Cannot create SDL renderer: %s\n", SDL_GetError());
+    fprintf(stderr, "Cannot create SDL renderer_: %s\n", SDL_GetError());
   }
   return renderer;
 }
 
-RenderWindow *render_window_create(const char *title, int width, int height) {
+RenderWindow *RenderWindowCreate(const char *title, int width, int height) {
   RenderWindow *renderwindow = malloc(sizeof(RenderWindow));
-  renderwindow->window = create_sdl_window(title, width, height);
-  renderwindow->renderer = create_sdl_renderer(renderwindow->window);
-  renderwindow->entity_ht = hashtable_create();
+  renderwindow->window_ = CreateSdlWindow(title, width, height);
+  renderwindow->renderer_ = CreateSdlRenderer(renderwindow->window_);
+  renderwindow->entity_ht_ = HashtableCreate();
   return renderwindow;
 }
 
-SDL_Texture *load_texture(SDL_Renderer *renderer, const char *file_path) {
+SDL_Texture *LoadTexture(SDL_Renderer *renderer, const char *file_path) {
   if (renderer == NULL) {
-    fprintf(stderr, "Cannot load texture: SDL renderer is NULL\n");
+    fprintf(stderr, "Cannot load texture: SDL renderer_ is NULL\n");
     return NULL;
   }
 
@@ -81,10 +79,10 @@ SDL_Texture *load_texture(SDL_Renderer *renderer, const char *file_path) {
  * @param file_path Path to image
  * @return SDL_Texture The texture from source image
  */
-SDL_Texture *load_texture_from_memory(SDL_Renderer *renderer,
-                                      const char *file_path) {
+SDL_Texture *LoadTextureFromMemory(SDL_Renderer *renderer,
+                                   const char *file_path) {
   if (renderer == NULL) {
-    fprintf(stderr, "Cannot load texture: SDL renderer is NULL\n");
+    fprintf(stderr, "Cannot load texture: SDL renderer_ is NULL\n");
     return NULL;
   }
   SDL_Surface *surface = IMG_Load(file_path);
@@ -99,24 +97,24 @@ SDL_Texture *load_texture_from_memory(SDL_Renderer *renderer,
   return texture;
 }
 
-void load_font(RenderWindow *render_window, const char *font_path) {
-  TTF_Font *font = TTF_OpenFont(font_path, 24);
+void LoadFont(RenderWindow *render_window, const char *font_path,
+              int font_size) {
+  TTF_Font *font = TTF_OpenFont(font_path, font_size);
   if (font == NULL) {
-    fprintf(stderr, "Cannot load font: %s\n", TTF_GetError());
+    fprintf(stderr, "Cannot load font_: %s\n", TTF_GetError());
   }
-  render_window->font = font;
-  printf("Loaded font: %s\n", font_path);
+  render_window->font_ = font;
 }
 
-void render(SDL_Renderer *renderer, Entity *entity) {
+void Render(SDL_Renderer *renderer, Entity *entity) {
   if (entity == NULL) {
-    fprintf(stderr, "Cannot render entity: entity is NULL\n");
+    fprintf(stderr, "Cannot Render entity: entity is NULL\n");
     return;
   }
 
   if (renderer == NULL || entity->texture == NULL) {
     fprintf(stderr,
-            "Cannot render target entity: renderer or texture is NULL\n");
+            "Cannot Render target entity: renderer_ or texture is NULL\n");
     return;
   }
 
@@ -134,60 +132,61 @@ void render(SDL_Renderer *renderer, Entity *entity) {
   dest.w = src.w * entity->scale;
   dest.h = src.h * entity->scale;
 
-  printf("Source rect: x:%d y:%d w:%d h:%d\n", src.x, src.y, src.w, src.h);
-  printf("Destination rect: x:%d y:%d w:%d h:%d\n", dest.x, dest.y, dest.w,
-         dest.h);
-
   if (SDL_RenderCopy(renderer, texture, &src, &dest) != 0) {
-    fprintf(stderr, "Cannot render texture: %s\n", SDL_GetError());
-  };
+    fprintf(stderr, "Cannot Render texture: %s\n", SDL_GetError());
+  }
 }
 
-void render_all(RenderWindow *render_window) {
-  HashTable *ht = render_window->entity_ht;
+void RenderAll(RenderWindow *render_window) {
+  HashTable *ht = render_window->entity_ht_;
 
-  HashTableIterator it = hashtable_iterator_create(ht);
-  while (hashtable_iterator_has_next(&it)) {
-    Entry *entry = hashtable_iterator_next(&it);
+  HashTableIterator it = HashtableIteratorCreate(ht);
+  while (HashtableIteratorHasNext(&it)) {
+    Entry *entry = HashtableIteratorNext(&it);
+    if (entry == NULL) {
+      fprintf(stderr, "Cannot render entity: entry is NULL\n");
+      continue;
+    }
     Entity *entity = (Entity *)entry->value;
-    render(render_window->renderer, entity);
+    Render(render_window->renderer_, entity);
   }
 }
 
-void add_entity_to_render_window(RenderWindow *render_window,
-                                 const char *entity_name, Entity *entity) {
-  hashtable_add(&render_window->entity_ht, entity_name, entity);
+void AddEntityToRenderWindow(RenderWindow *render_window,
+                             const char *entity_name, Entity *entity) {
+  HashtableAdd(&render_window->entity_ht_, entity_name, entity);
 }
 
-Entity *get_entity_from_render_window(RenderWindow *renderwindow,
-                                      const char *entity_name) {
-  return hashtable_get(&renderwindow->entity_ht, entity_name);
+Entity *GetEntityFromRenderWindow(RenderWindow *render_window,
+                                  const char *entity_name) {
+  return HashtableGet(&render_window->entity_ht_, entity_name);
 }
 
-void display(RenderWindow *render_window) {
-  SDL_RenderPresent(render_window->renderer);
+void Display(RenderWindow *render_window) {
+  SDL_RenderPresent(render_window->renderer_);
 }
 
-void cleanup_entities(RenderWindow *render_window) {
-  HashTableIterator it = hashtable_iterator_create(render_window->entity_ht);
-  while (hashtable_iterator_has_next(&it)) {
-    Entry *entry = hashtable_iterator_next(&it);
+void CleanupEntities(RenderWindow *render_window) {
+  HashTableIterator it = HashtableIteratorCreate(render_window->entity_ht_);
+  while (HashtableIteratorHasNext(&it)) {
+    Entry *entry = HashtableIteratorNext(&it);
     Entity *entity = (Entity *)entry->value;
-    cleanup_entity(entity);
+    CleanupEntity(entity);
+    entity = NULL;
   }
 }
 
-void cleanup_render_window(RenderWindow *render_window) {
-  SDL_DestroyRenderer(render_window->renderer);
-  SDL_DestroyWindow(render_window->window);
+void CleanupRenderWindow(RenderWindow *render_window) {
+  SDL_DestroyRenderer(render_window->renderer_);
+  SDL_DestroyWindow(render_window->window_);
 
-  render_window->renderer = NULL;
-  render_window->window = NULL;
-  if (render_window->font != NULL) {
-    TTF_CloseFont(render_window->font);
-    render_window->font = NULL;
+  render_window->renderer_ = NULL;
+  render_window->window_ = NULL;
+  if (render_window->font_ != NULL) {
+    TTF_CloseFont(render_window->font_);
+    render_window->font_ = NULL;
   }
-  hashtable_destroy(render_window->entity_ht);
+  HashtableDestroy(render_window->entity_ht_);
   free(render_window);
   render_window = NULL;
 }

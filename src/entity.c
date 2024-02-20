@@ -8,13 +8,13 @@
 //  TODO: Can do Entity entity = *entity_create_dynamic(...) to accomplish the
 // same thing...maybe
 //
-Entity *entity_create(Vector2f position, Vector2i origin, int width, int height,
-                      float scale, SDL_Texture *texture) {
+Entity *EntityCreate(Vector2F position, Vector2I screen_origin, int width,
+                     int height, float scale, SDL_Texture *texture) {
   Entity *entity = malloc(sizeof(Entity));
   entity->position = position;
   entity->scale = scale;
-  entity->current_frame.x = origin.x;
-  entity->current_frame.y = origin.y;
+  entity->current_frame.x = screen_origin.x;
+  entity->current_frame.y = screen_origin.y;
   entity->current_frame.w = width;
   entity->current_frame.h = height;
   entity->texture = texture;
@@ -23,20 +23,20 @@ Entity *entity_create(Vector2f position, Vector2i origin, int width, int height,
   return entity;
 }
 
-void entity_add_animation(Entity *entity, char *anim_name,
-                          SDL_Texture *spritesheet,
-                          AnimationInfoProperties *props) {
+void EntityAddAnimation(Entity *entity, char *anim_name,
+                        SDL_Texture *spritesheet,
+                        AnimationInfoProperties *props) {
   if (entity->anim_info_ht == NULL) {
-    entity->anim_info_ht = hashtable_create();
+    entity->anim_info_ht = HashtableCreate();
   }
 
-  AnimationInfo *ai = animation_info_create(*props);
-  hashtable_add(&entity->anim_info_ht, anim_name, ai);
+  AnimationInfo *ai = AnimationInfoCreate(*props);
+  HashtableAdd(&entity->anim_info_ht, anim_name, ai);
   entity->curr_anim = anim_name;
   entity->texture = spritesheet;
 }
 
-void cleanup_entity(Entity *entity) {
+void CleanupEntity(Entity *entity) {
   if (entity == NULL) {
     fprintf(stderr, "Could not destroy entity: entity is NULL\n");
     return;
@@ -49,21 +49,21 @@ void cleanup_entity(Entity *entity) {
   // destroy all animation infos
   HashTable *ht = entity->anim_info_ht;
   if (ht != NULL && ht->size > 0) {
-    HashTableIterator it = hashtable_iterator_create(ht);
-    while (hashtable_iterator_has_next(&it)) {
-      Entry *entry = hashtable_iterator_next(&it);
+    HashTableIterator it = HashtableIteratorCreate(ht);
+    while (HashtableIteratorHasNext(&it)) {
+      Entry *entry = HashtableIteratorNext(&it);
       AnimationInfo *ai = (AnimationInfo *)entry->value;
       if (ai != NULL) {
-        animation_info_destroy(ai);
+        AnimationInfoDestroy(ai);
+        ai = NULL;
       }
     }
   }
 
   // destroy the animation info hashtable itself
   if (entity->anim_info_ht != NULL) {
-    hashtable_destroy(entity->anim_info_ht);
+    HashtableDestroy(entity->anim_info_ht);
   }
 
   free(entity);
-  entity = NULL;
 }
