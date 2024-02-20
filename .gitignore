@@ -1,3 +1,4 @@
 game_*
 obj
 build
+cmake-build-debug
