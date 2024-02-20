@@ -2,3 +2,6 @@ game_*
 obj
 build
 cmake-build-debug
+.cache
+cmake-build-release
+cmake-build-relwithdebinfo
