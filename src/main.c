@@ -58,7 +58,6 @@ void Update(RenderWindow *render_window) {
   // ---- fps Display ----
   static Uint32 frames = 0;
   static Uint32 last_time = 0;
-  static int current_frame = 0;
   // cache player entity
   static Entity *player = NULL;
   static AnimationInfo *ai = NULL;
@@ -101,11 +100,11 @@ void SetupEntities(RenderWindow *render_window) {
   SDL_Renderer *renderer = render_window->renderer_;
   SDL_Window *window = render_window->window_;
 
+  PathBuilder builder = {NULL, 0};
   int w, h;
 
   // ---- Background ----
   SDL_GetWindowSize(window, &w, &h);
-  PathBuilder builder = {NULL, 0};
   append(&builder, "..");
   append(&builder, "assets");
   append(&builder, "oak_woods");

@@ -11,29 +11,6 @@ SDL_Window *CreateSdlWindow(const char *title, int width, int height) {
   SDL_Window *window =
       SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                        width, height, SDL_WINDOW_SHOWN);
-
-  //  SDL_SysWMinfo info;
-  //  // Cannot just straight call GetWindowWMInfo, need to initialize the
-  //  version SDL_VERSION(&info.version); if (!SDL_GetWindowWMInfo(window_,
-  //  &info)) {
-  //    fprintf(stderr, "Cannot get window_ info: %s\n", SDL_GetError());
-  //  }
-  //
-  //  printf("Version: %d.%d\n", info.version.major, info.version.minor);
-  //  printf("Subsystem: %d\n", info.subsystem);
-  //
-  //  switch (info.subsystem) {
-  //  case SDL_SYSWM_UNKNOWN:
-  //    printf("Unknown subsystem\n");
-  //    break;
-  //  case SDL_SYSWM_X11:
-  //    // Access X11-specific information in info.info.x11
-  //    printf("X11 Window ID: %lu\n", info.info.x11.window_);
-  //    break;
-  //  default:
-  //    printf("Unsupported subsystem\n");
-  //  }
-
   if (window == NULL) {
     fprintf(stderr, "Cannot create SDL window_: %s\n", SDL_GetError());
   }
@@ -51,11 +28,11 @@ SDL_Renderer *CreateSdlRenderer(SDL_Window *window) {
 }
 
 RenderWindow *RenderWindowCreate(const char *title, int width, int height) {
-  RenderWindow *renderwindow = malloc(sizeof(RenderWindow));
-  renderwindow->window_ = CreateSdlWindow(title, width, height);
-  renderwindow->renderer_ = CreateSdlRenderer(renderwindow->window_);
-  renderwindow->entity_ht_ = HashtableCreate();
-  return renderwindow;
+  RenderWindow *render_window = malloc(sizeof(RenderWindow));
+  render_window->window_ = CreateSdlWindow(title, width, height);
+  render_window->renderer_ = CreateSdlRenderer(render_window->window_);
+  render_window->entity_ht_ = HashtableCreate();
+  return render_window;
 }
 
 SDL_Texture *LoadTexture(SDL_Renderer *renderer, const char *file_path) {

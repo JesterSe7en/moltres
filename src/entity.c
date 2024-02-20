@@ -46,7 +46,7 @@ void CleanupEntity(Entity *entity) {
     SDL_DestroyTexture(entity->texture);
   }
 
-  // destroy all animation infos
+  // destroy all animation info
   HashTable *ht = entity->anim_info_ht;
   if (ht != NULL && ht->size > 0) {
     HashTableIterator it = HashtableIteratorCreate(ht);
