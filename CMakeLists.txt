@@ -23,6 +23,8 @@ endif()
 # Global settings
 set(CMAKE_C_STANDARD 17)
 
+set(CMAKE_CONFIGURATION_TYPES Debug Release ReleaseWithDebugInfo)
+
 # for clangd lsp
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -57,6 +59,11 @@ if(WIN32)
   target_compile_definitions(moltres PRIVATE WINDOWS)
 endif()
 
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+  target_compile_definitions(moltres PRIVATE MOLTRES_DEBUG)
+endif()
+
+
 if(UNIX)
   target_include_directories(moltres PRIVATE /usr/include/SDL2)
   target_link_libraries(moltres PRIVATE -lm -lSDL2 -lSDL2_image -lSDL2_ttf)
@@ -66,7 +73,11 @@ endif()
 if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
   target_compile_options(moltres PRIVATE -Wall -pedantic)
   target_compile_options(moltres PRIVATE $<$<CONFIG:Debug>:-g -O0>)
+  target_compile_options(moltres PRIVATE $<$<CONFIG:Release>:-O3>)
+  target_compile_options(moltres PRIVATE $<$<CONFIG:ReleaseWithDebugInfo>:-O3 -g>)
 elseif(CMAKE_C_COMPILER_ID MATCHES "MSVC")
   target_compile_options(moltres PRIVATE /Wall)
   target_compile_options(moltres PRIVATE $<$<CONFIG:Debug>:/Zi /Od /W4>)
+  target_compile_options(moltres PRIVATE $<$<CONFIG:Release>:/O2 /Oi /Ot /GL>)
+  target_compile_options(moltres PRIVATE $<$<CONFIG:ReleaseWithDebugInfo>:/O2 /Oi /Ot /GL /Zi>)
 endif()
