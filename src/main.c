@@ -229,7 +229,9 @@ int main(int argc, char *argv[]) {
     ProcessInputs(&game_is_running);
     Update(render_window);
     RenderAll(render_window);
+#ifdef MOLTRES_DEBUG
     RenderFps(render_window);
+#endif
     Display(render_window);
   }
 
