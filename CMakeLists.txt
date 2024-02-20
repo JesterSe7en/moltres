@@ -23,6 +23,9 @@ endif()
 # Global settings
 set(CMAKE_C_STANDARD 17)
 
+# for clangd lsp
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Add Executable
 file(GLOB SRC_FILES src/*.c)
 add_executable(moltres ${SRC_FILES})
