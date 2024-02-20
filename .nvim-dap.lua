@@ -7,27 +7,25 @@ dap.adapters.cppdbg = {
 
 dap.configurations.cpp = {
 	{
-		name = "Launch file",
+		name = "Launch Moltres",
 		type = "cppdbg",
 		request = "launch",
-		program = function()
-			return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-		end,
-		cwd = "${workspaceFolder}",
-		stopAtEntry = true,
+		program = "${workspaceFolder}/build/moltres", -- link directly to the executable
+		cwd = "${workspaceFolder}/build", -- working directory for the program
+		stopAtEntry = false,
 	},
-	{
-		name = "Attach to gdbserver :1234",
-		type = "cppdbg",
-		request = "launch",
-		MIMode = "gdb",
-		miDebuggerServerAddress = "localhost:1234",
-		miDebuggerPath = "/usr/bin/gdb",
-		cwd = "${workspaceFolder}",
-		program = function()
-			return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-		end,
-	},
+	-- {
+	-- 	name = "Attach to gdbserver :1234",
+	-- 	type = "cppdbg",
+	-- 	request = "launch",
+	-- 	MIMode = "gdb",
+	-- 	miDebuggerServerAddress = "localhost:1234",
+	-- 	miDebuggerPath = "/usr/bin/gdb",
+	-- 	cwd = "${workspaceFolder}",
+	-- 	program = function()
+	-- 		return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+	-- 	end,
+	-- },
 }
 
 dap.configurations.c = dap.configurations.cpp
