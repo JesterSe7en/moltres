@@ -220,8 +220,8 @@ int main(int argc, char *argv[]) {
   append(&builder, "..");
   append(&builder, "assets");
   append(&builder, "fonts");
-  append(&builder, "8BitOperatorPlusSC-Regular.ttf");
-  LoadFont(render_window, builder.buffer,12);
+  append(&builder, "VCR_OSD_MONO.ttf");
+  LoadFont(render_window, builder.buffer, 14);
 
   while (game_is_running) {
     SDL_RenderClear(render_window->renderer_);
