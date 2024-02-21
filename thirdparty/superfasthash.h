@@ -4,6 +4,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-uint32_t SuperFastHash(const char *, int);
+uint32_t SuperFastHash(const char * data, int len);
 
 #endif // INCLUDE_THIRDPARTY_SUPERFASTHASH_H_

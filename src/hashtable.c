@@ -1,5 +1,5 @@
 #include "hashtable.h"
-#include "../thirdparty/superfasthash.c"
+#include "superfasthash.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>

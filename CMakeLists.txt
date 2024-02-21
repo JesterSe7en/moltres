@@ -29,8 +29,28 @@ set(CMAKE_CONFIGURATION_TYPES Debug Release ReleaseWithDebugInfo)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Add Executable
-file(GLOB SRC_FILES src/*.c)
-add_executable(moltres ${SRC_FILES})
+set(SRC_FILES
+        src/animation.c
+        src/entity.c
+        src/hashtable.c
+        src/main.c
+        src/renderwindow.c
+        src/utils.c
+        thirdparty/superfasthash.c
+)
+
+set(HEADER_FILES
+        src/animation.h
+        src/entity.h
+        src/hashtable.h
+        src/main.h
+        src/renderwindow.h
+        src/utils.h
+        src/vector.h
+        thirdparty/superfasthash.h
+)
+
+add_executable(moltres ${SRC_FILES} ${HEADER_FILES})
 
 include_directories(
         ${CMAKE_SOURCE_DIR}/src
