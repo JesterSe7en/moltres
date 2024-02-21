@@ -10,9 +10,9 @@
  * @brief Represents an entry in the hash table.
  */
 typedef struct Entry {
-  char *key;          /**< Key associated with the entry */
-  void *value;        /**< Value associated with the entry */
-  bool removed;       /**< Flag indicating if the entry has been removed */
+  char *key;    /**< Key associated with the entry */
+  void *value;  /**< Value associated with the entry */
+  bool removed; /**< Flag indicating if the entry has been removed */
 } Entry;
 
 /**
@@ -20,9 +20,9 @@ typedef struct Entry {
  * @brief Represents a hash table.
  */
 typedef struct HashTable {
-  Entry *entries;     /**< Array of entries in the hash table */
-  size_t size;        /**< Total size of the hash table */
-  size_t count;       /**< Number of entries in the hash table */
+  Entry *entries; /**< Array of entries in the hash table */
+  size_t size;    /**< Total size of the hash table */
+  size_t count;   /**< Number of entries in the hash table */
 } HashTable;
 
 /**
@@ -30,8 +30,8 @@ typedef struct HashTable {
  * @brief Represents an iterator for the hash table.
  */
 typedef struct HashTableIterator {
-  const HashTable *ht;       /**< Pointer to the hash table */
-  size_t current_index;      /**< Current index of the iterator */
+  const HashTable *ht;  /**< Pointer to the hash table */
+  size_t current_index; /**< Current index of the iterator */
 } HashTableIterator;
 
 /**

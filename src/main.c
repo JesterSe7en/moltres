@@ -36,11 +36,11 @@ void ProcessInputs(bool *game_is_running) {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
-    case SDL_QUIT:
-    case SDL_WINDOWEVENT_CLOSE:
-      printf("Window close event received, exiting game...\n");
-      *game_is_running = false;
-      break;
+      case SDL_QUIT:
+      case SDL_WINDOWEVENT_CLOSE:
+        printf("Window close event received, exiting game...\n");
+        *game_is_running = false;
+        break;
     }
 
     const Uint8 *key_state = SDL_GetKeyboardState(NULL);
@@ -65,8 +65,8 @@ void Update(RenderWindow *render_window) {
   frames++;
   Uint32 current_time = SDL_GetTicks64();
   if (player == NULL) {
-    player = (Entity *)HashtableGet(&render_window->entity_ht_, "player");
-    ai = (AnimationInfo *)HashtableGet(&player->anim_info_ht, "run");
+    player = (Entity *) HashtableGet(&render_window->entity_ht_, "player");
+    ai = (AnimationInfo *) HashtableGet(&player->anim_info_ht, "run");
   }
 
   if (ai != NULL) {
@@ -78,7 +78,7 @@ void Update(RenderWindow *render_window) {
       ai->elapsed_time = fmodf(ai->elapsed_time, total_duration);
     }
 
-    ai->cur_frame = (int)(ai->elapsed_time / ai->frame_duration);
+    ai->cur_frame = (int) (ai->elapsed_time / ai->frame_duration);
 
     player->current_frame.x = ai->origin.x + ai->offset.x * ai->cur_frame;
     player->current_frame.y = ai->origin.y + ai->offset.y * ai->cur_frame;
@@ -115,8 +115,7 @@ void SetupEntities(RenderWindow *render_window) {
   SDL_Texture *background_texture = LoadTexture(renderer, builder.buffer);
   // SDL_Texture *background_texture = LoadTexture(
   //     renderer, "..\\assets\\oak_woods\\background\\background_layer_1.png");
-  Entity *background =
-      EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background_texture);
+  Entity *background = EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background_texture);
   AddEntityToRenderWindow(render_window, "background", background);
 
   clear(&builder);
@@ -126,8 +125,7 @@ void SetupEntities(RenderWindow *render_window) {
   append(&builder, "background");
   append(&builder, "background_layer_2.png");
   SDL_Texture *background2_texture = LoadTexture(renderer, builder.buffer);
-  Entity *background2 =
-      EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background2_texture);
+  Entity *background2 = EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background2_texture);
   AddEntityToRenderWindow(render_window, "background2", background2);
 
   clear(&builder);
@@ -137,8 +135,7 @@ void SetupEntities(RenderWindow *render_window) {
   append(&builder, "background");
   append(&builder, "background_layer_3.png");
   SDL_Texture *background3_texture = LoadTexture(renderer, builder.buffer);
-  Entity *background3 =
-      EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background3_texture);
+  Entity *background3 = EntityCreate(V2F(0, 0), V2I(0, 0), w, h, 1, background3_texture);
   AddEntityToRenderWindow(render_window, "background3", background3);
 
   //---- Floor ----
@@ -149,8 +146,7 @@ void SetupEntities(RenderWindow *render_window) {
   append(&builder, "oak_floor.png");
   SDL_Texture *oak_floor_texture = LoadTexture(renderer, builder.buffer);
   SDL_QueryTexture(oak_floor_texture, NULL, NULL, &w, &h);
-  Entity *oak_floor =
-      EntityCreate(V2F(100, 100), V2I(0, 0), w, h, 1, oak_floor_texture);
+  Entity *oak_floor = EntityCreate(V2F(100, 100), V2I(0, 0), w, h, 1, oak_floor_texture);
   AddEntityToRenderWindow(render_window, "floor", oak_floor);
 
   //---- Player ----
@@ -193,11 +189,9 @@ void RenderFps(RenderWindow *render_window) {
   int text_w, text_h;
   TTF_SizeText(render_window->font_, fps, &text_w, &text_h);
 
-  SDL_Surface *surface =
-      TTF_RenderText_Solid(render_window->font_, fps, sdl_color);
+  SDL_Surface *surface = TTF_RenderText_Solid(render_window->font_, fps, sdl_color);
 
-  SDL_Texture *fps_texture =
-      SDL_CreateTextureFromSurface(render_window->renderer_, surface);
+  SDL_Texture *fps_texture = SDL_CreateTextureFromSurface(render_window->renderer_, surface);
 
   int screen_h;
   SDL_GetWindowSize(render_window->window_, NULL, &screen_h);

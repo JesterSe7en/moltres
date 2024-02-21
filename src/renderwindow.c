@@ -9,21 +9,15 @@
 
 SDL_Window *CreateSdlWindow(const char *title, int width, int height) {
   SDL_Window *window =
-      SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                       width, height, SDL_WINDOW_SHOWN);
-  if (window == NULL) {
-    fprintf(stderr, "Cannot create SDL window_: %s\n", SDL_GetError());
-  }
+      SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+  if (window == NULL) { fprintf(stderr, "Cannot create SDL window_: %s\n", SDL_GetError()); }
   return window;
 }
 
 SDL_Renderer *CreateSdlRenderer(SDL_Window *window) {
-  SDL_Renderer *renderer =
-      SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-  if (renderer == NULL) {
-    fprintf(stderr, "Cannot create SDL renderer_: %s\n", SDL_GetError());
-  }
+  if (renderer == NULL) { fprintf(stderr, "Cannot create SDL renderer_: %s\n", SDL_GetError()); }
   return renderer;
 }
 
@@ -42,9 +36,7 @@ SDL_Texture *LoadTexture(SDL_Renderer *renderer, const char *file_path) {
   }
 
   SDL_Texture *texture = IMG_LoadTexture(renderer, file_path);
-  if (texture == NULL) {
-    fprintf(stderr, "Cannot load image as texture: %s\n", SDL_GetError());
-  }
+  if (texture == NULL) { fprintf(stderr, "Cannot load image as texture: %s\n", SDL_GetError()); }
 
   return texture;
 }
@@ -56,8 +48,7 @@ SDL_Texture *LoadTexture(SDL_Renderer *renderer, const char *file_path) {
  * @param file_path Path to image
  * @return SDL_Texture The texture from source image
  */
-SDL_Texture *LoadTextureFromMemory(SDL_Renderer *renderer,
-                                   const char *file_path) {
+SDL_Texture *LoadTextureFromMemory(SDL_Renderer *renderer, const char *file_path) {
   if (renderer == NULL) {
     fprintf(stderr, "Cannot load texture: SDL renderer_ is NULL\n");
     return NULL;
@@ -68,18 +59,13 @@ SDL_Texture *LoadTextureFromMemory(SDL_Renderer *renderer,
     return NULL;
   }
   SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-  if (texture == NULL) {
-    fprintf(stderr, "Cannot load image as texture: %s\n", SDL_GetError());
-  }
+  if (texture == NULL) { fprintf(stderr, "Cannot load image as texture: %s\n", SDL_GetError()); }
   return texture;
 }
 
-void LoadFont(RenderWindow *render_window, const char *font_path,
-              int font_size) {
+void LoadFont(RenderWindow *render_window, const char *font_path, int font_size) {
   TTF_Font *font = TTF_OpenFont(font_path, font_size);
-  if (font == NULL) {
-    fprintf(stderr, "Cannot load font_: %s\n", TTF_GetError());
-  }
+  if (font == NULL) { fprintf(stderr, "Cannot load font_: %s\n", TTF_GetError()); }
   render_window->font_ = font;
 }
 
@@ -90,8 +76,7 @@ void Render(SDL_Renderer *renderer, Entity *entity) {
   }
 
   if (renderer == NULL || entity->texture == NULL) {
-    fprintf(stderr,
-            "Cannot Render target entity: renderer_ or texture is NULL\n");
+    fprintf(stderr, "Cannot Render target entity: renderer_ or texture is NULL\n");
     return;
   }
 
@@ -124,30 +109,26 @@ void RenderAll(RenderWindow *render_window) {
       fprintf(stderr, "Cannot render entity: entry is NULL\n");
       continue;
     }
-    Entity *entity = (Entity *)entry->value;
+    Entity *entity = (Entity *) entry->value;
     Render(render_window->renderer_, entity);
   }
 }
 
-void AddEntityToRenderWindow(RenderWindow *render_window,
-                             const char *entity_name, Entity *entity) {
+void AddEntityToRenderWindow(RenderWindow *render_window, const char *entity_name, Entity *entity) {
   HashtableAdd(&render_window->entity_ht_, entity_name, entity);
 }
 
-Entity *GetEntityFromRenderWindow(RenderWindow *render_window,
-                                  const char *entity_name) {
+Entity *GetEntityFromRenderWindow(RenderWindow *render_window, const char *entity_name) {
   return HashtableGet(&render_window->entity_ht_, entity_name);
 }
 
-void Display(RenderWindow *render_window) {
-  SDL_RenderPresent(render_window->renderer_);
-}
+void Display(RenderWindow *render_window) { SDL_RenderPresent(render_window->renderer_); }
 
 void CleanupEntities(RenderWindow *render_window) {
   HashTableIterator it = HashtableIteratorCreate(render_window->entity_ht_);
   while (HashtableIteratorHasNext(&it)) {
     Entry *entry = HashtableIteratorNext(&it);
-    Entity *entity = (Entity *)entry->value;
+    Entity *entity = (Entity *) entry->value;
     CleanupEntity(entity);
     entity = NULL;
   }

@@ -35,8 +35,8 @@ typedef struct Entity {
  * @param texture SDL_Texture representing the texture applied to the entity.
  * @return Pointer to the newly created entity.
  */
-Entity *EntityCreate(Vector2F position, Vector2I screen_origin, int width,
-                     int height, float scale, SDL_Texture *texture);
+Entity *EntityCreate(Vector2F position, Vector2I screen_origin, int width, int height, float scale,
+                     SDL_Texture *texture);
 
 /**
  * @brief Add an animation to an entity.
@@ -47,9 +47,7 @@ Entity *EntityCreate(Vector2F position, Vector2I screen_origin, int width,
  * @param props AnimationInfoProperties struct containing the properties of the
  * new animation.
  */
-void EntityAddAnimation(Entity *entity, char *anim_name,
-                        SDL_Texture *spritesheet,
-                        AnimationInfoProperties *props);
+void EntityAddAnimation(Entity *entity, char *anim_name, SDL_Texture *spritesheet, AnimationInfoProperties *props);
 
 /**
  * @brief Clean up an entity, freeing associated memory.

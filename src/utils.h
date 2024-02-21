@@ -11,10 +11,10 @@
 #endif
 
 typedef struct {
-  char* buffer;
+  char *buffer;
   size_t size;
 } PathBuilder;
 
-void append(PathBuilder* builder, const char* str);
-void clear(PathBuilder* builder);
+void append(PathBuilder *builder, const char *str);
+void clear(PathBuilder *builder);
 #endif //MOLTRES_SRC_UTILS_H_

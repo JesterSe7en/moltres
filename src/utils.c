@@ -1,6 +1,6 @@
 #include "utils.h"
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 static char separator[] = PATH_SEPARATOR;
 
@@ -40,4 +40,3 @@ void clear(PathBuilder *builder) {
   builder->size = 0;
   builder->buffer = NULL;
 }
-

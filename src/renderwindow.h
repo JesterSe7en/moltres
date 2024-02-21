@@ -41,8 +41,7 @@ SDL_Texture *LoadTexture(SDL_Renderer *renderer, const char *file_path);
  * @param font_path Path to the font file.
  * @param font_size The size of the font.
  */
-void LoadFont(RenderWindow *render_window, const char *font_path,
-              int font_size);
+void LoadFont(RenderWindow *render_window, const char *font_path, int font_size);
 
 /**
  * @brief Renders an entity using the SDL renderer.
@@ -69,8 +68,7 @@ void Display(RenderWindow *render_window);
  * @param entity_name The name of the entity.
  * @param entity Pointer to the entity to add.
  */
-void AddEntityToRenderWindow(RenderWindow *render_window,
-                             const char *entity_name, Entity *entity);
+void AddEntityToRenderWindow(RenderWindow *render_window, const char *entity_name, Entity *entity);
 
 /**
  * @brief Retrieves an entity from the render window.
@@ -78,8 +76,7 @@ void AddEntityToRenderWindow(RenderWindow *render_window,
  * @param entity_name The name of the entity.
  * @return Pointer to the retrieved entity, or NULL if not found.
  */
-Entity *GetEntityFromRenderWindow(RenderWindow *render_window,
-                                  const char *entity_name);
+Entity *GetEntityFromRenderWindow(RenderWindow *render_window, const char *entity_name);
 
 /**
  * @brief Cleans up all entities in the render window.

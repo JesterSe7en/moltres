@@ -6,9 +6,7 @@
 
 #define LOAD_FACTOR_THRESHOLD 0.75
 
-size_t HashFunction(const char *key) {
-  return SuperFastHash(key, strlen(key));
-}
+size_t HashFunction(const char *key) { return SuperFastHash(key, strlen(key)); }
 
 HashTable *HashtableCreate(void) {
   HashTable *ht = (HashTable *) malloc(sizeof(HashTable));
@@ -32,8 +30,7 @@ void HashtableAdd(HashTable **ht_ptr, const char *key, void *value) {
 
   HashTable *ht = *ht_ptr;
   // Resize if necessary; only at (LOAD_FACTOR_THRESHOLD * 100)% capacity
-  if (ht->entries == NULL ||
-      (float) ht->count / ht->size > LOAD_FACTOR_THRESHOLD) {
+  if (ht->entries == NULL || (float) ht->count / ht->size > LOAD_FACTOR_THRESHOLD) {
     size_t new_size = ht->size == 0 ? 1 : ht->size * 2;
 
     Entry *new_entries = (Entry *) calloc(new_size, sizeof(Entry));
@@ -48,13 +45,10 @@ void HashtableAdd(HashTable **ht_ptr, const char *key, void *value) {
 
         size_t index = HashFunction(ht->entries[i].key) % new_size;
 
-        while (new_entries[index].key != NULL) {
-          index = (index + 1) % new_size;
-        }
+        while (new_entries[index].key != NULL) { index = (index + 1) % new_size; }
 
         new_entries[index].key = strdup(ht->entries[i].key);
-        new_entries[index].value =
-            ht->entries[i].value; // copy over value to new array
+        new_entries[index].value = ht->entries[i].value; // copy over value to new array
       }
     }
 
@@ -69,8 +63,7 @@ void HashtableAdd(HashTable **ht_ptr, const char *key, void *value) {
   // check if key already exists and is not subject to removal.  if so, just
   // Update it
   while (ht->entries[index].key != NULL) {
-    if (strcmp(ht->entries[index].key, key) == 0 &&
-        !ht->entries[index].removed) {
+    if (strcmp(ht->entries[index].key, key) == 0 && !ht->entries[index].removed) {
       free(ht->entries[index].value);
       ht->entries[index].value = value;
       return;
@@ -86,9 +79,7 @@ void HashtableAdd(HashTable **ht_ptr, const char *key, void *value) {
 }
 
 void HashtableRemove(HashTable *ht, const char *key) {
-  if (ht->entries == NULL) {
-    perror("Cannot remove from empty hash table");
-  }
+  if (ht->entries == NULL) { perror("Cannot remove from empty hash table"); }
 
   size_t index;
   size_t hash = HashFunction(key);
@@ -100,9 +91,7 @@ void HashtableRemove(HashTable *ht, const char *key) {
   }
 
   Entry *entry = &ht->entries[index];
-  if (entry == NULL) {
-    return;
-  }
+  if (entry == NULL) { return; }
 
   while (entry->key != NULL) {
     // only mark entry as removed if it is the right key; also free key
@@ -128,10 +117,7 @@ void *HashtableGet(HashTable **ht_ptr, const char *key) {
   size_t index = HashFunction(key) % ht->size;
 
   while (ht->entries[index].key != NULL) {
-    if (strcmp(ht->entries[index].key, key) == 0 &&
-        !ht->entries[index].removed) {
-      return ht->entries[index].value;
-    }
+    if (strcmp(ht->entries[index].key, key) == 0 && !ht->entries[index].removed) { return ht->entries[index].value; }
     // linear probing
     index = (index + 1) % ht->size;
   }
@@ -139,9 +125,7 @@ void *HashtableGet(HashTable **ht_ptr, const char *key) {
 }
 
 void HashtableDestroy(HashTable *ht) {
-  for (size_t i = 0; i < ht->size; i++) {
-    free(ht->entries[i].key);
-  }
+  for (size_t i = 0; i < ht->size; i++) { free(ht->entries[i].key); }
   free(ht->entries);
   free(ht);
   ht = NULL;
@@ -152,22 +136,18 @@ void HashtableDestroy(HashTable *ht) {
 HashTableIterator HashtableIteratorCreate(const HashTable *ht) {
   if (ht == NULL) {
     fprintf(stderr, "Cannot create iterator from null hash table\n");
-    return (HashTableIterator) {NULL, 0};
+    return (HashTableIterator){NULL, 0};
   }
   HashTableIterator iterator;
   iterator.ht = ht;
   iterator.current_index = 0;
   return iterator;
 }
-bool HashtableIteratorHasNext(const HashTableIterator *it) {
-  return it->current_index < it->ht->count;
-}
+bool HashtableIteratorHasNext(const HashTableIterator *it) { return it->current_index < it->ht->count; }
 Entry *HashtableIteratorNext(HashTableIterator *it) {
   while (it->current_index < it->ht->count) {
     Entry *entry = &it->ht->entries[it->current_index++];
-    if (entry->key != NULL && !entry->removed) {
-      return entry;
-    }
+    if (entry->key != NULL && !entry->removed) { return entry; }
   }
 
   return NULL;

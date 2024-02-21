@@ -8,8 +8,8 @@
 //  TODO: Can do Entity entity = *entity_create_dynamic(...) to accomplish the
 // same thing...maybe
 //
-Entity *EntityCreate(Vector2F position, Vector2I screen_origin, int width,
-                     int height, float scale, SDL_Texture *texture) {
+Entity *EntityCreate(Vector2F position, Vector2I screen_origin, int width, int height, float scale,
+                     SDL_Texture *texture) {
   Entity *entity = malloc(sizeof(Entity));
   entity->position = position;
   entity->scale = scale;
@@ -23,12 +23,8 @@ Entity *EntityCreate(Vector2F position, Vector2I screen_origin, int width,
   return entity;
 }
 
-void EntityAddAnimation(Entity *entity, char *anim_name,
-                        SDL_Texture *spritesheet,
-                        AnimationInfoProperties *props) {
-  if (entity->anim_info_ht == NULL) {
-    entity->anim_info_ht = HashtableCreate();
-  }
+void EntityAddAnimation(Entity *entity, char *anim_name, SDL_Texture *spritesheet, AnimationInfoProperties *props) {
+  if (entity->anim_info_ht == NULL) { entity->anim_info_ht = HashtableCreate(); }
 
   AnimationInfo *ai = AnimationInfoCreate(*props);
   HashtableAdd(&entity->anim_info_ht, anim_name, ai);
@@ -42,9 +38,7 @@ void CleanupEntity(Entity *entity) {
     return;
   }
 
-  if (entity->texture != NULL) {
-    SDL_DestroyTexture(entity->texture);
-  }
+  if (entity->texture != NULL) { SDL_DestroyTexture(entity->texture); }
 
   // destroy all animation info
   HashTable *ht = entity->anim_info_ht;
@@ -52,7 +46,7 @@ void CleanupEntity(Entity *entity) {
     HashTableIterator it = HashtableIteratorCreate(ht);
     while (HashtableIteratorHasNext(&it)) {
       Entry *entry = HashtableIteratorNext(&it);
-      AnimationInfo *ai = (AnimationInfo *)entry->value;
+      AnimationInfo *ai = (AnimationInfo *) entry->value;
       if (ai != NULL) {
         AnimationInfoDestroy(ai);
         ai = NULL;
@@ -61,9 +55,7 @@ void CleanupEntity(Entity *entity) {
   }
 
   // destroy the animation info hashtable itself
-  if (entity->anim_info_ht != NULL) {
-    HashtableDestroy(entity->anim_info_ht);
-  }
+  if (entity->anim_info_ht != NULL) { HashtableDestroy(entity->anim_info_ht); }
 
   free(entity);
 }
