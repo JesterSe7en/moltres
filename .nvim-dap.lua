@@ -10,8 +10,8 @@ dap.configurations.cpp = {
 		name = "Launch Moltres",
 		type = "cppdbg",
 		request = "launch",
-		program = "${workspaceFolder}/build/moltres", -- link directly to the executable
-		cwd = "${workspaceFolder}/build", -- working directory for the program
+		program = "${workspaceFolder}/build-debug/moltres", -- link directly to the executable
+		cwd = "${workspaceFolder}", -- working directory for the program
 		stopAtEntry = false,
 	},
 	-- {
