@@ -25,16 +25,27 @@ set(SOURCE_FILES
 
 add_library(moltres_engine STATIC ${HEADER_FILES} ${SOURCE_FILES})
 
-target_include_directories(moltres_engine PUBLIC include
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../thirdparty/SDL2/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../thirdparty/superfasthash/include
+target_include_directories(moltres_engine PUBLIC
+      ${CMAKE_CURRENT_SOURCE_DIR}/../../thirdparty/SDL2/include
+      ${CMAKE_CURRENT_SOURCE_DIR}/../../thirdparty/superfasthash/include
+      include
 )
 
-if (WIN32)
-  target_link_libraries(moltres_engine PRIVATE -L${CMAKE_CURRENT_SOURCE_DIR}/../../thirdparty/SDL2/lib/win -lSDL2 -lSDL2_image -lSDL2_ttf)
-else ()
-  target_link_libraries(moltres_engine PRIVATE -L${CMAKE_CURRENT_SOURCE_DIR}/../../thirdparty/SDL2/lib/mingw -lSDL2 -lSDL2_image -lSDL2_ttf)
-endif ()
+if(WIN32)
+  target_link_libraries(moltres_engine PRIVATE
+      -L${CMAKE_CURRENT_SOURCE_DIR}/../../thirdparty/SDL2/lib/win
+      -lSDL2
+      -lSDL2_image
+      -lSDL2_ttf
+  )
+else()
+  target_link_libraries(moltres_engine PRIVATE
+      -L${CMAKE_CURRENT_SOURCE_DIR}/../../thirdparty/SDL2/lib/mingw
+      -lSDL2
+      -lSDL2_image
+      -lSDL2_ttf
+  )
+endif()
 
 set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Debug, Release or RelWithDebInfo")
 
