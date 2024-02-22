@@ -109,7 +109,7 @@ void HashtableRemove(HashTable *ht, const char *key) {
 
 void *HashtableGet(HashTable **ht_ptr, const char *key) {
   if (*ht_ptr == NULL) {
-    fprintf(stderr, "Cannot get from null hash table\n");
+    (void) fprintf(stderr, "Cannot get from null hash table\n");
     return NULL;
   }
 

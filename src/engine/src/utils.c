@@ -15,7 +15,7 @@ void append(PathBuilder *builder, const char *str) {
   // don't append separator if the buffer is empty
   if (builder->size == 0) {
     builder->buffer = realloc(builder->buffer, len + 1);
-    memcpy(builder->buffer + builder->size, str, len);
+    (void) memcpy(builder->buffer + builder->size, str, len);
     builder->size += len;
     builder->buffer[builder->size] = '\0';
     return;
@@ -24,13 +24,13 @@ void append(PathBuilder *builder, const char *str) {
   //append the separator
   if (builder->buffer != NULL) {
     builder->buffer = realloc(builder->buffer, builder->size + sep_len + len + 1);
-    memcpy(builder->buffer + builder->size, separator, sep_len);
+    (void) memcpy(builder->buffer + builder->size, separator, sep_len);
     builder->size += sep_len;
   } else {
     builder->buffer = malloc(len + 1);
   }
   //append the string
-  memcpy(builder->buffer + builder->size, str, len);
+  (void) memcpy(builder->buffer + builder->size, str, len);
   builder->size += len;
   builder->buffer[builder->size] = '\0';
 }

@@ -13,18 +13,18 @@ static int global_fps = 0;
 void InitSubsystems(void) {
   // SDL returns 1 and SDL_image returns 0 on failure
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-    fprintf(stderr, "Cannot initialize SDL: %s\n", SDL_GetError());
+    (void) fprintf(stderr, "Cannot initialize SDL: %s\n", SDL_GetError());
     exit(EXIT_FAILURE);
   }
 
   if (IMG_Init(IMG_INIT_PNG) == 0) {
-    fprintf(stderr, "Cannot initialize SDL image: %s\n", SDL_GetError());
+    (void) fprintf(stderr, "Cannot initialize SDL image: %s\n", SDL_GetError());
     SDL_Quit();
     exit(EXIT_FAILURE);
   }
 
   if (TTF_Init() != 0) {
-    fprintf(stderr, "Cannot initialize SDL TTF: %s\n", SDL_GetError());
+    (void) fprintf(stderr, "Cannot initialize SDL TTF: %s\n", SDL_GetError());
     IMG_Quit();
     SDL_Quit();
     exit(EXIT_FAILURE);
@@ -37,14 +37,14 @@ void ProcessInputs(bool *game_is_running) {
     switch (event.type) {
       case SDL_QUIT:
       case SDL_WINDOWEVENT_CLOSE:
-        printf("Window close event received, exiting game...\n");
+        (void) printf("Window close event received, exiting game...\n");
         *game_is_running = false;
         break;
     }
 
     const Uint8 *key_state = SDL_GetKeyboardState(NULL);
     if (key_state[SDL_SCANCODE_ESCAPE]) {
-      printf("Escape key pressed, exiting game...\n");
+      (void) printf("Escape key pressed, exiting game...\n");
       *game_is_running = false;
     }
   }
@@ -95,7 +95,6 @@ void Update(RenderWindow *render_window) {
 }
 
 void SetupEntities(RenderWindow *render_window) {
-
   SDL_Renderer *renderer = render_window->renderer_;
   SDL_Window *window = render_window->window_;
 
@@ -109,7 +108,7 @@ void SetupEntities(RenderWindow *render_window) {
   append(&builder, "oak_woods");
   append(&builder, "background");
   append(&builder, "background_layer_1.png");
-  printf("%s\n", builder.buffer);
+  (void) printf("%s\n", builder.buffer);
 
   SDL_Texture *background_texture = LoadTexture(renderer, builder.buffer);
   // SDL_Texture *background_texture = LoadTexture(
@@ -184,9 +183,9 @@ void SetupEntities(RenderWindow *render_window) {
 void RenderFps(RenderWindow *render_window) {
   SDL_Color sdl_color = {255, 0, 0, 255}; // red
   char fps[32];
-  snprintf(fps, sizeof(fps), "%d", global_fps);
+  (void) snprintf(fps, sizeof(fps), "%d", global_fps);
   int text_w, text_h;
-  TTF_SizeText(render_window->font_, fps, &text_w, &text_h);
+  (void) TTF_SizeText(render_window->font_, fps, &text_w, &text_h);
 
   SDL_Surface *surface = TTF_RenderText_Solid(render_window->font_, fps, sdl_color);
 
@@ -197,11 +196,10 @@ void RenderFps(RenderWindow *render_window) {
 
   //  bottom left of the screen
   SDL_Rect target = {0, screen_h - text_h, text_w, text_h};
-  (void)SDL_RenderCopy(render_window->renderer_, fps_texture, NULL, &target);
+  (void) SDL_RenderCopy(render_window->renderer_, fps_texture, NULL, &target);
 }
 
 int main(int argc, char *argv[]) {
-
   InitSubsystems();
 
   RenderWindow *render_window = RenderWindowCreate("Game v1.0", 800, 600);
@@ -217,7 +215,7 @@ int main(int argc, char *argv[]) {
   LoadFont(render_window, builder.buffer, 14);
 
   while (game_is_running) {
-    (void)SDL_RenderClear(render_window->renderer_);
+    (void) SDL_RenderClear(render_window->renderer_);
 
     ProcessInputs(&game_is_running);
     Update(render_window);

@@ -33,7 +33,7 @@ void EntityAddAnimation(Entity *entity, char *anim_name, SDL_Texture *spriteshee
 
 void CleanupEntity(Entity *entity) {
   if (entity == NULL) {
-    fprintf(stderr, "Could not destroy entity: entity is NULL\n");
+    (void) fprintf(stderr, "Could not destroy entity: entity is NULL\n");
     return;
   }
 

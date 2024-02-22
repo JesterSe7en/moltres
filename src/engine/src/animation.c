@@ -14,7 +14,7 @@ AnimationInfo *AnimationInfoCreate(AnimationInfoProperties properties) {
 
 void AnimationInfoDestroy(AnimationInfo *animation_info) {
   if (animation_info == NULL) {
-    fprintf(stderr, "Cannot destroy NULL animation_info.\n");
+    (void) fprintf(stderr, "Cannot destroy NULL animation_info.\n");
     return;
   }
   free(animation_info);
