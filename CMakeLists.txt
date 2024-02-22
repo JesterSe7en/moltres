@@ -30,24 +30,24 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Add Executable
 set(SRC_FILES
-        src/animation.c
-        src/entity.c
-        src/hashtable.c
-        src/main.c
-        src/renderwindow.c
-        src/utils.c
-        thirdparty/superfasthash.c
+        src/engine/src/animation.c
+        src/engine/src/entity.c
+        src/engine/src/hashtable.c
+        src/engine/src/main.c
+        src/engine/src/renderwindow.c
+        src/engine/src/utils.c
+        thirdparty/superfasthash/src/superfasthash.c
 )
 
 set(HEADER_FILES
-        src/animation.h
-        src/entity.h
-        src/hashtable.h
-        src/main.h
-        src/renderwindow.h
-        src/utils.h
-        src/vector.h
-        thirdparty/superfasthash.h
+        src/engine/include/animation.h
+        src/engine/include/entity.h
+        src/engine/include/hashtable.h
+        src/engine/include/main.h
+        src/engine/include/renderwindow.h
+        src/engine/include/utils.h
+        src/engine/include/vector.h
+        thirdparty/superfasthash/include/superfasthash.h
 )
 
 add_executable(moltres ${SRC_FILES} ${HEADER_FILES})
