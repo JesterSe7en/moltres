@@ -9,3 +9,4 @@ set(CMAKE_CONFIGURATION_TYPES Debug Release ReleaseWithDebugInfo)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(src/engine)
+add_subdirectory(src/game)
