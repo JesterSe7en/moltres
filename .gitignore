@@ -7,3 +7,5 @@ cmake-build-release
 cmake-build-relwithdebinfo
 .idea
 build-debug
+out
+compile_commands.json
