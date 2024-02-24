@@ -1,4 +1,4 @@
-# Moltres Project
+# Moltres Project - C 2D Game Engine
 
 SDL2 Project
 Uses SDL2, SDL2_image, SDL2_mixer, SDL2_ttf, and SDL2_gfx.
